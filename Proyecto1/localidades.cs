@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class localidades
+    public class Localidades
     {
         // Atributos
-        private int IdLocalidad;
-        private string NombreLocalidad;
-        private Decimal Precio;
+         int IdLocalidad;
+         string NombreLocalidad;
+         Decimal Precio;
        
 
         // Constructor
-        public localidades(int idLocalidad, string nombreLocalidad, Decimal precio)
+        public Localidades(int idLocalidad, string nombreLocalidad, Decimal precio)
         {
             IdLocalidad = idLocalidad;
             NombreLocalidad = nombreLocalidad;
             Precio = precio;
-        }           
+        }
+        public Localidades()
+        {           
+        }
         //Getter 
-         public int GetIdLocalidad()
+        public int GetIdLocalidad()
         { 
             return IdLocalidad; 
         }
