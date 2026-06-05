@@ -20,11 +20,23 @@ namespace Acceso
             {
                 return false;
             }
+
+            // Validar que no exista el mismo IdLocalidad
+            for (int i = 0; i < lista_Localidad.Length; i++)
+            {
+                if (lista_Localidad[i] != null &&
+                    lista_Localidad[i].GetIdLocalidad() == localidades.GetIdLocalidad())
+                {
+                    return false; // ID repetido
+                }
+            }
+
             // recorro el arreglo para encontar la posion vacia y guardar el objeto localidades
             for (int i = 0; i < lista_Localidad.Length; i++)
             {
                 if (lista_Localidad[i] == null) //si est vacia
                 {
+
                     lista_Localidad[i] = localidades; //gudarde el objeto
                     return true;
                 }
@@ -52,5 +64,6 @@ namespace Acceso
             }
             return false; //si no hay registros
         }
-    }
+
+    }   
 }

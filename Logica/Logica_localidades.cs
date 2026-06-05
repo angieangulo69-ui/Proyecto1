@@ -18,8 +18,8 @@ namespace Logica
                 return false;
             }
             //esta localidad va a la capa de acceso porque esta instancia y es static 
-            Acceso.Acceso_Localidad.ingresar(plocalidades);
-            return true;
+            return Acceso.Acceso_Localidad.ingresar(plocalidades);
+            
         }
 
         public Localidades[] Listar() //metodo para listar las localidades

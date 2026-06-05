@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Entidades
 {
     public class Ventas
-    {
+    {/*/
         //Atributos
         private int IdVenta;
         Clientes clientes;
@@ -105,6 +105,7 @@ namespace Entidades
         {
             TipoVenta = tipoVenta;
         }
-
+       */
     }
+        
 }

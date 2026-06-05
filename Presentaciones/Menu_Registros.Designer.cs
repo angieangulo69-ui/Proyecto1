@@ -58,6 +58,7 @@
             btn_salir.TabIndex = 9;
             btn_salir.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_salir.UseVisualStyleBackColor = false;
+            btn_salir.Click += btn_salir_Click;
             // 
             // btn_Localidad
             // 
@@ -71,6 +72,7 @@
             btn_Localidad.TabIndex = 8;
             btn_Localidad.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_Localidad.UseVisualStyleBackColor = false;
+            btn_Localidad.Click += btn_Localidad_Click;
             // 
             // label1
             // 
@@ -161,6 +163,7 @@
             btn_atras.TabIndex = 15;
             btn_atras.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_atras.UseVisualStyleBackColor = false;
+            btn_atras.Click += btn_atras_Click;
             // 
             // label2
             // 

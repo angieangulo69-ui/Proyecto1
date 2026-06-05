@@ -9,20 +9,23 @@ namespace Entidades
     public class Localidades
     {
         // Atributos
-         int IdLocalidad;
-         string NombreLocalidad;
-         Decimal Precio;
+        public int IdLocalidad;
+        public string NombreLocalidad;        
+        public Decimal Precio;
+        
        
 
         // Constructor
-        public Localidades(int idLocalidad, string nombreLocalidad, Decimal precio)
+        public Localidades(int idLocalidad, string nombreLocalidad,Decimal precio)
         {
             IdLocalidad = idLocalidad;
-            NombreLocalidad = nombreLocalidad;
+            NombreLocalidad = nombreLocalidad;           
             Precio = precio;
         }
+        // Constructor vacio
         public Localidades()
-        {           
+        {   
+            
         }
         //Getter 
         public int GetIdLocalidad()
@@ -35,8 +38,7 @@ namespace Entidades
         } public Decimal GetPrecio() {   
             return Precio;
             } 
-       
-
+     
         //Setter
         public void SetIdLocalidad(int idLocalidad)
         {
@@ -46,6 +48,7 @@ namespace Entidades
         {
             NombreLocalidad = nombreLocalidad;
         }
+            
         public void SetPrecio(Decimal precio)
         {
             Precio = precio;
