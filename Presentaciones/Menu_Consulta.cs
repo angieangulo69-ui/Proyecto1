@@ -1,4 +1,5 @@
-﻿using Presentaciones.Consultas;
+﻿using Entidades;
+using Presentaciones.Consultas;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,5 +37,43 @@ namespace Presentaciones
             menu_princiaal.ShowDialog();
             this.Dispose();
         }
+
+        private void btn_partido_Click(object sender, EventArgs e)
+        {
+            Consulta_Partidos VentaConsultaPartido = new Consulta_Partidos();
+            VentaConsultaPartido.ShowDialog();
+            this.Dispose();
+        }
+
+        private void btn_vendedor_Click(object sender, EventArgs e)
+        {
+            Consulta_Vendedores ventan_ConsultaVendedores = new Consulta_Vendedores();
+            ventan_ConsultaVendedores.ShowDialog();
+            this.Dispose();
+
+        }
+
+        private void btn_clientes_Click(object sender, EventArgs e)
+        {
+            Consulta_Clientes ventan_ConsultaClientes = new Consulta_Clientes();
+            ventan_ConsultaClientes.ShowDialog();
+            this.Dispose();
+        }
+
+        private void btn_localidadXpartido_Click(object sender, EventArgs e)
+        {
+            Consulta_LocalidadXPartido ventan_ConsultaLocalidadXPartido = new Consulta_LocalidadXPartido();
+            ventan_ConsultaLocalidadXPartido.ShowDialog();
+            this.Dispose();
+        }
+
+        private void btn_ventas_Click(object sender, EventArgs e)
+        {
+            Consulta_Ventas ventan_ConsultaVentas = new Consulta_Ventas();
+            ventan_ConsultaVentas.ShowDialog();
+            this.Dispose();
+
+        }
     }
+
 }

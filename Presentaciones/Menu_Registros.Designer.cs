@@ -98,6 +98,7 @@
             btn_partido.TabIndex = 10;
             btn_partido.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_partido.UseVisualStyleBackColor = false;
+            btn_partido.Click += btn_partido_Click;
             // 
             // btn_vendedor
             // 
@@ -111,6 +112,7 @@
             btn_vendedor.TabIndex = 11;
             btn_vendedor.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_vendedor.UseVisualStyleBackColor = false;
+            btn_vendedor.Click += btn_vendedor_Click;
             // 
             // btn_ventas
             // 
@@ -124,6 +126,7 @@
             btn_ventas.TabIndex = 14;
             btn_ventas.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_ventas.UseVisualStyleBackColor = false;
+            btn_ventas.Click += btn_ventas_Click;
             // 
             // btn_localidadXpartido
             // 
@@ -137,6 +140,7 @@
             btn_localidadXpartido.TabIndex = 13;
             btn_localidadXpartido.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_localidadXpartido.UseVisualStyleBackColor = false;
+            btn_localidadXpartido.Click += btn_localidadXpartido_Click;
             // 
             // btn_clientes
             // 
@@ -150,6 +154,7 @@
             btn_clientes.TabIndex = 12;
             btn_clientes.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_clientes.UseVisualStyleBackColor = false;
+            btn_clientes.Click += btn_clientes_Click;
             // 
             // btn_atras
             // 

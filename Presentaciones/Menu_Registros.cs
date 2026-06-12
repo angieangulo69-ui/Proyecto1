@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Presentaciones.Registros;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,5 +37,41 @@ namespace Presentaciones
             menu_principal.Show();
             Dispose(); // Cierra la ventana actual
         }
+
+        private void btn_partido_Click(object sender, EventArgs e)
+        {
+            Registro_partido ventana_registroPedido = new Registro_partido();
+            ventana_registroPedido.Show();
+            Dispose(); // Cierra la ventana actual
+        }
+
+        private void btn_vendedor_Click(object sender, EventArgs e)
+        {
+            Registro_Vendedores ventana_registroVendedores = new Registro_Vendedores();
+            ventana_registroVendedores.Show();
+            Dispose(); // Cierra la ventana actual
+        }
+
+        private void btn_clientes_Click(object sender, EventArgs e)
+        {
+            Registro_Clientes ventana_registroClientes = new Registro_Clientes();
+            ventana_registroClientes.Show();
+            Dispose(); // Cierra la ventana actual
+        }
+
+        private void btn_localidadXpartido_Click(object sender, EventArgs e)
+        {
+            Registro_LocalidadXPartido ventana_Registro_LocalidadXPartido = new Registro_LocalidadXPartido();
+            ventana_Registro_LocalidadXPartido.Show();
+            Dispose(); // Cierra la ventana actual
+        }
+
+        private void btn_ventas_Click(object sender, EventArgs e)
+        {
+            Registro_Ventas ventana_registroVentas = new Registro_Ventas();
+            ventana_registroVentas.Show();
+            Dispose(); // Cierra la ventana actual
+        }
     }
+
 }

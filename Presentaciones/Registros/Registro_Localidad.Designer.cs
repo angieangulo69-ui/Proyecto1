@@ -198,6 +198,7 @@
             Controls.Add(btn_salir);
             Name = "Registro_Localidad";
             Text = "Registro_Localidad";
+            Load += Registro_Localidad_Load;
             ((System.ComponentModel.ISupportInitialize)data_localidades).EndInit();
             ResumeLayout(false);
             PerformLayout();

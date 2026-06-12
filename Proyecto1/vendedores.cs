@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class vendedores
+    public class Vendedores
     {
         //Atributos 
         private int IdVendedor;
@@ -19,7 +19,7 @@ namespace Entidades
 
 
         // Constructor
-        public vendedores(int idVendedor, string identificacion, string nombre, string apellido, DateTime fechaNacimiento, DateTime fechaIngreso    )
+        public Vendedores(int idVendedor, string identificacion, string nombre, string apellido, DateTime fechaNacimiento, DateTime fechaIngreso    )
         {
             this.IdVendedor = idVendedor;
             this.Identificacion = identificacion;
@@ -27,6 +27,9 @@ namespace Entidades
             this.Apellido = apellido;
             this.FechaNacimiento = fechaNacimiento;
             this.FechaIngreso = fechaIngreso;
+        }
+
+        public Vendedores() {
         }
         // getter
         public int GetIdVendedor()

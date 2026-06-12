@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class partidos
+    public class Partidos
     {
         //Atributos
 
-        private int IdPartido;
-        private string Rival;
-        private DateTime Fecha;
-        private string Hora;
-        private Boolean Activo;
-
+        public int IdPartido;
+        public string Rival;
+        public DateTime Fecha;
+        public string Hora;
+        public Boolean Activo;
         //Constructor
-        public partidos(int idPartido, string rival, DateTime fecha, string hora, Boolean activo)
+        public Partidos(int idPartido, string rival, DateTime fecha, string hora, Boolean activo)
         {
             IdPartido = idPartido;
             Rival = rival;
@@ -27,8 +26,11 @@ namespace Entidades
             Activo = activo;
         }
 
-        //Getter
+        public Partidos()
+        {
+        }
 
+        //Getter
         public int getIdPartido()
         {
             return IdPartido;

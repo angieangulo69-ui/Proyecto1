@@ -52,9 +52,9 @@ namespace Presentaciones
             }
             else
             {
-                MessageBox.Show("Error No se permiten ID repetidos, al registrar localidad", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Error No se permiten ID repetidos o a llegado al limite de 10 registros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 limpiar();
-            }         
+            }
         }
         private void data_localidades_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -118,6 +118,11 @@ namespace Presentaciones
             Menu_Registros ventana_registros = new Menu_Registros();
             ventana_registros.Show();
             this.Dispose();
+        }
+
+        private void Registro_Localidad_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

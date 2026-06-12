@@ -10,7 +10,7 @@ namespace Entidades
     {
         // Atributos
         private int id_localidadPartido;
-        partidos partidos; // Relación con la clase partidos
+        //partidos partidos; // Relación con la clase partidos
         //localidades localidades;
         private int CantidadDisponible;
 
