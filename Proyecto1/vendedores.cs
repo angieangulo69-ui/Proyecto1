@@ -9,12 +9,12 @@ namespace Entidades
     public class Vendedores
     {
         //Atributos 
-        private int IdVendedor;
-        private string Identificacion;
-        private string Nombre;
-        private string Apellido;
-        private DateTime FechaNacimiento;
-        private DateTime FechaIngreso;
+        public int IdVendedor;
+        public string Identificacion;
+        public string Nombre;
+        public string Apellido;
+        public DateTime FechaNacimiento;
+        public DateTime FechaIngreso;
 
 
 
@@ -29,7 +29,8 @@ namespace Entidades
             this.FechaIngreso = fechaIngreso;
         }
 
-        public Vendedores() {
+        public Vendedores()
+        {
         }
         // getter
         public int GetIdVendedor()

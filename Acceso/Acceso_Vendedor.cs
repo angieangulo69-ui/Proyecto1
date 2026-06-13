@@ -16,24 +16,14 @@ namespace Acceso
         //Booleado pára controlar el ingreso de vendedores registrados
         public static bool ingresar(Vendedores vendedores) //Clase objeto
         {
-            if (vendedores == null)
+            if (lista_Vendedores == null)
             {
                 return false; 
             }
-
-            //Validar que no existe el mismo IDVendedor
-            for (int i = 0; i < lista_Vendedores.Length; i++)
-            {
-
-                if (lista_Vendedores[i] != null && lista_Vendedores[i].GetIdVendedor == vendedores.GetIdVendedor)
-                {
-                    return false; //Id repetido
-                }
-            }
-
-            //REcorre el arreglo para encontar la psoicion vacia y guiardar el objeto vendedor
+           
+            //REcorre el arreglo para encontar la posicion vacia y guiardar el objeto vendedor
             for (int i = 0; i < lista_Vendedores.Length; i++) {
-                if (lista_Vendedores == null)
+                if (lista_Vendedores[i] == null)
                 {
                     lista_Vendedores[i] = vendedores; //guarde le objeto
                     return true;

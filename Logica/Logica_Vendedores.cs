@@ -9,35 +9,42 @@ namespace Logica
 {
     public class Logica_Vendedores
     {
-        public bool Agregar(Vendedores pvendedor)// vendedor , viene de la logica
+
+        Vendedores[] lista_Vendedores = Acceso.Acceso_Vendedor.Listar(); //listamos para obtener los vendedores guardados y poder validar 
+        
+        //Este metodo se encarga de agregar un nuevo vendendedor 
+        public bool Agregar(Vendedores pvendedor)
         {
-            //Validar 
+            //Validar si es nulo
             if (pvendedor == null)
             {
                 return false; 
             }
-            return Acceso.Acceso_Vendedor.ingresar(pvendedor);
+            return Acceso.Acceso_Vendedor.ingresar(pvendedor);  //Envia el vendedor a la capa de acceso para guardarlo
         }
-        public Vendedores[] Listar() ///metodo para listar los vendedores
+        // Obtiene la lista de vendedores desde la capa de acceso
+        public Vendedores[] Listar() 
         {
             return Acceso.Acceso_Vendedor.Listar();
         }
+
+        //Obtenemos el vendedor por medio del codigo
         public Vendedores obtenerVendedores(String codigo) {
 
             //Obtenemos la lista de vendedores desde la capa de acceso
             var listaVendedores = Acceso.Acceso_Vendedor.Listar();
 
-            //REcorremos la lsiata de locaclidades desde la capa de acceso
+            // Recorre la lista de vendedores para buscar el código indicado
             for (int i = 0; i < listaVendedores.Length; i++)
             {
-               if(listaVendedores is not null && listaVendedores[i].GetIdVendedor().Equals(codigo))
+                if (listaVendedores[i] != null && listaVendedores[i].GetIdVendedor().Equals(codigo))
                 {
                     return listaVendedores[i];
                 }
             }
             return null;
-        
         }
+        // Metodo de validaciones solicitadas
         public string validacionVendedor(Vendedores vendedor) {
             //validamos que no sea nulo
             if (vendedor == null)
@@ -54,6 +61,32 @@ namespace Logica
             DateTime fechaIngreso = vendedor.GetFechaIngreso();
             DateTime hoy = DateTime.Today; //Toma la fecha del sistema
 
+            // Validamos que la identificacion no este vacia
+            if (string.IsNullOrWhiteSpace(vendedor.Identificacion))
+            {
+                return "La identificación es obligatoria.";
+            }
+        
+            //Validar que no existe el mismo IDVendedor
+            for (int i = 0; i < lista_Vendedores.Length; i++)
+            {
+
+                if (lista_Vendedores[i] != null) //Si la lista no esta nula entra
+                {
+                    if (lista_Vendedores[i].IdVendedor == vendedor.IdVendedor) // si la lista el id en la posicion i es igual, esta repetido               
+                    {
+                        return "El id del vendedor ya existe"; //Id repetido
+                    }
+                    // si la lista la identificacion en la posicion i es igual, esta repetido               
+                    if (lista_Vendedores[i].Identificacion == vendedor.Identificacion)
+                    {
+                        return "La identificación del vendedor ya existe";  //Identificacion repetida
+
+                    }
+                }
+            }
+
+
             // validadcion de Fecha de nacimiento (no debe de ser mayor o igual a la fecha actual
             if (fechaNacimiento >= hoy)
                 return "La fecha de nacimiento no puede ser igual o mayor a la fecha actual.";
@@ -66,10 +99,9 @@ namespace Logica
 
             if (edad < 18)
             {
-                return "El vendedor debe tener al menos 16 años.";
+                return "El vendedor debe tener al menos 18 años.";
             }
 
-            //validacion de la fecha de ingres
             //si la fecha de ingreso es menor a la fecha de nacimiento 
             if (fechaIngreso < fechaNacimiento) { 
             return "La fecha de ingreso no puede ser menor que la fecha de nacimiento.";
