@@ -40,6 +40,7 @@
             ClientSize = new Size(800, 450);
             Name = "Consulta_Vendedores";
             Text = "Consulta_Vendedores";
+            Load += Consulta_Vendedores_Load;
             ResumeLayout(false);
         }
 

@@ -13,35 +13,23 @@ namespace Acceso
         //Mi arreglo para almacenamiento de localidades
         private static Localidades[] lista_Localidad = new Localidades[10];
 
-        //Booleano para controlar el ingreso de localidades registradas
+        //metodo para registrar una nueva localidad
         public static bool ingresar(Localidades localidades) //clase y objeto
         {
             if (localidades == null) //si el objeto es nulo, no se puede ingresar
             {
                 return false;
             }
-
-            // Validar que no exista el mismo IdLocalidad
-            for (int i = 0; i < lista_Localidad.Length; i++)
-            {
-                if (lista_Localidad[i] != null &&
-                    lista_Localidad[i].GetIdLocalidad() == localidades.GetIdLocalidad())
-                {
-                    return false; // ID repetido
-                }
-            }
-
-            // recorro el arreglo para encontar la posion vacia y guardar el objeto localidades
+            // recorro el arreglo para encontar la posion vacia y guardar la localidad
             for (int i = 0; i < lista_Localidad.Length; i++)
             {
                 if (lista_Localidad[i] == null) //si est vacia
                 {
-
-                    lista_Localidad[i] = localidades; //gudarde el objeto
+                    lista_Localidad[i] = localidades; //gudarde la localidad en la posicion disponible
                     return true;
                 }
             }
-            return false; //sino hay vacio false
+            return false; //no hay espacio disponilbe en el arreglo
         }
 
         public static Localidades[] Listar() //metodo para listar las localidades
@@ -57,7 +45,7 @@ namespace Acceso
 
             for (int i = 0; i < lista_Localidad.Length; i++)
             {
-                if (lista_Localidad[i] != null) //si hay al menos un registro
+                if (lista_Localidad[i] != null) //si encuentra al menos una localidad registrada
                 {
                     return true;
                 }

@@ -40,6 +40,7 @@
             ClientSize = new Size(800, 518);
             Name = "Consulta_LocalidadXPartido";
             Text = "Consulta_LocalidadXPartido";
+            Load += Consulta_LocalidadXPartido_Load;
             ResumeLayout(false);
         }
 

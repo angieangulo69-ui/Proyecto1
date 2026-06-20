@@ -30,10 +30,9 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Registro_partido));
             label5 = new Label();
-            data_localidades = new DataGridView();
+            data_partidos = new DataGridView();
             btn_guardar = new Button();
             txt_rival = new TextBox();
-            txt_hora = new TextBox();
             txt_idpartido = new TextBox();
             label4 = new Label();
             label3 = new Label();
@@ -45,7 +44,8 @@
             label7 = new Label();
             dateTime_fecha = new DateTimePicker();
             checkBox_activo = new CheckBox();
-            ((System.ComponentModel.ISupportInitialize)data_localidades).BeginInit();
+            dateTime_hora = new DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)data_partidos).BeginInit();
             SuspendLayout();
             // 
             // label5
@@ -60,14 +60,14 @@
             label5.TabIndex = 55;
             label5.Text = "Registros  realizados:";
             // 
-            // data_localidades
+            // data_partidos
             // 
-            data_localidades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            data_localidades.Location = new Point(59, 342);
-            data_localidades.Name = "data_localidades";
-            data_localidades.RowHeadersWidth = 51;
-            data_localidades.Size = new Size(723, 119);
-            data_localidades.TabIndex = 54;
+            data_partidos.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            data_partidos.Location = new Point(59, 342);
+            data_partidos.Name = "data_partidos";
+            data_partidos.RowHeadersWidth = 51;
+            data_partidos.Size = new Size(723, 119);
+            data_partidos.TabIndex = 54;
             // 
             // btn_guardar
             // 
@@ -89,13 +89,6 @@
             txt_rival.Name = "txt_rival";
             txt_rival.Size = new Size(249, 27);
             txt_rival.TabIndex = 52;
-            // 
-            // txt_hora
-            // 
-            txt_hora.Location = new Point(276, 198);
-            txt_hora.Name = "txt_hora";
-            txt_hora.Size = new Size(249, 27);
-            txt_hora.TabIndex = 51;
             // 
             // txt_idpartido
             // 
@@ -220,6 +213,16 @@
             checkBox_activo.TabIndex = 59;
             checkBox_activo.UseVisualStyleBackColor = true;
             // 
+            // dateTime_hora
+            // 
+            dateTime_hora.CustomFormat = "hh:mm tt";
+            dateTime_hora.Format = DateTimePickerFormat.Custom;
+            dateTime_hora.Location = new Point(273, 199);
+            dateTime_hora.Name = "dateTime_hora";
+            dateTime_hora.ShowUpDown = true;
+            dateTime_hora.Size = new Size(266, 27);
+            dateTime_hora.TabIndex = 60;
+            // 
             // Registro_partido
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -227,15 +230,15 @@
             BackgroundImage = (Image)resources.GetObject("$this.BackgroundImage");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(818, 524);
+            Controls.Add(dateTime_hora);
             Controls.Add(checkBox_activo);
             Controls.Add(dateTime_fecha);
             Controls.Add(label6);
             Controls.Add(label7);
             Controls.Add(label5);
-            Controls.Add(data_localidades);
+            Controls.Add(data_partidos);
             Controls.Add(btn_guardar);
             Controls.Add(txt_rival);
-            Controls.Add(txt_hora);
             Controls.Add(txt_idpartido);
             Controls.Add(label4);
             Controls.Add(label3);
@@ -246,7 +249,7 @@
             Name = "Registro_partido";
             Text = "Registro_partido";
             Load += Registro_partido_Load;
-            ((System.ComponentModel.ISupportInitialize)data_localidades).EndInit();
+            ((System.ComponentModel.ISupportInitialize)data_partidos).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -254,10 +257,9 @@
         #endregion
 
         private Label label5;
-        private DataGridView data_localidades;
+        private DataGridView data_partidos;
         private Button btn_guardar;
         private TextBox txt_rival;
-        private TextBox txt_hora;
         private TextBox txt_idpartido;
         private Label label4;
         private Label label3;
@@ -269,5 +271,6 @@
         private Label label7;
         private DateTimePicker dateTime_fecha;
         private CheckBox checkBox_activo;
+        private DateTimePicker dateTime_hora;
     }
 }

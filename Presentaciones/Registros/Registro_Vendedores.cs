@@ -18,6 +18,7 @@ namespace Presentaciones.Registros
         public Registro_Vendedores()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             configurar_data_vendedores();
             cargar_vendedores();
         }
@@ -33,7 +34,7 @@ namespace Presentaciones.Registros
             // validamos que solo sean numeros
             if (!int.TryParse(txt_idvendedor.Text, out int idVendedor))
             {
-                MessageBox.Show( "El Id del vendedor debe ser numérico.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("El Id del vendedor debe ser numérico.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txt_idvendedor.Focus();
                 return;
             }
@@ -54,21 +55,21 @@ namespace Presentaciones.Registros
             Logica_Vendedores logica = new Logica_Vendedores(); //Creamos un objeto
             String mensaje = logica.validacionVendedor(vendedor);
             // 
-            if (!String.IsNullOrEmpty(mensaje))               
+            if (!String.IsNullOrEmpty(mensaje))
             {
-                MessageBox.Show(mensaje, "Validación",MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(mensaje, "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             //Si 
             if (logica.Agregar(vendedor))
             {
-                MessageBox.Show("Vendedor registrado correctamente.", "Información", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("Vendedor registrado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 limpiar();
                 cargar_vendedores();
             }
             else
             {
-                MessageBox.Show( "Error al registrar el vendedor.", "Error", MessageBoxButtons.OK,  MessageBoxIcon.Error);
+                MessageBox.Show("Error al registrar el vendedor.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -96,7 +97,8 @@ namespace Presentaciones.Registros
 
         }
         //Configuracion de mi data 
-        public void configurar_data_vendedores() {
+        public void configurar_data_vendedores()
+        {
             //  configurar las columnas
             data_vendedores.Columns.Add("IdVendedor", "Id Vendedor");
             data_vendedores.Columns.Add("Identificacion", "Identificación");
@@ -109,6 +111,7 @@ namespace Presentaciones.Registros
             data_vendedores.AutoGenerateColumns = false;
             data_vendedores.ReadOnly = true;
             data_vendedores.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            data_vendedores.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         //Metodo para cargar los vendedores registrados 
@@ -122,24 +125,26 @@ namespace Presentaciones.Registros
             if (logica_vendedor.TieneVendedores())
             {
                 var lista_vendedor = logica_vendedor.Listar(); //Obtenemos las lista de partidos
-                for(int i = 0; i < lista_vendedor.Length; i++)
+                for (int i = 0; i < lista_vendedor.Length; i++)
                 {
-                    if (lista_vendedor[i]!=null)
+                    if (lista_vendedor[i] != null)
                     {
                         Vendedores vendedor = lista_vendedor[i];
-                            data_vendedores.Rows.Add(
-                                vendedor.IdVendedor, 
-                                vendedor.Identificacion,
-                                vendedor.Nombre,
-                                vendedor.Apellido,
-                                vendedor.FechaNacimiento.ToShortDateString(),
-                                 vendedor.FechaIngreso.ToShortDateString());
+                        data_vendedores.Rows.Add(
+                            vendedor.IdVendedor,
+                            vendedor.Identificacion,
+                            vendedor.Nombre,
+                            vendedor.Apellido,
+                            vendedor.FechaNacimiento.ToShortDateString(),
+                             vendedor.FechaIngreso.ToShortDateString());
                     }
                 }
             }
         }
 
+        private void Registro_Vendedores_Load(object sender, EventArgs e)
+        {
 
-
+        }
     }
 }

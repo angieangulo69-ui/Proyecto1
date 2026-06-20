@@ -12,9 +12,7 @@ namespace Entidades
         public int IdLocalidad;
         public string NombreLocalidad;        
         public Decimal Precio;
-        
-       
-
+             
         // Constructor
         public Localidades(int idLocalidad, string nombreLocalidad,Decimal precio)
         {
@@ -53,6 +51,11 @@ namespace Entidades
         {
             Precio = precio;
         }
+
+        public override string ToString()
+        {
+            return IdLocalidad + " - " + NombreLocalidad;
        
+        }
     }
 }

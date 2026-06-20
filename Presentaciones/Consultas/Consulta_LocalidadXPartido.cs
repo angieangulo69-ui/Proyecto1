@@ -15,6 +15,12 @@ namespace Presentaciones.Consultas
         public Consulta_LocalidadXPartido()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void Consulta_LocalidadXPartido_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

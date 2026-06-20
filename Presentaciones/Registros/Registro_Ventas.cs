@@ -15,6 +15,17 @@ namespace Presentaciones.Registros
         public Registro_Ventas()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Registro_Ventas_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

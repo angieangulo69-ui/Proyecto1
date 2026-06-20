@@ -153,6 +153,7 @@
             Controls.Add(label1);
             Name = "Consulta_Partidos";
             Text = "Consulta_Partidos";
+            Load += Consulta_Partidos_Load;
             ((System.ComponentModel.ISupportInitialize)data_partidos).EndInit();
             ResumeLayout(false);
             PerformLayout();

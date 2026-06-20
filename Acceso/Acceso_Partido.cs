@@ -19,14 +19,7 @@ namespace Acceso
             { //Valida que no este nulo
                 return false;
             }
-            // valida que no existe el mismo idPartido en el arreglo
-            for (int i = 0; i < lista_Partidos.Length; i++)
-            {   // Si encuentra un partido con el mismo idPartido, no se puede ingresar
-                if (lista_Partidos[i] != null && lista_Partidos[i].getIdPartido() == partido.getIdPartido())
-                {
-                    return false;
-                }
-            }
+            
             for (int i = 0; i < lista_Partidos.Length; i++)
             {   // Busca un espacio vacio en el arreglo para ingresar el nuevo partido
                 if (lista_Partidos[i] == null)

@@ -6,20 +6,65 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class localidadesXpartido
+    public class LocalidadesXpartido
     {
         // Atributos
-        private int id_localidadPartido;
-        //partidos partidos; // Relación con la clase partidos
-        //localidades localidades;
-        private int CantidadDisponible;
-
+        public int id_localidadPartido;
+        public Partidos partido; // Relación con la clase partidos
+        public Localidades localidades;
+        public int cantidadDisponible;
         // Constructor
-       // public localidadesXpartido(int id_localidadPartido, partidos partido, localidades localidad, int cantidadDisponible)
-       // {
-           // this.partidos = partido;
-            //this.localidades = localidad;
-            //this.CantidadDisponible = cantidadDisponible;
-       // }
+        public LocalidadesXpartido(int id_localidadPartido, Partidos partido, Localidades localidades, int cantidadDisponible)
+        {
+            this.id_localidadPartido = id_localidadPartido;
+            this.partido = partido;
+            this.localidades = localidades;
+            this.cantidadDisponible = cantidadDisponible;
+        }
+         public LocalidadesXpartido()
+        {
+
+        }       
+
+        //Getter
+        public int getIdLocalidadPartido()
+        {
+            return id_localidadPartido;
+        }
+     
+        public Partidos getPartido()
+        {
+            return partido;
+        }
+        public Localidades getLocalidades()
+        {
+            return localidades;
+        }
+        public int getCantidadDisponible()
+        {
+            return cantidadDisponible;
+        }
+
+
+        //Setter
+        public void setPartido(Partidos partido)
+        {
+            this.partido = partido;
+        }
+        public void setIdLocalidadPartido(int idLocalidadPartido)
+        {
+            this.id_localidadPartido = idLocalidadPartido;
+        }
+        
+
+        public void setLocalidades(Localidades localidades)
+        {
+            this.localidades = localidades;
+        }
+     
+        public void setCantidadDisponible(int cantidadDisponible)
+        {
+            this.cantidadDisponible = cantidadDisponible;
+        }
     }
 }

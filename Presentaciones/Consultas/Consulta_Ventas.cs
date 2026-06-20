@@ -15,6 +15,12 @@ namespace Presentaciones.Consultas
         public Consulta_Ventas()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
+        }
+
+        private void Consulta_Ventas_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

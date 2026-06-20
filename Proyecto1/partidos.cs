@@ -10,7 +10,6 @@ namespace Entidades
     public class Partidos
     {
         //Atributos
-
         public int IdPartido;
         public string Rival;
         public DateTime Fecha;
@@ -25,7 +24,6 @@ namespace Entidades
             Hora = hora;
             Activo = activo;
         }
-
         public Partidos()
         {
         }
@@ -75,6 +73,13 @@ namespace Entidades
         {
             this.Activo = Activo;
         }
+
+        public override string ToString()
+        {
+            return IdPartido + " - " + Rival + " - " +
+                   Fecha.ToShortDateString() + " - " + Hora;
+        }
+
     }
  }
 

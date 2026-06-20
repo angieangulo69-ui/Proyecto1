@@ -83,9 +83,9 @@
             label4.ForeColor = Color.Cyan;
             label4.Location = new Point(220, 16);
             label4.Name = "label4";
-            label4.Size = new Size(374, 48);
+            label4.Size = new Size(382, 48);
             label4.TabIndex = 47;
-            label4.Text = "Registro de Localidad";
+            label4.Text = "Consulta de Localidad";
             // 
             // label2
             // 
@@ -152,6 +152,7 @@
             Controls.Add(btn_salir);
             Name = "Consulta_Localidades";
             Text = "Consulta_Localidades";
+            Load += Consulta_Localidades_Load;
             ((System.ComponentModel.ISupportInitialize)data_localidades).EndInit();
             ResumeLayout(false);
             PerformLayout();

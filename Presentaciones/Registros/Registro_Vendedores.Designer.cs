@@ -267,6 +267,7 @@
             Controls.Add(btn_salir);
             Name = "Registro_Vendedores";
             Text = "Registro_Vendedores";
+            Load += Registro_Vendedores_Load;
             ((System.ComponentModel.ISupportInitialize)data_vendedores).EndInit();
             ResumeLayout(false);
             PerformLayout();

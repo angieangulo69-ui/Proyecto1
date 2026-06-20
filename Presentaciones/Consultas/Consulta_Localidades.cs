@@ -17,6 +17,7 @@ namespace Presentaciones.Consultas
         public Consulta_Localidades()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             configurar_data_localidades();
             cargar_nombrelocalidad();
         }
@@ -40,6 +41,7 @@ namespace Presentaciones.Consultas
             data_localidades.ReadOnly = true;
             data_localidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             data_localidades.Columns["precio"].DefaultCellStyle.Format = "C2"; // Formato de moneda para la columna de precio]
+            data_localidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
         private void cargar_localidades()
         {
@@ -101,6 +103,11 @@ namespace Presentaciones.Consultas
         private void btn_salir_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Consulta_Localidades_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

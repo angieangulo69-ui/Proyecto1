@@ -14,12 +14,13 @@ namespace Presentaciones.Consultas
 {
     public partial class Consulta_Partidos : Form
 
-    { 
+    {
         //Obtenemos la lista de partidos
         Logica_Partidos logicaPartidos = new Logica_Partidos();
         public Consulta_Partidos()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             configurar_data_partidos();
             cargar_fechapartido();
         }
@@ -55,10 +56,12 @@ namespace Presentaciones.Consultas
             data_partidos.AutoGenerateColumns = false;
             data_partidos.ReadOnly = true;
             data_partidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            data_partidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+           
         }
 
         public void cargar_partidos()
-        { 
+        {
             data_partidos.Rows.Clear();
 
             if (comboBox_fechas.SelectedIndex == -1)
@@ -114,6 +117,11 @@ namespace Presentaciones.Consultas
         private void btn_consultar_Click(object sender, EventArgs e)
         {
             cargar_partidos();
+        }
+
+        private void Consulta_Partidos_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

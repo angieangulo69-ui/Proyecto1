@@ -17,6 +17,7 @@ namespace Presentaciones.Registros
         public Registro_partido()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
             configurar_data_partidos();
             cargar_partidos();
         }
@@ -26,9 +27,17 @@ namespace Presentaciones.Registros
             // Validar que los campos no estén vacíos
             if (string.IsNullOrWhiteSpace(txt_idpartido.Text) ||
                 string.IsNullOrWhiteSpace(txt_rival.Text) ||
-                string.IsNullOrWhiteSpace(txt_hora.Text))
+                string.IsNullOrWhiteSpace(dateTime_hora.Text) ||
+                string.IsNullOrWhiteSpace(dateTime_fecha.Text))
             {
                 MessageBox.Show("Por favor, complete todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            //Validar que el ID sea numerico
+            if (!int.TryParse(txt_idpartido.Text, out int idPartido))
+            {
+                MessageBox.Show("El ID del partido debe ser numérico.","Validación", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                txt_idpartido.Focus();
                 return;
             }
 
@@ -36,10 +45,10 @@ namespace Presentaciones.Registros
             Partidos partido = new Partidos();
 
             // Asignar valores a las propiedades del nuevo partido
-            partido.IdPartido = int.Parse(txt_idpartido.Text);
+            partido.IdPartido = idPartido; ;
             partido.Rival = txt_rival.Text;
             partido.Fecha = dateTime_fecha.Value;
-            partido.Hora = txt_hora.Text;
+            partido.Hora = dateTime_hora.Value.ToString("hh:mm tt");
             partido.Activo = checkBox_activo.Checked;
 
 
@@ -77,22 +86,24 @@ namespace Presentaciones.Registros
             txt_idpartido.Clear();
             txt_rival.Clear();
             dateTime_fecha.Value = DateTime.Now;
-            txt_hora.Clear();
+            dateTime_hora.Value = DateTime.Now;
             checkBox_activo.Checked = true;
         }
         public void configurar_data_partidos()
         {
             //configuracion de columnas
-            data_localidades.Columns.Add("IdPartido", "ID Partido");
-            data_localidades.Columns.Add("Rival", "Rival");
-            data_localidades.Columns.Add("Fecha", "Fecha");
-            data_localidades.Columns.Add("Hora", "Hora");
-            data_localidades.Columns.Add("Activo", "Activo");
+            data_partidos.Columns.Add("IdPartido", "ID Partido");
+            data_partidos.Columns.Add("Rival", "Rival");
+            data_partidos.Columns.Add("Fecha", "Fecha");
+            data_partidos.Columns.Add("Hora", "Hora");
+            data_partidos.Columns.Add("Activo", "Activo");
 
             //configuracion adicional
-            data_localidades.AutoGenerateColumns = false;
-            data_localidades.ReadOnly = true;
-            data_localidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            data_partidos.AutoGenerateColumns = false;
+            data_partidos.ReadOnly = true;
+            data_partidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            data_partidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            data_partidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         public void cargar_partidos()
@@ -100,7 +111,7 @@ namespace Presentaciones.Registros
             //cargar partidos desde la logica
             Logica_Partidos logica_Partidos = new Logica.Logica_Partidos();
 
-            data_localidades.Rows.Clear(); // Limpiar filas existentes
+            data_partidos.Rows.Clear(); // Limpiar filas existentes
 
             if (logica_Partidos.TienePartidos())
             {
@@ -110,7 +121,7 @@ namespace Presentaciones.Registros
                     if (lista_partidos[i] != null)
                     {
                         Partidos partidos = lista_partidos[i];
-                        data_localidades.Rows.Add(
+                        data_partidos.Rows.Add(
                             partidos.IdPartido,
                             partidos.Rival,
                             partidos.Fecha.ToShortDateString(),
@@ -119,8 +130,6 @@ namespace Presentaciones.Registros
                         );
                     }
                 }
-
-
 
             }
         }

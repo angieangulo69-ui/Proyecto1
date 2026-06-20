@@ -17,7 +17,7 @@ namespace Presentaciones
         public Registro_Localidad()
         {
             InitializeComponent();
-
+            this.StartPosition = FormStartPosition.CenterScreen;
             configurar_data_localidades();
             cargar_localidades();
 
