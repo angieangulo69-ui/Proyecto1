@@ -36,7 +36,11 @@ namespace Entidades
         {
             this.FechaIngreso = fechaIngreso    ;
         }
-                      
-            
+
+        public override string ToString()
+        {
+            return Identificacion + " - " + Nombre + " " + Apellido;
+        }
+
     }
 }

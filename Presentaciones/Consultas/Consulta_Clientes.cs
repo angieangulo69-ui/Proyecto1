@@ -46,7 +46,7 @@ namespace Presentaciones.Consultas
             }
         }
 
-        public void cargar_consulta_clientes()
+        public void cargar_dataconsulta_clientes()
         {
             if (comboBox_cliente.SelectedItem == null)
             {
@@ -93,7 +93,7 @@ namespace Presentaciones.Consultas
 
         private void btn_consulta_Click(object sender, EventArgs e)
         {
-            cargar_consulta_clientes();
+            cargar_dataconsulta_clientes();
         }
 
         private void Consulta_Clientes_Load(object sender, EventArgs e)

@@ -167,7 +167,7 @@ namespace Presentaciones.Registros
             data_localidadXpartido.AutoGenerateColumns = false;
             data_localidadXpartido.ReadOnly = true;
             data_localidadXpartido.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            data_cliente.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            data_localidadXpartido.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         public void limpiar()

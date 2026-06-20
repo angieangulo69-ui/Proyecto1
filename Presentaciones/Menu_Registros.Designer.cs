@@ -266,6 +266,7 @@
             Controls.Add(label1);
             Name = "Menu_Registros";
             Text = "Menu_Registros";
+            Load += Menu_Registros_Load;
             ResumeLayout(false);
             PerformLayout();
         }

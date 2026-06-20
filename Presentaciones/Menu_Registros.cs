@@ -16,6 +16,7 @@ namespace Presentaciones
         public Menu_Registros()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void btn_Localidad_Click(object sender, EventArgs e)
@@ -71,6 +72,11 @@ namespace Presentaciones
             Registro_Ventas ventana_registroVentas = new Registro_Ventas();
             ventana_registroVentas.Show();
             Dispose(); // Cierra la ventana actual
+        }
+
+        private void Menu_Registros_Load(object sender, EventArgs e)
+        {
+
         }
     }
 

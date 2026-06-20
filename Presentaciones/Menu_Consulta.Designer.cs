@@ -266,6 +266,7 @@
             Controls.Add(label1);
             Name = "Menu_Consulta";
             Text = "Menu_Consulta";
+            Load += Menu_Consulta_Load;
             ResumeLayout(false);
             PerformLayout();
         }

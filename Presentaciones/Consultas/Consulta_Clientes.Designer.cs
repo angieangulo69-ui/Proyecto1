@@ -93,7 +93,7 @@
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Sylfaen", 22.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label4.ForeColor = Color.Cyan;
-            label4.Location = new Point(317, 9);
+            label4.Location = new Point(317, 21);
             label4.Name = "label4";
             label4.Size = new Size(367, 48);
             label4.TabIndex = 82;

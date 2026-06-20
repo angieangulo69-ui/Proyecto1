@@ -17,6 +17,7 @@ namespace Presentaciones
         public Menu_Consulta()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void btn_Localidad_Click(object sender, EventArgs e)
@@ -72,6 +73,11 @@ namespace Presentaciones
             Consulta_Ventas ventan_ConsultaVentas = new Consulta_Ventas();
             ventan_ConsultaVentas.ShowDialog();
             this.Dispose();
+
+        }
+
+        private void Menu_Consulta_Load(object sender, EventArgs e)
+        {
 
         }
     }

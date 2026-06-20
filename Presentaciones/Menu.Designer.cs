@@ -129,6 +129,7 @@
             Controls.Add(label1);
             Name = "Menu";
             Text = "Menu";
+            Load += Menu_Load;
             ResumeLayout(false);
             PerformLayout();
         }

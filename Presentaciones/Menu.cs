@@ -15,6 +15,7 @@ namespace Presentaciones
         public Menu()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.CenterScreen;
         }
 
         private void btn_registro_Click(object sender, EventArgs e)
@@ -32,6 +33,11 @@ namespace Presentaciones
         private void btn_salir_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void Menu_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
