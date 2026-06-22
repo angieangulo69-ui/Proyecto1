@@ -5,6 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase administra el almacenamiento y acceso de los registros
+de Localidades por Partido. Permite agregar, listar y verificar la existencia
+de registros utilizando un arreglo de objetos como  almacenamiento.
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
+
 namespace Acceso
 {
     public class Acceso_LocalidadesXPartido
@@ -12,7 +23,7 @@ namespace Acceso
         //Mi arreglo para almacenamiento
         private static LocalidadesXpartido[] lista_LocalidadXPartido = new LocalidadesXpartido[200];
 
-        //Booleano para controlar el ingreso de
+        //Booleano para controlar el ingreso de registros
         public static bool ingresar(LocalidadesXpartido localidadesXpartido) //clase y objeto
         {
             if (localidadesXpartido == null) //si el objeto es nulo, no se puede ingresar
@@ -24,28 +35,28 @@ namespace Acceso
             for (int i = 0; i < lista_LocalidadXPartido.Length; i++)
             {
                 if (lista_LocalidadXPartido[i] != null &&
-                    lista_LocalidadXPartido[i].getIdLocalidadPartido() == localidadesXpartido.getIdLocalidadPartido())
+                    lista_LocalidadXPartido[i].IdLocalidadPartido == localidadesXpartido.IdLocalidadPartido)
                 {
                     return false; // ID repetido
                 }
             }
 
-            // recorro el arreglo para encontar la posion vacia y guardar el objeto localidades
+            // Recorro el arreglo para encontar la posion vacia y guardar el objeto localidadesXPartido
             for (int i = 0; i < lista_LocalidadXPartido.Length; i++)
             {
                 if (lista_LocalidadXPartido[i] == null) //si est vacia
                 {
 
-                    lista_LocalidadXPartido[i] = localidadesXpartido; //gudarde el objeto
+                    lista_LocalidadXPartido[i] = localidadesXpartido; //guardar el objeto
                     return true;
                 }
             }
             return false; //sino hay vacio false
         }
 
-        public static LocalidadesXpartido[] Listar() //metodo para listar las localidades
+        public static LocalidadesXpartido[] Listar() //metodo para listar las localidades x partido
         {
-            return lista_LocalidadXPartido; //retorna el arreglo de localidades
+            return lista_LocalidadXPartido; //retorna el arreglo de localidadesx partido
         }
         public static bool encontrar_registros()
         {
@@ -63,5 +74,6 @@ namespace Acceso
             }
             return false; //si no hay registros
         }
+
     }
 }

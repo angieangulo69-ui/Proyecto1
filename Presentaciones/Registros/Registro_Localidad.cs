@@ -12,6 +12,14 @@ using System.Windows.Forms;
 
 namespace Presentaciones
 {
+    /*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de regsitros de localidades
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
     public partial class Registro_Localidad : Form
     {
         public Registro_Localidad()
@@ -61,12 +69,12 @@ namespace Presentaciones
 
         }
 
-        // Métodos
+        // Método para limpiar los campos
         public void limpiar()
         {
-            txt_idlocalidad.Text = " ";
-            txt_nombrelocalidad.Text = " ";
-            txt_precio.Text = " ";
+            txt_idlocalidad.Clear();
+            txt_nombrelocalidad.Clear();
+            txt_precio.Clear();
 
         }
         private void configurar_data_localidades()

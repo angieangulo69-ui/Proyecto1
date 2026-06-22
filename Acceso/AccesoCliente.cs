@@ -4,7 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite acceder al registro de clientes , permite verificar si hay registros. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Acceso
 {
     public class AccesoCliente

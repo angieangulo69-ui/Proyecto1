@@ -9,9 +9,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de menu de consultas
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Presentaciones
 {
+ 
     public partial class Menu_Consulta : Form
     {
         public Menu_Consulta()

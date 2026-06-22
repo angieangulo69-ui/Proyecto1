@@ -4,67 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase representa la combinacion de localidades por partido,cuenta con construcores para la 
+reación de objetos, atributos y propiedades que permiten el acceso a los datos de una forma segura.
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Entidades
 {
     public class LocalidadesXpartido
     {
-        // Atributos
-        public int id_localidadPartido;
-        public Partidos partido; // Relación con la clase partidos
-        public Localidades localidades;
-        public int cantidadDisponible;
-        // Constructor
-        public LocalidadesXpartido(int id_localidadPartido, Partidos partido, Localidades localidades, int cantidadDisponible)
+        // Atributos de la clase
+        private int idLocalidadPartido;
+        private Partidos partido; // Relación con la clase partidos
+        private Localidades localidades;
+        private int cantidadDisponible;
+
+        //Propiedades nos permiten acceder a los datos de forma segura
+        public int IdLocalidadPartido { get => idLocalidadPartido; set => idLocalidadPartido = value; }
+        public Partidos Partido { get => partido; set => partido = value; }
+        public Localidades Localidades { get => localidades; set => localidades = value; }
+        public int CantidadDisponible { get => cantidadDisponible; set => cantidadDisponible = value; }
+
+
+        //Constructor vacio permite crear el objeto sin datos iniciales
+        public LocalidadesXpartido()
         {
-            this.id_localidadPartido = id_localidadPartido;
+
+        }
+        //Constructor: inicializa el objeto con valores proporcionados
+        public LocalidadesXpartido(int idLocalidadPartido, Partidos partido, Localidades localidades, int cantidadDisponible)
+        {
+            this.IdLocalidadPartido = idLocalidadPartido;
             this.partido = partido;
             this.localidades = localidades;
             this.cantidadDisponible = cantidadDisponible;
         }
-         public LocalidadesXpartido()
-        {
 
-        }       
-
-        //Getter
-        public int getIdLocalidadPartido()
+        public override string ToString()
         {
-            return id_localidadPartido;
-        }
-     
-        public Partidos getPartido()
-        {
-            return partido;
-        }
-        public Localidades getLocalidades()
-        {
-            return localidades;
-        }
-        public int getCantidadDisponible()
-        {
-            return cantidadDisponible;
-        }
-
-
-        //Setter
-        public void setPartido(Partidos partido)
-        {
-            this.partido = partido;
-        }
-        public void setIdLocalidadPartido(int idLocalidadPartido)
-        {
-            this.id_localidadPartido = idLocalidadPartido;
-        }
-        
-
-        public void setLocalidades(Localidades localidades)
-        {
-            this.localidades = localidades;
-        }
-     
-        public void setCantidadDisponible(int cantidadDisponible)
-        {
-            this.cantidadDisponible = cantidadDisponible;
+            return Partido.Rival + " - " + Localidades.NombreLocalidad;
         }
     }
 }

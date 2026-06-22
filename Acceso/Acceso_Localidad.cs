@@ -4,7 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite el acceso a las localidades registradas en la clase de Localidad ene ste caso
+la identidad, tambien permite validar si hay registros 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 
 namespace Acceso
 {
@@ -36,6 +44,7 @@ namespace Acceso
         {
             return lista_Localidad; //retorna el arreglo de localidades
         }
+        //Metodo que nos permite saber si hay registros
         public static bool encontrar_registros()
         {
             if (lista_Localidad == null) //si el arreglo es nulo, no hay registros

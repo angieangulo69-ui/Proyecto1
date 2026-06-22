@@ -4,108 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase representa la venta,cuenta con constructores para la 
+reación de objetos, atributos y propiedades que permiten el acceso a los datos de una forma segura.
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Entidades
 {
     public class Ventas
-    {/*/
-        //Atributos
-        private int IdVenta;
-        Clientes clientes;
-        partidos partidos;
-        localidades localidades;
+    {
+        //Atributos de la clase
+        private int idVenta;
+        private Clientes clientes;  //Cliente que realiza la compra
+        private Partidos partidos;
+        private Localidades localidades;       
+        private Vendedores vendedores;
         private int cantidad;
-        vendedores vendedores;
-        private DateTime FechaVenta;
-        private Decimal MontoTotal;
-        private string TipoVenta = "Boleteria";
+        private DateTime fechaVenta;
+        private Decimal montoTotal;
+        private string tipoVenta = "Boleteria";
 
-        //Constructor
-        public Ventas(int idVenta, Clientes clientes, partidos partidos, localidades localidades, int cantidad, vendedores vendedores, DateTime fechaVenta, decimal montoTotal)
+        //Constructor: inicializa el objeto con valores proporcionados
+        public Ventas(int idVenta, Clientes clientes, Partidos partidos, Localidades localidades, int cantidad, Vendedores vendedores, DateTime fechaVenta, decimal montoTotal)
         {
             IdVenta = idVenta;
-            this.clientes = clientes;
-            this.partidos = partidos;
-            this.localidades = localidades;
-            this.cantidad = cantidad;
-            this.vendedores = vendedores;
+            this.Clientes = clientes;
+            this.Partidos = partidos;
+            this.Localidades = localidades;
+            this.Cantidad = cantidad;
+            this.Vendedores = vendedores;
             FechaVenta = fechaVenta;
             MontoTotal = montoTotal;
         }
-        //Getter
-        public int GetIdVenta()
+        // Constructor vacío: permite crear el objeto sin datos iniciales
+        public Ventas()
         {
-            return IdVenta;
+
         }
-        public Clientes GetClientes()
-        {
-            return clientes;
-        }
-        public partidos GetPartidos()
-        {
-            return partidos;
-        }
-        public localidades GetLocalidades()
-        {
-            return localidades;
-        }
-        public int GetCantidad()
-        {
-            return cantidad;
-        }
-        public vendedores GetVendedores()
-        {
-            return vendedores;
-        }
-        public DateTime GetFechaVenta()
-        {
-            return FechaVenta;
-        }
-        public decimal GetMontoTotal()
-        {
-            return MontoTotal;
-        }
-            public string GetTipoVenta()
-            {
-                return TipoVenta;
-            }
-        //Setter
-        public void SetIdVenta(int idVenta)
-        {
-            IdVenta = idVenta;
-        }
-        public void SetClientes(Clientes clientes)
-        {
-            this.clientes = clientes;
-        }
-        public void SetPartidos(partidos partidos)
-        {
-            this.partidos = partidos;
-        }
-        public void SetLocalidades(localidades localidades)
-        {
-            this.localidades = localidades;
-        }
-        public void SetCantidad(int cantidad)
-        {
-            this.cantidad = cantidad;
-        }
-        public void SetVendedores(vendedores vendedores)
-        {
-            this.vendedores = vendedores;
-        }
-        public void SetFechaVenta(DateTime fechaVenta)
-        {
-            FechaVenta = fechaVenta;
-        }
-        public void SetMontoTotal(decimal montoTotal)
-        {
-            MontoTotal = montoTotal;
-        }
-         public void SetTipoVenta(string tipoVenta)
-        {
-            TipoVenta = tipoVenta;
-        }
-       */
+
+        //Propiedades nos permiten acceder a los datos de forma segura
+        public int IdVenta { get => idVenta; set => idVenta = value; }
+        public Clientes Clientes { get => clientes; set => clientes = value; }
+        public Partidos Partidos { get => partidos; set => partidos = value; }
+        public Localidades Localidades { get => localidades; set => localidades = value; }
+        public int Cantidad { get => cantidad; set => cantidad = value; }
+        public Vendedores Vendedores { get => vendedores; set => vendedores = value; }
+        public DateTime FechaVenta { get => fechaVenta; set => fechaVenta = value; }
+        public decimal MontoTotal { get => montoTotal; set => montoTotal = value; }
+        public string TipoVenta { get => tipoVenta; set => tipoVenta = value; }
+     
     }
+
         
 }

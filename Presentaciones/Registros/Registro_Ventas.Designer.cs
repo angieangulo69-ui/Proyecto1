@@ -51,7 +51,7 @@
             label10 = new Label();
             label11 = new Label();
             date_fechaVenta = new DateTimePicker();
-            textBox1 = new TextBox();
+            txt_montoTotal = new TextBox();
             comboBox_tipoVenta = new ComboBox();
             ((System.ComponentModel.ISupportInitialize)data_Venta).BeginInit();
             SuspendLayout();
@@ -76,6 +76,7 @@
             data_Venta.RowHeadersWidth = 51;
             data_Venta.Size = new Size(787, 205);
             data_Venta.TabIndex = 99;
+            data_Venta.CellContentClick += data_Venta_CellContentClick;
             // 
             // btn_guardar
             // 
@@ -89,6 +90,7 @@
             btn_guardar.TabIndex = 98;
             btn_guardar.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_guardar.UseVisualStyleBackColor = false;
+            btn_guardar.Click += btn_guardar_Click;
             // 
             // txt_idventa
             // 
@@ -134,6 +136,7 @@
             btn_atras.TabIndex = 94;
             btn_atras.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_atras.UseVisualStyleBackColor = false;
+            btn_atras.Click += btn_atras_Click;
             // 
             // btn_salir
             // 
@@ -147,6 +150,7 @@
             btn_salir.TabIndex = 93;
             btn_salir.TextImageRelation = TextImageRelation.ImageBeforeText;
             btn_salir.UseVisualStyleBackColor = false;
+            btn_salir.Click += btn_salir_Click;
             // 
             // label1
             // 
@@ -191,6 +195,7 @@
             comboBox_Cliente.Name = "comboBox_Cliente";
             comboBox_Cliente.Size = new Size(151, 28);
             comboBox_Cliente.TabIndex = 104;
+            comboBox_Cliente.SelectedIndexChanged += comboBox_Cliente_SelectedIndexChanged;
             // 
             // comboBox_Partido
             // 
@@ -199,6 +204,7 @@
             comboBox_Partido.Name = "comboBox_Partido";
             comboBox_Partido.Size = new Size(151, 28);
             comboBox_Partido.TabIndex = 105;
+            comboBox_Partido.SelectedIndexChanged += comboBox_Partido_SelectedIndexChanged;
             // 
             // comboBox_Localidad
             // 
@@ -207,6 +213,7 @@
             comboBox_Localidad.Name = "comboBox_Localidad";
             comboBox_Localidad.Size = new Size(151, 28);
             comboBox_Localidad.TabIndex = 106;
+            comboBox_Localidad.SelectedIndexChanged += comboBox_Localidad_SelectedIndexChanged;
             // 
             // label7
             // 
@@ -238,6 +245,7 @@
             txt_cantidad.Name = "txt_cantidad";
             txt_cantidad.Size = new Size(150, 27);
             txt_cantidad.TabIndex = 109;
+            txt_cantidad.TextChanged += txt_cantidad_TextChanged;
             // 
             // comboBox_Vendedor
             // 
@@ -290,12 +298,13 @@
             date_fechaVenta.Size = new Size(250, 27);
             date_fechaVenta.TabIndex = 114;
             // 
-            // textBox1
+            // txt_montoTotal
             // 
-            textBox1.Location = new Point(569, 183);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(150, 27);
-            textBox1.TabIndex = 115;
+            txt_montoTotal.Location = new Point(569, 183);
+            txt_montoTotal.Name = "txt_montoTotal";
+            txt_montoTotal.Size = new Size(150, 27);
+            txt_montoTotal.TabIndex = 115;
+            txt_montoTotal.TextChanged += txt_montoTotal_TextChanged;
             // 
             // comboBox_tipoVenta
             // 
@@ -313,7 +322,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(963, 618);
             Controls.Add(comboBox_tipoVenta);
-            Controls.Add(textBox1);
+            Controls.Add(txt_montoTotal);
             Controls.Add(date_fechaVenta);
             Controls.Add(label11);
             Controls.Add(label10);
@@ -368,7 +377,7 @@
         private Label label10;
         private Label label11;
         private DateTimePicker date_fechaVenta;
-        private TextBox textBox1;
+        private TextBox txt_montoTotal;
         private ComboBox comboBox_tipoVenta;
     }
 }

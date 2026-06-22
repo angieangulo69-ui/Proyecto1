@@ -12,6 +12,14 @@ using System.Windows.Forms;
 
 namespace Presentaciones.Registros
 {
+    /*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de regsitros de partidos
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
     public partial class Registro_partido : Form
     {
         public Registro_partido()

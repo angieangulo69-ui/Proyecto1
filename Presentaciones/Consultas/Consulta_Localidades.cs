@@ -9,7 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de consultas de localidades registrados 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Presentaciones.Consultas
 {
     public partial class Consulta_Localidades : Form

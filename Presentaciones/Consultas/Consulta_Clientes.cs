@@ -9,7 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de consultas de clientes registrados 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Presentaciones.Consultas
 {
     public partial class Consulta_Clientes : Form
@@ -28,7 +35,7 @@ namespace Presentaciones.Consultas
         {
             Application.Exit();
         }
-
+        //Metodo que me carga los clientes registrdos en mi combox
         public void cargar_clientes()
         {
             comboBox_cliente.Items.Clear(); //limpiamos 
@@ -45,7 +52,7 @@ namespace Presentaciones.Consultas
                 }
             }
         }
-
+        //Metodo que se encarga de cargar los cliente segun la seleccion 
         public void cargar_dataconsulta_clientes()
         {
             if (comboBox_cliente.SelectedItem == null)
@@ -55,8 +62,7 @@ namespace Presentaciones.Consultas
             //
             Clientes cliente = (Clientes)comboBox_cliente.SelectedItem;
 
-            data_cliente.Rows.Clear();
-
+            data_cliente.Rows.Clear(); //Limpiamos la data antes de visualizar la seleccion 
             data_cliente.Rows.Add(
                cliente.IdCliente,
                cliente.Identificacion,
@@ -65,7 +71,7 @@ namespace Presentaciones.Consultas
                cliente.FechaNacimiento.ToShortDateString(),
                cliente.FechaRegistro.ToShortDateString());
         }
-
+        //Metodo encargados de configurar la data de clientes
         public void configurar_data_clientes()
         {
             //  configurar las columnas

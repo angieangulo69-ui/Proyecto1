@@ -5,7 +5,14 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite acceder al registro de vendedores , permite verificar si hay registros. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Acceso
 {
     public class Acceso_Vendedor

@@ -5,12 +5,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite agregar los registros, y realizar validaciones, segun lo solicitado.
+obtener cliente y permite una conexion con mi clase de acceso a mi almacenamiento. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Logica
 {
     public class Logica_localidades
-    {
-
+    {  //Pemite agregar localiaddes
         public bool Agregar(Localidades plocalidades) //esta localidad viene de la capa de logica
         {
             //importante validar
@@ -26,7 +33,7 @@ namespace Logica
             {
                 if (lista_Localidad[i] != null)
                 {
-                    if (lista_Localidad[i].GetIdLocalidad() == plocalidades.GetIdLocalidad())
+                    if (lista_Localidad[i].IdLocalidad == plocalidades.IdLocalidad)
                     {
                         return false; // eL ID existe
                     }
@@ -41,23 +48,7 @@ namespace Logica
         {
             return Acceso.Acceso_Localidad.Listar(); //retorna el arreglo de localidades desde la capa de acceso
         }
-
-        public Localidades obtenerLocalidad(string codigo)
-        {
-            //obtiene la lista de localidades desde la capa de acceso
-            var listaLocalidades = Acceso.Acceso_Localidad.Listar();
-
-            //Recorre la lista para ver si conside
-            for (int i = 0; i < listaLocalidades.Length; i++)
-            {       //si no esta nula , compara el codigo de la localidad con el codigo proporcionado        
-                if (listaLocalidades[i] != null && listaLocalidades[i].GetIdLocalidad().Equals(codigo))
-
-                {
-                    return listaLocalidades[i];
-                }
-            }
-            return null;
-        }
+        //Permite controlar que tengamos localidades registradas
         public bool TieneLocalidades()
         {
             //retorna true si hay registros, false si no hay registros

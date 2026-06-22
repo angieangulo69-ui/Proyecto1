@@ -5,20 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite agregar los registros, y realizar validaciones, segun lo solicitado.
+obtener cliente y permite una conexion con mi clase de acceso a mi almacenamiento. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Logica
 {
     public class Logica_LocalidadXPartido
-    {
+    {//Permite agregar registros de localidadesXPartidos
         public bool Agregar(LocalidadesXpartido plocalidadesXpartido) //esta localidad viene de la capa de logica
         {
             //importante validar
             if (plocalidadesXpartido == null)
             {
                 return false;
-            }
-           
-            
+            }       
             //esta localidad va a la capa de acceso porque esta instancia y es static 
             return Acceso.Acceso_LocalidadesXPartido.ingresar(plocalidadesXpartido);
 
@@ -26,14 +32,14 @@ namespace Logica
         //Valida que el partido este activo
         public static bool PartidoActivo(LocalidadesXpartido localidadXPartido)
         {
-            return localidadXPartido.partido.Activo;
+            return localidadXPartido.Partido.Activo;
         }
-
+        //Controla que la cantidad de boletos sea mayor a 0
         public bool CantidadValida(LocalidadesXpartido localidadXPartido)
         {
-            return localidadXPartido.cantidadDisponible > 0;
+            return localidadXPartido.CantidadDisponible > 0;
         }
-
+        //Controla si existen localidadesxpartido registradas
         public bool ExisteLocalidadPartido(LocalidadesXpartido localidadXPartido)
         {
             LocalidadesXpartido[] lista =
@@ -43,43 +49,24 @@ namespace Logica
             {
                 if (lista[i] != null)
                 {
-                    if (lista[i].partido.getIdPartido() ==
-                        localidadXPartido.partido.getIdPartido() &&
+                    if (lista[i].Partido.IdPartido ==
+                        localidadXPartido.Partido.IdPartido &&
 
-                        lista[i].localidades.GetIdLocalidad() ==
-                        localidadXPartido.localidades.GetIdLocalidad())
+                        lista[i].Localidades.IdLocalidad ==
+                        localidadXPartido.Localidades.IdLocalidad)
                     {
                         return true;
                     }
                 }
             }
-
             return false;
         }
-
-
 
         public LocalidadesXpartido[] Listar() //metodo para listar las localidades
         {
             return Acceso.Acceso_LocalidadesXPartido.Listar(); //retorna el arreglo de localidades desde la capa de acceso
         }
-
-        public LocalidadesXpartido obtenerLocalidadXPartido(string codigo)
-        {
-            //obtiene la lista de localidades desde la capa de acceso
-            var listaLocalidadesXpartido= Acceso.Acceso_LocalidadesXPartido.Listar();
-
-            //Recorre la lista para ver si conside
-            for (int i = 0; i < listaLocalidadesXpartido.Length; i++)
-            {       //si no esta nula , compara el codigo de la localidad con el codigo proporcionado        
-                if (listaLocalidadesXpartido is not null && listaLocalidadesXpartido[i].getIdLocalidadPartido().Equals(codigo))
-
-                {
-                    return listaLocalidadesXpartido[i];
-                }
-            }
-            return null;
-        }
+        //PErmite controlar si hay registros en la localidadxpartido
         public bool TieneLocalidadesXPartido()
         {
             //retorna true si hay registros, false si no hay registros

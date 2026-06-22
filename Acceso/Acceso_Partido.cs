@@ -4,7 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite acceder a los partidos registrados y verificar si hay registros en la clase
+de partido
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Acceso
 {
     public class Acceso_Partido
@@ -34,6 +42,7 @@ namespace Acceso
         {
             return lista_Partidos; // Devuelve el arreglo de partidos
         }
+        //Metodo que permite validar por medio del bool si hay  registros 
         public static bool encontrar_registros()
         {
             if (lista_Partidos == null)

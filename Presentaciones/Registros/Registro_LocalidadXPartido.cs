@@ -10,6 +10,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Formulario encargado del registro de localidades por partido.
+Permite seleccionar un partido y una localidad previamente registrados,
+asignar la cantidad disponible de entradas y almacenar la información,
+aplicando las validaciones establecidas por las reglas de negocio.
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
+
+
 namespace Presentaciones.Registros
 {
     public partial class Registro_LocalidadXPartido : Form
@@ -21,17 +35,18 @@ namespace Presentaciones.Registros
             configurar_data_localidades();
             cargar_Partidos();
             cargar_Localidades();
-            cargar_localidadesXPartido();
-
+           
         }
 
         private void btn_salir_Click(object sender, EventArgs e)
         {
+            //Salimos del sistema
             Application.Exit();
         }
 
         private void btn_atras_Click(object sender, EventArgs e)
         {
+            //Volvemos a la ventana de menu de registros
             Menu_Registros menu_Registro = new Menu_Registros();
             menu_Registro.Show();
             this.Dispose();
@@ -54,10 +69,10 @@ namespace Presentaciones.Registros
             LocalidadesXpartido localidadXpartido = new LocalidadesXpartido();
 
             //asignamos los datos ingresados a la clase Localidad
-            localidadXpartido.id_localidadPartido = int.Parse(txt_idlocalidadPartido.Text); // Convertir el texto a entero
-            localidadXpartido.partido = (Partidos)comboBox_partido.SelectedItem;
-            localidadXpartido.localidades = (Localidades)comboBox_localidad.SelectedItem;
-            localidadXpartido.cantidadDisponible = int.Parse(txt_disponibilidad.Text);
+            localidadXpartido.IdLocalidadPartido = int.Parse(txt_idlocalidadPartido.Text); // Convertir el texto a entero
+            localidadXpartido.Partido = (Partidos)comboBox_partido.SelectedItem;
+            localidadXpartido.Localidades = (Localidades)comboBox_localidad.SelectedItem;
+            localidadXpartido.CantidadDisponible = int.Parse(txt_disponibilidad.Text);
 
             //validamos que el partido este activo
             if (!Logica_LocalidadXPartido.PartidoActivo(localidadXpartido))
@@ -65,8 +80,6 @@ namespace Presentaciones.Registros
                 MessageBox.Show("No se pueden registrar localidades para partidos inactivos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-
-
 
             Logica_LocalidadXPartido logicaXPartido = new Logica_LocalidadXPartido(); //Instancia de la clase Logica_localidades
             //Validamos que no se repita la localidad
@@ -95,10 +108,12 @@ namespace Presentaciones.Registros
             }
 
         }
-
+        //Metodo que me permite cargar los registros realizados 
         public void cargar_localidadesXPartido()
         {
-            // Cargar localidades desde la lógica y mostrarlas en el DataGridView
+            data_localidadXpartido.Rows.Clear(); //Borramos data para evitar duplicados
+
+            // Cargar localidadesXPartido desde la lógica y mostrarlas en el DataGridView
             Logica_LocalidadXPartido logica_Partidos = new Logica_LocalidadXPartido();
 
             if (logica_Partidos.TieneLocalidadesXPartido()) //Tiene localidades
@@ -110,10 +125,10 @@ namespace Presentaciones.Registros
                     {
                         LocalidadesXpartido localidadXpartido = lista_localidadXpartido[i]; // Obtener la localidad actual
                         data_localidadXpartido.Rows.Add(
-                            localidadXpartido.id_localidadPartido,
-                           localidadXpartido.partido,
-                            localidadXpartido.localidades,
-                            localidadXpartido.cantidadDisponible
+                        localidadXpartido.IdLocalidadPartido,
+                        localidadXpartido.Partido,
+                        localidadXpartido.Localidades,
+                        localidadXpartido.CantidadDisponible
                         );
                     }
                 }
@@ -122,23 +137,24 @@ namespace Presentaciones.Registros
 
         public void cargar_Partidos()
         {
-            // Cargar localidades desde la lógica y mostrarlas en el DataGridView
+            // Cargar partidos desde la lógica y mostrarlas en el DataGridView
             Logica_Partidos logica_Partidos = new Logica_Partidos();
 
-            if (logica_Partidos.TienePartidos()) //Tiene localidades
+            if (logica_Partidos.TienePartidos()) //Tiene partidos
             {
-                var listaPartidos = logica_Partidos.Listar(); // Obtener la lista de localidades
+                var listaPartidos = logica_Partidos.Listar(); // Obtener la lista de partidos
                 for (int i = 0; i < listaPartidos.Length; i++)
                 {
-                    if (listaPartidos[i] != null) // Verificar que la localidad no sea nula
+                    if (listaPartidos[i] != null) // Verificar que la partidos no sea nula
                     {
                         comboBox_partido.Items.Add(listaPartidos[i]); //cargamos datos 
                     }
                 }
             }
         }
+        //Cargar las localidades en el combox de localidades 
         public void cargar_Localidades()
-        {
+        {          
             // Cargar localidades desde la lógica y mostrarlas en el DataGridView
             Logica_localidades logica_Localidades = new Logica_localidades();
 
@@ -155,7 +171,7 @@ namespace Presentaciones.Registros
             }
 
         }
-
+        //Metodo para configurar la data de las localidades registradas
         private void configurar_data_localidades()
         {
             data_localidadXpartido.Columns.Add("IDLocalidadPartido", "ID Localidad por Partido");
@@ -169,15 +185,13 @@ namespace Presentaciones.Registros
             data_localidadXpartido.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             data_localidadXpartido.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
-
+        //Metodo para limpiar los espacios
         public void limpiar()
         {
             txt_idlocalidadPartido.Clear();
             txt_disponibilidad.Clear();
-
             comboBox_partido.SelectedIndex = -1;
             comboBox_localidad.SelectedIndex = -1;
-
             txt_idlocalidadPartido.Focus();
         }
 

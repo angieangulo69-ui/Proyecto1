@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite agregar los registros, y realizar validaciones, segun lo solicitado.
+obtener cliente y permite una conexion con mi clase de acceso a mi almacenamiento. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Logica
 {
     public class Logica_Vendedores
     {
-
         Vendedores[] lista_Vendedores = Acceso.Acceso_Vendedor.Listar(); //listamos para obtener los vendedores guardados y poder validar 
         
         //Este metodo se encarga de agregar un nuevo vendendedor 
@@ -37,7 +44,7 @@ namespace Logica
             // Recorre la lista de vendedores para buscar el código indicado
             for (int i = 0; i < listaVendedores.Length; i++)
             {
-                if (listaVendedores[i] != null && listaVendedores[i].GetIdVendedor().Equals(codigo))
+                if (listaVendedores[i] != null && listaVendedores[i].IdVendedor.Equals(codigo))
                 {
                     return listaVendedores[i];
                 }
@@ -50,15 +57,15 @@ namespace Logica
             if (vendedor == null)
                 return "El vendedor es nulo.";
             //Validamos que no este vacio el nombre
-            if (string.IsNullOrWhiteSpace(vendedor.GetNombre()))
+            if (string.IsNullOrWhiteSpace(vendedor.Nombre))
                 return "El nombre es obligatorio.";
             //Validamos que no este vacio el apellido
-            if (string.IsNullOrWhiteSpace(vendedor.GetApellido()))
+            if (string.IsNullOrWhiteSpace(vendedor.Apellido))
                 return "El apellido es obligatorio.";
 
             //Obtenemos los datos ingresados de entidad vendedor
-            DateTime fechaNacimiento = vendedor.GetFechaNacimiento();
-            DateTime fechaIngreso = vendedor.GetFechaIngreso();
+            DateTime fechaNacimiento = vendedor.FechaNacimiento;
+            DateTime fechaIngreso = vendedor.FechaIngreso;
             DateTime hoy = DateTime.Today; //Toma la fecha del sistema
 
             // Validamos que la identificacion no este vacia
@@ -113,8 +120,7 @@ namespace Logica
             }
             return ""; // Todo correcto
         }
-        
-      
+        //Controla si hay vendedores registrados
         public bool TieneVendedores()
         {
             //retorna true si hay registros, false si no hay registros

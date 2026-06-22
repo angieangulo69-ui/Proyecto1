@@ -4,12 +4,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite agregar los registros, y realizar validaciones, segun lo solicitado.
+obtener cliente y permite una conexion con mi clase de acceso a mi almacenamiento. 
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Logica
 {
     public class Logica_Clientes
-    {
-        
+    {// permite agregar clientes a mi clase correspondiente
         public bool Agregar(Clientes pclientes)
         {
             string mensaje = validacionesCliente(pclientes);
@@ -56,16 +63,17 @@ namespace Logica
             {
                 return "Debe ingresar el nombre";
             }
-
+            // valida que no quede en blanco el apellido
             if (String.IsNullOrWhiteSpace(clientes.Apellido))
             {
                 return "Debe ingresar el apellido";
             }
+            //Valida que no quede en blanco la identificacion 
             if (String.IsNullOrWhiteSpace(clientes.Identificacion))
             {
                 return "Debe ingresar la identificacion";
             }
-
+            //Permite que la fecha de nacimiento no sea a futuro de la actual
             if (clientes.FechaNacimiento >=  DateTime.Now)
             {
                 return "La fecha de nacimiento no puede ser futura";
@@ -91,10 +99,7 @@ namespace Logica
                 return "Debe indicar si el cliente se encuentra activo.";
             }
 
-
-            //Valida identificacion repetida
             //Validar que no existe el mismo IDVendedor
-
             Clientes[] lista_Clientes = Acceso.AccesoCliente.Listar();
 
             for (int i = 0; i < lista_Clientes.Length; i++)
@@ -115,7 +120,6 @@ namespace Logica
                     }
                     //Valida que el cliente sea mayor de edad
                     int edad = DateTime.Now.Year - clientes.FechaNacimiento.Year;
-
                     if (clientes.FechaNacimiento > DateTime.Now.AddYears(-edad))
                     {
                         edad--;
@@ -127,9 +131,10 @@ namespace Logica
                     }
                 }
             }
-            return string.Empty; //nos retorna una cena vacia
+            return string.Empty; 
 
         }
+        //Permite validar que el cliente siempre debe de estar activo
         public bool ClienteHabilitado(int idCliente)
         {
             Clientes cliente = obtenerClientes(idCliente);
@@ -141,15 +146,7 @@ namespace Logica
 
             return cliente.Activo;
         }
-
-
-         /*if (!logicaCliente.ClienteHabilitado(idCliente))
-{
-            MessageBox.Show("El cliente se encuentra inactivo y no puede realizar compras.","Cliente no habilitado",MessageBoxButtons.OK, MessageBoxIcon.Warning);
-
-    return;
-}*/
-
+        //Permite controlar si hay clientes registrados
         public bool TieneClientes()
         {
             //retorna true si hay registros, false si no hay registros

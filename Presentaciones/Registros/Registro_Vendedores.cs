@@ -10,9 +10,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+/*
+Universidad:UNED
+II Cuatrimestre
+Proyecto I
+Descripción:formulario de regsitros de vendedores
+Estudiante: Angie Angulo Chacón 
+Fecha:21/06/2026
+*/
 namespace Presentaciones.Registros
+
 {
+
     public partial class Registro_Vendedores : Form
     {
         public Registro_Vendedores()
