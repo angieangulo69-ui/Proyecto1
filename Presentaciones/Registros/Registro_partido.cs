@@ -44,7 +44,7 @@ Fecha:21/06/2026
             //Validar que el ID sea numerico
             if (!int.TryParse(txt_idpartido.Text, out int idPartido))
             {
-                MessageBox.Show("El ID del partido debe ser numérico.","Validación", MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("El ID del partido debe ser numérico.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txt_idpartido.Focus();
                 return;
             }
@@ -145,6 +145,21 @@ Fecha:21/06/2026
         private void Registro_partido_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void txt_idpartido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Validar que solo se ingresen números en el campo de ID del partido
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo de ID del partido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

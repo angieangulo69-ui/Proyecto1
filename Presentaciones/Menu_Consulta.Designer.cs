@@ -51,7 +51,7 @@
             label7.AutoSize = true;
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label7.ForeColor = Color.SpringGreen;
+            label7.ForeColor = Color.PapayaWhip;
             label7.Location = new Point(168, 222);
             label7.Name = "label7";
             label7.Size = new Size(108, 36);
@@ -63,7 +63,7 @@
             label6.AutoSize = true;
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label6.ForeColor = Color.SpringGreen;
+            label6.ForeColor = Color.PapayaWhip;
             label6.Location = new Point(489, 142);
             label6.Name = "label6";
             label6.Size = new Size(107, 36);
@@ -75,7 +75,7 @@
             label5.AutoSize = true;
             label5.BackColor = Color.Transparent;
             label5.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label5.ForeColor = Color.SpringGreen;
+            label5.ForeColor = Color.PapayaWhip;
             label5.Location = new Point(489, 222);
             label5.Name = "label5";
             label5.Size = new Size(287, 36);
@@ -87,7 +87,7 @@
             label4.AutoSize = true;
             label4.BackColor = Color.Transparent;
             label4.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.SpringGreen;
+            label4.ForeColor = Color.PapayaWhip;
             label4.Location = new Point(489, 307);
             label4.Name = "label4";
             label4.Size = new Size(101, 36);
@@ -99,7 +99,7 @@
             label3.AutoSize = true;
             label3.BackColor = Color.Transparent;
             label3.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.SpringGreen;
+            label3.ForeColor = Color.PapayaWhip;
             label3.Location = new Point(163, 307);
             label3.Name = "label3";
             label3.Size = new Size(140, 36);
@@ -111,7 +111,7 @@
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Sylfaen", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.SpringGreen;
+            label2.ForeColor = Color.PapayaWhip;
             label2.Location = new Point(163, 142);
             label2.Name = "label2";
             label2.Size = new Size(135, 36);
@@ -124,7 +124,7 @@
             btn_atras.BackgroundImage = (Image)resources.GetObject("btn_atras.BackgroundImage");
             btn_atras.BackgroundImageLayout = ImageLayout.Stretch;
             btn_atras.Cursor = Cursors.Hand;
-            btn_atras.Location = new Point(116, 437);
+            btn_atras.Location = new Point(23, 437);
             btn_atras.Name = "btn_atras";
             btn_atras.Size = new Size(57, 56);
             btn_atras.TabIndex = 30;
@@ -235,8 +235,8 @@
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.Font = new Font("Snap ITC", 19.8000011F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.Orange;
-            label1.Location = new Point(247, 36);
+            label1.ForeColor = Color.SandyBrown;
+            label1.Location = new Point(268, 31);
             label1.Name = "label1";
             label1.Size = new Size(322, 44);
             label1.TabIndex = 22;

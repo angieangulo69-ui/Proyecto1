@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 /*
 Universidad:UNED
@@ -21,7 +22,7 @@ namespace Entidades
         private int idVenta;
         private Clientes clientes;  //Cliente que realiza la compra
         private Partidos partidos;
-        private Localidades localidades;       
+        private Localidades localidades;
         private Vendedores vendedores;
         private int cantidad;
         private DateTime fechaVenta;
@@ -57,7 +58,13 @@ namespace Entidades
         public decimal MontoTotal { get => montoTotal; set => montoTotal = value; }
         public string TipoVenta { get => tipoVenta; set => tipoVenta = value; }
      
-    }
+    
 
-        
+     public override string ToString()
+        {
+            return Clientes.Identificacion + " - " + Clientes.Nombre + " " + Clientes.Apellido;
+        }
+
+
+    }
 }

@@ -143,7 +143,6 @@ namespace Logica
             {
                 return false;
             }
-
             return cliente.Activo;
         }
         //Permite controlar si hay clientes registrados

@@ -32,7 +32,7 @@ namespace Presentaciones.Registros
             cargarClientes();
             cargarVendedores();
 
-            txt_montoTotal.ReadOnly = true; //Inaviliatr el montototal
+            txt_montoTotal.ReadOnly = true; //Inavilitar el montototal
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace Presentaciones.Registros
                comboBox_Partido.SelectedItem == null ||
                comboBox_Localidad.SelectedItem == null ||
                 string.IsNullOrWhiteSpace(txt_cantidad.Text) ||
-               comboBox_Vendedor.SelectedItem == null )               
+               comboBox_Vendedor.SelectedItem == null)
             {
                 MessageBox.Show("Debe completar todos los campos.");
                 return;
@@ -69,7 +69,7 @@ namespace Presentaciones.Registros
                 venta.Clientes = (Clientes)comboBox_Cliente.SelectedItem;
                 venta.Partidos = (Partidos)comboBox_Partido.SelectedItem;
                 venta.Localidades = (Localidades)comboBox_Localidad.SelectedItem;
-               //validamos que solo numeros
+                //validamos que solo numeros
                 if (!int.TryParse(txt_cantidad.Text, out int cantidad))
                 {
                     MessageBox.Show("Cantidad inválida");
@@ -78,7 +78,9 @@ namespace Presentaciones.Registros
                 venta.Cantidad = int.Parse(txt_cantidad.Text);
                 venta.Vendedores = (Vendedores)comboBox_Vendedor.SelectedItem;
                 venta.FechaVenta = date_fechaVenta.Value;
+                venta.MontoTotal = decimal.Parse(txt_montoTotal.Text);
                 venta.TipoVenta = "Boleteria";
+
 
                 Logica_Ventas logicaVentas = new Logica_Ventas(); //Instancia de la clase Logica ventas
 
@@ -170,7 +172,7 @@ namespace Presentaciones.Registros
         //Carga los registros de ventas realizadas
         public void CargarVentas()
         {
-           
+
             // Cargar localidades desde la lógica y mostrarlas en el DataGridView
             Logica_Ventas logica_Ventas = new Logica_Ventas();
 
@@ -194,7 +196,7 @@ namespace Presentaciones.Registros
                             Venta.Vendedores.Nombre,
                             Venta.FechaVenta,
                             Venta.MontoTotal,
-                            Venta.TipoVenta 
+                            Venta.TipoVenta
                         );
                     }
                 }
@@ -213,7 +215,7 @@ namespace Presentaciones.Registros
                 if (logicaLocalidades.TieneLocalidades()) //Tiene localidades
                 {
                     var listaLocalidades = logicaLocalidades.Listar(); // Obtener la lista de localidades
-                    for (int i = 0; i < listaLocalidades.Length; i++)
+                    for (int i = 0; i < listaLocalidades.Count; i++)
                     {
                         if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
                         {
@@ -330,7 +332,7 @@ namespace Presentaciones.Registros
 
             txt_montoTotal.Text = total.ToString("0.00");
         }
-       
+
         private void comboBox_Localidad_SelectedIndexChanged(object sender, EventArgs e)
         {
             CalcularTotal();
@@ -339,6 +341,26 @@ namespace Presentaciones.Registros
         private void txt_cantidad_TextChanged(object sender, EventArgs e)
         {
             CalcularTotal();
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void txt_idventa_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //validamos que solo se puedan ingresar numeros en el campo de id venta
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo de Id Venta.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

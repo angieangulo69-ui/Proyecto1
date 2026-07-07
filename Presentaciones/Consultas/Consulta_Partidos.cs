@@ -64,7 +64,7 @@ namespace Presentaciones.Consultas
             data_partidos.ReadOnly = true;
             data_partidos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             data_partidos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-           
+
         }
 
         public void cargar_partidos()
@@ -105,7 +105,7 @@ namespace Presentaciones.Consultas
         {
             var listaPartidos = logicaPartidos.Listar(); //Listamos 
 
-            comboBox_fechas.Items.Clear(); //Lompiamor combox antes de cargar
+            comboBox_fechas.Items.Clear(); //Limpiamos combox antes de cargar
 
             if (listaPartidos != null)
             {
@@ -127,6 +127,11 @@ namespace Presentaciones.Consultas
         }
 
         private void Consulta_Partidos_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox_fechas_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

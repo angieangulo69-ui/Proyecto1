@@ -49,6 +49,12 @@ Fecha:21/06/2026
             localidad.IdLocalidad = int.Parse(txt_idlocalidad.Text); // Convertir el texto a entero
             localidad.NombreLocalidad = txt_nombrelocalidad.Text;
             localidad.Precio = decimal.Parse(txt_precio.Text);
+          
+            if (!decimal.TryParse(txt_precio.Text, out decimal precio))
+            {
+                MessageBox.Show("Ingrese un precio válido.");
+                return;
+            }
 
             Logica_localidades logica = new Logica_localidades(); //Instancia de la clase Logica_localidades
 
@@ -60,7 +66,7 @@ Fecha:21/06/2026
             }
             else
             {
-                MessageBox.Show("Error No se permiten ID repetidos o a llegado al limite de 10 registros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("No se pudo registrar la localidad. Verifique que el ID no exista.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 limpiar();
             }
         }
@@ -75,6 +81,8 @@ Fecha:21/06/2026
             txt_idlocalidad.Clear();
             txt_nombrelocalidad.Clear();
             txt_precio.Clear();
+
+            txt_idlocalidad.Focus(); // Colocar el cursor en el primer campo
 
         }
         private void configurar_data_localidades()
@@ -100,20 +108,16 @@ Fecha:21/06/2026
 
             if (logica_Localidades.TieneLocalidades()) //Tiene localidades
             {
-                var listaLocalidades = logica_Localidades.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < listaLocalidades.Length; i++)
+                foreach (Localidades localidad in logica_Localidades.Listar())
                 {
-                    if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
-                    {
-                        Localidades localidad = listaLocalidades[i]; // Obtener la localidad actual
-                        data_localidades.Rows.Add(
-                            localidad.IdLocalidad,
-                            localidad.NombreLocalidad,
-                            localidad.Precio
-                        );
-                    }
+                    data_localidades.Rows.Add(
+                        localidad.IdLocalidad,
+                        localidad.NombreLocalidad,
+                        localidad.Precio
+                    );
                 }
-            }
+           }
+            
         }
 
         private void btn_salir_Click(object sender, EventArgs e)
@@ -131,6 +135,46 @@ Fecha:21/06/2026
         private void Registro_Localidad_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void txt_idlocalidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Validar que solo se ingresen números
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo ID Localidad.", "Entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_nombrelocalidad_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_nombrelocalidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //validar que solo se ingresen letras y espacios
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten letras y espacios en el campo Nombre Localidad.", "Entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_precio_KeyUp(object sender, KeyEventArgs e)
+        {
+            //Validar que solo se ingresen números y un punto decimal
+            if (!decimal.TryParse(txt_precio.Text, out _))
+            {
+                MessageBox.Show("Solo se permiten números y un punto decimal en el campo Precio.", "Entrada inválida", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txt_precio.Clear(); // Limpiar el campo si la entrada es inválida
+            }
         }
     }
 }

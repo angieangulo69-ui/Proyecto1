@@ -21,7 +21,7 @@ namespace Presentaciones.Consultas
 {
     public partial class Consulta_Ventas : Form
     {
-        
+
         Logica_Ventas logicaVenta = new Logica_Ventas();
         public Consulta_Ventas()
         {
@@ -114,6 +114,11 @@ namespace Presentaciones.Consultas
                 }
             }
         }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
     }
-    
+
 }

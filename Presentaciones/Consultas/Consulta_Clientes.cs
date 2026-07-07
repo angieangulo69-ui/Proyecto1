@@ -46,7 +46,7 @@ namespace Presentaciones.Consultas
                 for (int i = 0; i < lista_cliente.Length; i++)
                 {
                     if (lista_cliente[i] != null)
-                    {
+                    {                      
                         comboBox_cliente.Items.Add(lista_cliente[i]);
                     }
                 }
@@ -69,7 +69,9 @@ namespace Presentaciones.Consultas
                cliente.Nombre,
                cliente.Apellido,
                cliente.FechaNacimiento.ToShortDateString(),
-               cliente.FechaRegistro.ToShortDateString());
+               cliente.FechaRegistro.ToShortDateString(),
+               cliente.Activo
+               );
         }
         //Metodo encargados de configurar la data de clientes
         public void configurar_data_clientes()

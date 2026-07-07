@@ -61,7 +61,7 @@ namespace Presentaciones.Consultas
             if (logica_Localidades.TieneLocalidades()) //Tiene localidades
             {
                 var listaLocalidades = logica_Localidades.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < listaLocalidades.Length; i++)
+                for (int i = 0; i < listaLocalidades.Count; i++)
                 {
                     if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
                     {    // Verificar si el nombre de la localidad coincide con el seleccionado en el ComboBox
@@ -113,6 +113,16 @@ namespace Presentaciones.Consultas
         }
 
         private void Consulta_Localidades_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
         {
 
         }

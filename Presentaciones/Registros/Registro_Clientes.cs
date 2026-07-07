@@ -139,7 +139,7 @@ namespace Presentaciones.Registros
         //Metodo para cargar los vendedores registrados 
         public void cargar_Clientes()
         {
-            
+
 
             data_cliente.Rows.Clear(); //limpiamos para evitar duplicados
 
@@ -158,11 +158,64 @@ namespace Presentaciones.Registros
                             cliente.Apellido,
                             cliente.FechaNacimiento.ToShortDateString(),
                              cliente.FechaRegistro.ToShortDateString(),
-                        cliente.Activo.ToString());
+                             cliente.Activo.ToString());
                     }
                 }
             }
         }
-    }
 
+        private void txt_idcliente_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //Solo numeros
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo Id Cliente.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void toolStripContainer1_TopToolStripPanel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void panel7_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            limpiar();
+
+        }
+
+        private void txt_nombre_KeyPress(object sender, KeyPressEventArgs e)
+        {  // Validar que solo se ingresen letras y espacios
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && e.KeyChar != ' ')
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten letras en el campo Nombre.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_apellido_KeyPress(object sender, KeyPressEventArgs e)
+        {  // Validar que solo se ingresen letras y espacios
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && e.KeyChar != ' ')
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten letras en el campo Apellido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+    }
 }

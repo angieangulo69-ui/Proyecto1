@@ -35,7 +35,7 @@ namespace Presentaciones.Registros
             configurar_data_localidades();
             cargar_Partidos();
             cargar_Localidades();
-           
+
         }
 
         private void btn_salir_Click(object sender, EventArgs e)
@@ -154,14 +154,14 @@ namespace Presentaciones.Registros
         }
         //Cargar las localidades en el combox de localidades 
         public void cargar_Localidades()
-        {          
+        {
             // Cargar localidades desde la lógica y mostrarlas en el DataGridView
             Logica_localidades logica_Localidades = new Logica_localidades();
 
             if (logica_Localidades.TieneLocalidades()) //Tiene localidades
             {
                 var listaLocalidades = logica_Localidades.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < listaLocalidades.Length; i++)
+                for (int i = 0; i < listaLocalidades.Count; i++)
                 {
                     if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
                     {
@@ -198,6 +198,31 @@ namespace Presentaciones.Registros
         private void Registro_LocalidadXPartido_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void btn_limpiar_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void txt_idlocalidadPartido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Validar que solo se ingresen números en el campo de ID Localidad por Partido
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo de ID Localidad por Partido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_disponibilidad_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Validar que solo se ingresen números en el campo de Cantidad Disponible
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo de Cantidad Disponible.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
     }
 }

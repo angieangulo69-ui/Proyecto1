@@ -155,5 +155,45 @@ namespace Presentaciones.Registros
         {
 
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            limpiar();
+        }
+
+        private void txt_idvendedor_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //validamos que solo se puedan ingresar numeros en el campo de id vendedor
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten números en el campo de Id Vendedor.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_nombre_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txt_nombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //validamos que solo se puedan ingresar letras en el campo de nombre
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten letras en el campo de Nombre.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void txt_apellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            //validamos que solo se puedan ingresar letras en el campo de apellido
+            if (!char.IsControl(e.KeyChar) && !char.IsLetter(e.KeyChar) && !char.IsWhiteSpace(e.KeyChar))
+            {
+                e.Handled = true; // Ignorar el carácter ingresado
+                MessageBox.Show("Solo se permiten letras en el campo de Apellido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
