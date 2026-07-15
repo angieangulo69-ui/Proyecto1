@@ -55,7 +55,7 @@ namespace Presentaciones.Registros
             vendedor.IdVendedor = int.Parse(txt_idvendedor.Text);
             vendedor.Apellido = txt_apellido.Text;
             vendedor.Nombre = txt_nombre.Text;
-            vendedor.Identificacion = mask_identificacion.Text;
+            vendedor.Identificacion = mask_identificacion.Text.Replace("-","");
             vendedor.FechaIngreso = date_fechaingreso.Value;
             vendedor.FechaNacimiento = date_fechanacimiento.Value;
 
@@ -133,24 +133,19 @@ namespace Presentaciones.Registros
 
             if (logica_vendedor.TieneVendedores())
             {
-                var lista_vendedor = logica_vendedor.Listar(); //Obtenemos las lista de partidos
-                for (int i = 0; i < lista_vendedor.Length; i++)
+                foreach (Vendedores vendedor in logica_vendedor.Listar())
                 {
-                    if (lista_vendedor[i] != null)
-                    {
-                        Vendedores vendedor = lista_vendedor[i];
-                        data_vendedores.Rows.Add(
-                            vendedor.IdVendedor,
-                            vendedor.Identificacion,
-                            vendedor.Nombre,
-                            vendedor.Apellido,
-                            vendedor.FechaNacimiento.ToShortDateString(),
-                             vendedor.FechaIngreso.ToShortDateString());
-                    }
+                    data_vendedores.Rows.Add(
+                        vendedor.IdVendedor,
+                        vendedor.Identificacion,
+                        vendedor.Nombre,
+                        vendedor.Apellido,
+                        vendedor.FechaNacimiento.ToShortDateString(),
+                        vendedor.FechaIngreso.ToShortDateString());
                 }
             }
         }
-
+    
         private void Registro_Vendedores_Load(object sender, EventArgs e)
         {
 

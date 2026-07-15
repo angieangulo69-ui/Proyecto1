@@ -91,8 +91,7 @@ namespace Presentaciones.Consultas
                 return;
             }
 
-            LocalidadesXpartido item =
-                (LocalidadesXpartido)comboBoxlocalidadXpartido.SelectedItem;
+            LocalidadesXpartido item = (LocalidadesXpartido)comboBoxlocalidadXpartido.SelectedItem;
 
             data_localidadXpartido.Rows.Clear();
 
@@ -116,7 +115,7 @@ namespace Presentaciones.Consultas
 
             if (logica.TieneLocalidadesXPartido())
             {
-                LocalidadesXpartido[] lista = logica.Listar();
+                List<LocalidadesXpartido> lista = logica.Listar();
 
                 comboBoxlocalidadXpartido.Items.Clear();
 

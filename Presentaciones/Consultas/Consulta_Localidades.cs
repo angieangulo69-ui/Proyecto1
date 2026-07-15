@@ -47,11 +47,17 @@ namespace Presentaciones.Consultas
             data_localidades.AutoGenerateColumns = false;
             data_localidades.ReadOnly = true;
             data_localidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            data_localidades.Columns["precio"].DefaultCellStyle.Format = "C2"; // Formato de moneda para la columna de precio]
+            data_localidades.Columns["Precio"].DefaultCellStyle.Format = "C2"; // Formato de moneda para la columna de precio]
             data_localidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
         private void cargar_localidades()
         {
+            if (comboBox_nombrelocalidad.SelectedItem == null)
+            {
+                MessageBox.Show("Seleccione una localidad.");
+                return;
+            }
+
             // Cargar localidades desde la lógica y mostrarlas en el DataGridView
             Logica_localidades logica_Localidades = new Logica_localidades();
 
@@ -61,22 +67,20 @@ namespace Presentaciones.Consultas
             if (logica_Localidades.TieneLocalidades()) //Tiene localidades
             {
                 var listaLocalidades = logica_Localidades.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < listaLocalidades.Count; i++)
+                foreach (Localidades localidad in listaLocalidades)
                 {
-                    if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
-                    {    // Verificar si el nombre de la localidad coincide con el seleccionado en el ComboBox
-                        if (comboBox_nombrelocalidad.SelectedItem != null &&
-                            listaLocalidades[i].NombreLocalidad == comboBox_nombrelocalidad.SelectedItem.ToString())
-                        {
-                            Localidades localidad = listaLocalidades[i]; // Obtener la localidad actual
-                            data_localidades.Rows.Add(
-                                localidad.IdLocalidad,
-                                localidad.NombreLocalidad,
-                                localidad.Precio
-                            );
-                        }
+                    if (localidad != null &&
+                        comboBox_nombrelocalidad.SelectedItem != null &&
+                        localidad.NombreLocalidad == comboBox_nombrelocalidad.SelectedItem.ToString())
+                    {
+                        data_localidades.Rows.Add(
+                            localidad.IdLocalidad,
+                            localidad.NombreLocalidad,
+                            localidad.Precio
+                        );
                     }
                 }
+
             }
         }
 
@@ -91,11 +95,8 @@ namespace Presentaciones.Consultas
             if (listaLocalidades != null)
             {
                 foreach (var localidad in listaLocalidades)
-                {
-                    if (localidad != null)
-                    {
-                        comboBox_nombrelocalidad.Items.Add(localidad.NombreLocalidad);
-                    }
+                {                    
+                  comboBox_nombrelocalidad.Items.Add(localidad.NombreLocalidad);                    
                 }
             }
         }

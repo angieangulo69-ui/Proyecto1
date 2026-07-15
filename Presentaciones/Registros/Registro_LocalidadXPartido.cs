@@ -54,6 +54,7 @@ namespace Presentaciones.Registros
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Entró al botón Guardar");
             //Validamos que los campos no estén vacíos
             if (string.IsNullOrWhiteSpace(txt_idlocalidadPartido.Text) ||
                 string.IsNullOrWhiteSpace(comboBox_partido.Text) ||
@@ -111,26 +112,20 @@ namespace Presentaciones.Registros
         //Metodo que me permite cargar los registros realizados 
         public void cargar_localidadesXPartido()
         {
-            data_localidadXpartido.Rows.Clear(); //Borramos data para evitar duplicados
+            data_localidadXpartido.Rows.Clear();
 
-            // Cargar localidadesXPartido desde la lógica y mostrarlas en el DataGridView
-            Logica_LocalidadXPartido logica_Partidos = new Logica_LocalidadXPartido();
+            Logica_LocalidadXPartido logica = new Logica_LocalidadXPartido();
 
-            if (logica_Partidos.TieneLocalidadesXPartido()) //Tiene localidades
+            if (logica.TieneLocalidadesXPartido())
             {
-                var lista_localidadXpartido = logica_Partidos.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < lista_localidadXpartido.Length; i++)
+                foreach (LocalidadesXpartido localidadXpartido in logica.Listar())
                 {
-                    if (lista_localidadXpartido[i] != null) // Verificar que la localidad no sea nula
-                    {
-                        LocalidadesXpartido localidadXpartido = lista_localidadXpartido[i]; // Obtener la localidad actual
-                        data_localidadXpartido.Rows.Add(
+                    data_localidadXpartido.Rows.Add(
                         localidadXpartido.IdLocalidadPartido,
-                        localidadXpartido.Partido,
-                        localidadXpartido.Localidades,
+                        localidadXpartido.Partido.Rival,
+                        localidadXpartido.Localidades.NombreLocalidad,
                         localidadXpartido.CantidadDisponible
-                        );
-                    }
+                    );
                 }
             }
         }
@@ -142,14 +137,12 @@ namespace Presentaciones.Registros
 
             if (logica_Partidos.TienePartidos()) //Tiene partidos
             {
-                var listaPartidos = logica_Partidos.Listar(); // Obtener la lista de partidos
-                for (int i = 0; i < listaPartidos.Length; i++)
+                // Obtener la lista de partidos
+                foreach (Partidos partido in logica_Partidos.Listar())
                 {
-                    if (listaPartidos[i] != null) // Verificar que la partidos no sea nula
-                    {
-                        comboBox_partido.Items.Add(listaPartidos[i]); //cargamos datos 
-                    }
+                    comboBox_partido.Items.Add(partido); //cargamos datos 
                 }
+
             }
         }
         //Cargar las localidades en el combox de localidades 
@@ -160,17 +153,14 @@ namespace Presentaciones.Registros
 
             if (logica_Localidades.TieneLocalidades()) //Tiene localidades
             {
-                var listaLocalidades = logica_Localidades.Listar(); // Obtener la lista de localidades
-                for (int i = 0; i < listaLocalidades.Count; i++)
+                foreach (Localidades localidad in logica_Localidades.Listar())
                 {
-                    if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
-                    {
-                        comboBox_localidad.Items.Add(listaLocalidades[i]);
-                    }
+                    comboBox_localidad.Items.Add(localidad);
                 }
             }
-
         }
+
+
         //Metodo para configurar la data de las localidades registradas
         private void configurar_data_localidades()
         {
@@ -223,6 +213,69 @@ namespace Presentaciones.Registros
                 e.Handled = true; // Ignorar el carácter ingresado
                 MessageBox.Show("Solo se permiten números en el campo de Cantidad Disponible.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Entró al botón Guardar");
+            //Validamos que los campos no estén vacíos
+            if (string.IsNullOrWhiteSpace(txt_idlocalidadPartido.Text) ||
+                string.IsNullOrWhiteSpace(comboBox_partido.Text) ||
+                string.IsNullOrWhiteSpace(comboBox_localidad.Text) ||
+                string.IsNullOrWhiteSpace(txt_disponibilidad.Text))
+
+            {
+                MessageBox.Show("Debe completar todos los campos.");
+                return;
+            }
+
+            //Referencia a la clase Localidad
+            LocalidadesXpartido localidadXpartido = new LocalidadesXpartido();
+
+            //asignamos los datos ingresados a la clase Localidad
+            localidadXpartido.IdLocalidadPartido = int.Parse(txt_idlocalidadPartido.Text); // Convertir el texto a entero
+            localidadXpartido.Partido = (Partidos)comboBox_partido.SelectedItem;
+            localidadXpartido.Localidades = (Localidades)comboBox_localidad.SelectedItem;
+            localidadXpartido.CantidadDisponible = int.Parse(txt_disponibilidad.Text);
+
+            //validamos que el partido este activo
+            if (!Logica_LocalidadXPartido.PartidoActivo(localidadXpartido))
+            {
+                MessageBox.Show("No se pueden registrar localidades para partidos inactivos.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            Logica_LocalidadXPartido logicaXPartido = new Logica_LocalidadXPartido(); //Instancia de la clase Logica_localidades
+            //Validamos que no se repita la localidad
+
+            if (logicaXPartido.ExisteLocalidadPartido(localidadXpartido))
+            {
+                MessageBox.Show("Esta localidad ya fue asignada a este partido.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!logicaXPartido.CantidadValida(localidadXpartido))
+            {
+                MessageBox.Show("La cantidad disponible debe ser mayor que cero.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            // Llamamos al método Agregar de la clase Logica_localidades para agregar la localidad
+            if (logicaXPartido.Agregar(localidadXpartido))
+            {
+                cargar_localidadesXPartido(); // Recargar el DataGridView para mostrar la nueva localidad
+                limpiar();
+            }
+            else
+            {
+                MessageBox.Show("Error No se permiten ID repetidos o a llegado al limite de 10 registros", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                limpiar();
+            }
+
+        }
+
+        private void btn_limpiar_Click_1(object sender, EventArgs e)
+        {
+            limpiar();
         }
     }
 }

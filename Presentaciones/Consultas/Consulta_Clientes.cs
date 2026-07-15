@@ -26,9 +26,8 @@ namespace Presentaciones.Consultas
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            cargar_clientes();
             configurar_data_clientes();
-
+            cargar_clientes();            
         }
 
         private void btn_salir_Click(object sender, EventArgs e)
@@ -43,7 +42,7 @@ namespace Presentaciones.Consultas
             if (logicaCliente.TieneClientes())
             {
                 var lista_cliente = logicaCliente.Listar(); //Obtenemos las lista de partidos
-                for (int i = 0; i < lista_cliente.Length; i++)
+                for (int i = 0; i < lista_cliente.Count; i++)
                 {
                     if (lista_cliente[i] != null)
                     {                      
@@ -70,7 +69,7 @@ namespace Presentaciones.Consultas
                cliente.Apellido,
                cliente.FechaNacimiento.ToShortDateString(),
                cliente.FechaRegistro.ToShortDateString(),
-               cliente.Activo
+               cliente.Activo ? "Sí" : "No"
                );
         }
         //Metodo encargados de configurar la data de clientes

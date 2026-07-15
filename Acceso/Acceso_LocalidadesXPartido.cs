@@ -20,59 +20,125 @@ namespace Acceso
 {
     public class Acceso_LocalidadesXPartido
     {
-        //Mi arreglo para almacenamiento
-        private static LocalidadesXpartido[] lista_LocalidadXPartido = new LocalidadesXpartido[200];
+        private Conexion conexion = new Conexion();
 
         //Booleano para controlar el ingreso de registros
-        public static bool ingresar(LocalidadesXpartido localidadesXpartido) //clase y objeto
+        public bool ingresar(LocalidadesXpartido localidadesXpartido) //clase y objeto
         {
-            if (localidadesXpartido == null) //si el objeto es nulo, no se puede ingresar
+            using (var conn = new Conexion().ObtenerConexion())
             {
-                return false;
-            }
-
-            // Validar que no exista el mismo IdLocalidadXPartido
-            for (int i = 0; i < lista_LocalidadXPartido.Length; i++)
-            {
-                if (lista_LocalidadXPartido[i] != null &&
-                    lista_LocalidadXPartido[i].IdLocalidadPartido == localidadesXpartido.IdLocalidadPartido)
+                conn.Open();
+                string query = "INSERT INTO LocalidadPorPartido (IdLocalidadPartido,IdPartido, IdLocalidad, CantidadDisponible) " +
+                               "VALUES (@IdLocalidadPartido, @IdPartido, @IdLocalidad, @CantidadDisponible)";
+                // Se utiliza un comando SQL parametrizado para evitar inyecciones SQL y asegurar la integridad de los datos.
+                using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
                 {
-                    return false; // ID repetido
-                }
-            }
+                    comando.Parameters.AddWithValue("@IdLocalidadPartido", localidadesXpartido.IdLocalidadPartido);
+                    comando.Parameters.AddWithValue("@IdPartido", localidadesXpartido.Partido.IdPartido); //
+                    comando.Parameters.AddWithValue("@IdLocalidad", localidadesXpartido.Localidades.IdLocalidad);
+                    comando.Parameters.AddWithValue("@CantidadDisponible", localidadesXpartido.CantidadDisponible);
 
-            // Recorro el arreglo para encontar la posion vacia y guardar el objeto localidadesXPartido
-            for (int i = 0; i < lista_LocalidadXPartido.Length; i++)
-            {
-                if (lista_LocalidadXPartido[i] == null) //si est vacia
-                {
+                    //Verifica si se guardo correctamente la localidad en la base de datos
+                    int filasAfectadas = comando.ExecuteNonQuery();
+                    if (filasAfectadas == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("No se pudo insertar la localidad por partido.");
 
-                    lista_LocalidadXPartido[i] = localidadesXpartido; //guardar el objeto
-                    return true;
+                    }
                 }
+
             }
-            return false; //sino hay vacio false
         }
 
-        public static LocalidadesXpartido[] Listar() //metodo para listar las localidades x partido
-        {
-            return lista_LocalidadXPartido; //retorna el arreglo de localidadesx partido
-        }
-        public static bool encontrar_registros()
-        {
-            if (lista_LocalidadXPartido == null) //si el arreglo es nulo, no hay registros
-            {
-                return false;
-            }
 
-            for (int i = 0; i < lista_LocalidadXPartido.Length; i++)
+        public List<LocalidadesXpartido> ObtenerLocalidadXPartido()
+        {
+            List<LocalidadesXpartido> localidadesXpartido = new List<LocalidadesXpartido>();
+            try
             {
-                if (lista_LocalidadXPartido[i] != null) //si hay al menos un registro
+                using (var conn = conexion.ObtenerConexion())
                 {
-                    return true;
+                    conn.Open();
+                    string query = @"SELECT
+                      LP.IdLocalidadPartido,
+                      P.IdPartido,P.Rival, P.Fecha,P.Hora, P.Activo,
+                      L.IdLocalidad,L.NombreLocalidad,L.Precio,
+                      LP.CantidadDisponible
+                     FROM LocalidadPorPartido LP
+                     INNER JOIN Partido P
+                     ON LP.IdPartido = P.IdPartido
+                     INNER JOIN Localidad L
+                    ON LP.IdLocalidad = L.IdLocalidad"; ;
+
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        using (var reader = comando.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                LocalidadesXpartido localidadPorpartido = new LocalidadesXpartido
+                                {
+                                    IdLocalidadPartido = reader.GetInt32(0),
+                                    // Se crean instancias de las clases Partidos y
+                                    // Localidades para almacenar los datos obtenidos de la base de datos.
+                                    Partido = new Partidos
+                                    {
+                                        IdPartido = reader.GetInt32(1),
+                                        Rival = reader.GetString(2),
+                                        Fecha = reader.GetDateTime(3),
+                                        Hora = reader.GetString(4),
+                                        Activo = reader.GetBoolean(5)
+                                    },
+
+                                    // Se crean instancias de las clases Partidos y
+                                    // Localidades para almacenar los datos obtenidos de la base de datos.
+                                    Localidades = new Localidades
+                                    {
+                                        IdLocalidad = reader.GetInt32(6),
+                                        NombreLocalidad = reader.GetString(7),
+                                        Precio = reader.GetDecimal(8)
+                                    },
+
+                                    CantidadDisponible = reader.GetInt32(9)
+                                };
+                                localidadesXpartido.Add(localidadPorpartido);
+                            }
+                        }
+                    }
                 }
             }
-            return false; //si no hay registros
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener localidades: " + ex.Message, ex);
+            }
+            return localidadesXpartido;
+        }
+        
+        public bool encontrar_registros()
+        {
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+
+                    string query = "SELECT COUNT(*) FROM LocalidadPorPartido";
+
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        int cantidad = (int)comando.ExecuteScalar();
+                        return cantidad > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar registros.", ex);
+            }
         }
 
     }

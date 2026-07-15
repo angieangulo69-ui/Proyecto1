@@ -54,16 +54,17 @@ namespace Presentaciones.Consultas
 
         public void cargar_vendedores()
         {
-            comboBox_vendedores.Items.Clear(); //limpiamos 
+            comboBox_vendedores.Items.Clear();
 
             if (logicaVendedor.TieneVendedores())
             {
-                var lista_vendedor = logicaVendedor.Listar(); //Obtenemos las lista de partidos
-                for (int i = 0; i < lista_vendedor.Length; i++)
+                List<Vendedores> lista_vendedor = logicaVendedor.Listar();
+
+                foreach (Vendedores vendedor in lista_vendedor)
                 {
-                    if (lista_vendedor[i] != null)
+                    if (vendedor != null)
                     {
-                        comboBox_vendedores.Items.Add(lista_vendedor[i]);
+                        comboBox_vendedores.Items.Add(vendedor);
                     }
                 }
             }
@@ -73,14 +74,13 @@ namespace Presentaciones.Consultas
         {
             if (comboBox_vendedores.SelectedItem == null)
             {
+                MessageBox.Show("Seleccione un vendedor.");
                 return;
             }
             //
             Vendedores vendedor = (Vendedores)comboBox_vendedores.SelectedItem;
-
             data_vendedores.Rows.Clear();
-
-            data_vendedores.Rows.Add(
+              data_vendedores.Rows.Add(
                vendedor.IdVendedor,
                vendedor.Identificacion,
                vendedor.Nombre,
@@ -92,7 +92,7 @@ namespace Presentaciones.Consultas
         public void configurar_data_vendedores()
         {
             //  configurar las columnas
-            data_vendedores.Columns.Add("IdCliente", "Id Cliente");
+            data_vendedores.Columns.Add("IdVendedor", "ID Vendedor");
             data_vendedores.Columns.Add("Identificacion", "Identificación");
             data_vendedores.Columns.Add("Nombre", "Nombre");
             data_vendedores.Columns.Add("Apellido", "Apellido");

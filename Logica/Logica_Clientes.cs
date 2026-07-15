@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Acceso;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,42 +18,59 @@ namespace Logica
 {
     public class Logica_Clientes
     {// permite agregar clientes a mi clase correspondiente
+        //
+        private AccesoCliente Acceso = new AccesoCliente();
+
         public bool Agregar(Clientes pclientes)
         {
-            string mensaje = validacionesCliente(pclientes);
-
-            if (!string.IsNullOrEmpty(mensaje))
+          if(pclientes == null)
             {
                 return false;
             }
 
-            return Acceso.AccesoCliente.ingresar(pclientes);
+            //Obtenemos la lista de clientes desde la capa de acceso
+            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
+
+            //Valiamos a los clientes en la base de datos
+            foreach( Clientes item in lista_Clientes ) {
+               if (item.IdCliente == pclientes.IdCliente)
+               {
+                  return false;
+               }
+
+               if (item.Identificacion.Trim() == pclientes.Identificacion.Trim())
+                {
+                        return false;
+                 }               
+            }
+            return Acceso.ingresar(pclientes);
         }
 
         //Obtenemos la lista de clientes desde la capa acceso
-        public Clientes[] Listar()
+        public List<Clientes> Listar()
         {
-            return Acceso.AccesoCliente.Listar();
+            return Acceso.ObtenerClientes();
 
         }
         //Buscar clciente por id
         public Clientes obtenerClientes(int codigo)
         {
-            var listaClientes = Acceso.AccesoCliente.Listar();
+            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
 
             //Recorremos la lista de clientes para buscar el codigo indicado
-            for (int i = 0; i < listaClientes.Length; i++)
+            foreach (Clientes cliente in lista_Clientes)
             {
-                if (listaClientes[i] != null && listaClientes[i].IdCliente.Equals(codigo))
+                if (cliente.IdCliente.Equals(codigo))
                 {
-                    return listaClientes[i];
+                    return cliente;
                 }
             }
             return null;
         }
 
         //Metodo de validaciones 
-        public string validacionesCliente(Clientes clientes) {
+        public string validacionesCliente(Clientes clientes)
+        {
             if (clientes == null)
             {
                 return "El cliente no puede estar vacio.";
@@ -100,56 +118,41 @@ namespace Logica
             }
 
             //Validar que no existe el mismo IDVendedor
-            Clientes[] lista_Clientes = Acceso.AccesoCliente.Listar();
+            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
 
-            for (int i = 0; i < lista_Clientes.Length; i++)
+            foreach (Clientes item in lista_Clientes)
             {
-
-                if (lista_Clientes[i] != null) //Si la lista no esta nula entra
+                if (item.IdCliente == clientes.IdCliente)
                 {
-                    if (lista_Clientes[i].IdCliente == clientes.IdCliente) // si la lista el id en la posicion i es igual, esta repetido               
-                    {
-                        return "El id del cliente ya existe"; //Id repetido
-                    }
+                    return "El id del cliente ya existe";
+                }
 
-                    // si la lista la identificacion en la posicion i es igual, esta repetido               
-                    if (lista_Clientes[i].Identificacion.Trim() == clientes.Identificacion.Trim())
-                    {
-                        return "La identificación del cliente ya existe";  //Identificacion repetida
-
-                    }
-                    //Valida que el cliente sea mayor de edad
-                    int edad = DateTime.Now.Year - clientes.FechaNacimiento.Year;
-                    if (clientes.FechaNacimiento > DateTime.Now.AddYears(-edad))
-                    {
-                        edad--;
-                    }
-
-                    if (edad < 18)
-                    {
-                        return "El cliente debe ser mayor de edad";
-                    }
+                if (item.Identificacion.Trim() == clientes.Identificacion.Trim())
+                {
+                    return "La identificación del cliente ya existe";
                 }
             }
-            return string.Empty; 
 
-        }
-        //Permite validar que el cliente siempre debe de estar activo
-        public bool ClienteHabilitado(int idCliente)
-        {
-            Clientes cliente = obtenerClientes(idCliente);
 
-            if (cliente == null)
-            {
-                return false;
-            }
-            return cliente.Activo;
+            //Valida que el cliente sea mayor de edad
+            int edad = DateTime.Now.Year - clientes.FechaNacimiento.Year;
+             if (clientes.FechaNacimiento > DateTime.Now.AddYears(-edad))
+             {
+                edad--;
+             }
+
+             if (edad < 18)
+             {
+               return "El cliente debe ser mayor de edad";
+             }
+             return string.Empty; // Retorna cadena vacía si todas las validaciones pasan
         }
+        
         //Permite controlar si hay clientes registrados
         public bool TieneClientes()
         {
             //retorna true si hay registros, false si no hay registros
-            return Acceso.AccesoCliente.encontrar_registro();
+            return Acceso.encontrar_registro();
         }
     }
 

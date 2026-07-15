@@ -18,17 +18,19 @@ namespace Logica
 {
     public class Logica_LocalidadXPartido
     {//Permite agregar registros de localidadesXPartidos
+        private Acceso_LocalidadesXPartido Acceso = new Acceso_LocalidadesXPartido();
         public bool Agregar(LocalidadesXpartido plocalidadesXpartido) //esta localidad viene de la capa de logica
         {
+           
             //importante validar
             if (plocalidadesXpartido == null)
             {
                 return false;
             }       
             //esta localidad va a la capa de acceso porque esta instancia y es static 
-            return Acceso.Acceso_LocalidadesXPartido.ingresar(plocalidadesXpartido);
-
+            return Acceso.ingresar(plocalidadesXpartido);
         }
+
         //Valida que el partido este activo
         public static bool PartidoActivo(LocalidadesXpartido localidadXPartido)
         {
@@ -42,35 +44,29 @@ namespace Logica
         //Controla si existen localidadesxpartido registradas
         public bool ExisteLocalidadPartido(LocalidadesXpartido localidadXPartido)
         {
-            LocalidadesXpartido[] lista =
-                Acceso_LocalidadesXPartido.Listar();
-
-            for (int i = 0; i < lista.Length; i++)
-            {
-                if (lista[i] != null)
-                {
-                    if (lista[i].Partido.IdPartido ==
-                        localidadXPartido.Partido.IdPartido &&
-
-                        lista[i].Localidades.IdLocalidad ==
-                        localidadXPartido.Localidades.IdLocalidad)
+            List<LocalidadesXpartido> lista = Acceso.ObtenerLocalidadXPartido();
+            
+            foreach (LocalidadesXpartido item in lista)
+            { 
+                if (item.Partido.IdPartido == localidadXPartido.Partido.IdPartido &&
+                    item.Localidades.IdLocalidad == localidadXPartido.Localidades.IdLocalidad)
                     {
                         return true;
                     }
-                }
-            }
+                }           
             return false;
         }
-
-        public LocalidadesXpartido[] Listar() //metodo para listar las localidades
+        //Lista de registros
+        public List<LocalidadesXpartido> Listar() //metodo para listar las localidades
         {
-            return Acceso.Acceso_LocalidadesXPartido.Listar(); //retorna el arreglo de localidades desde la capa de acceso
+            return Acceso.ObtenerLocalidadXPartido(); //
         }
+
         //PErmite controlar si hay registros en la localidadxpartido
         public bool TieneLocalidadesXPartido()
         {
             //retorna true si hay registros, false si no hay registros
-            return Acceso.Acceso_LocalidadesXPartido.encontrar_registros();
+            return Acceso.encontrar_registros();
         }
 
     }

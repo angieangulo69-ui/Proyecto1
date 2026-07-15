@@ -16,7 +16,7 @@ namespace Presentaciones.Registros
 Universidad:UNED
 II Cuatrimestre
 Proyecto I
-Descripción:formulario de regsitros de partidos
+Descripción:formulario de registros de partidos
 Estudiante: Angie Angulo Chacón 
 Fecha:21/06/2026
 */
@@ -56,7 +56,7 @@ Fecha:21/06/2026
             partido.IdPartido = idPartido; ;
             partido.Rival = txt_rival.Text;
             partido.Fecha = dateTime_fecha.Value;
-            partido.Hora = dateTime_hora.Value.ToString("hh:mm tt");
+            partido.Hora = dateTime_hora.Value.ToString("hh:mm");
             partido.Activo = checkBox_activo.Checked;
 
 
@@ -123,24 +123,19 @@ Fecha:21/06/2026
 
             if (logica_Partidos.TienePartidos())
             {
-                var lista_partidos = logica_Partidos.Listar(); // Obtener la lista de partidos
-                for (int i = 0; i < lista_partidos.Length; i++)
-                {
-                    if (lista_partidos[i] != null)
-                    {
-                        Partidos partidos = lista_partidos[i];
-                        data_partidos.Rows.Add(
+                foreach(Partidos partidos in logica_Partidos.Listar())
+                { 
+                    data_partidos.Rows.Add(
                             partidos.IdPartido,
                             partidos.Rival,
                             partidos.Fecha.ToShortDateString(),
                             partidos.Hora.ToString(),
                             partidos.Activo ? "Sí" : "No"
-                        );
-                    }
+                    );
                 }
-
-            }
+             }
         }
+        
 
         private void Registro_partido_Load(object sender, EventArgs e)
         {

@@ -47,9 +47,9 @@ namespace Presentaciones.Registros
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
+
             //Validamos que los campos no estén vacíos
-            if (string.IsNullOrWhiteSpace(txt_idventa.Text) ||
-               comboBox_Cliente.SelectedItem == null ||
+            if (comboBox_Cliente.SelectedItem == null ||
                comboBox_Partido.SelectedItem == null ||
                comboBox_Localidad.SelectedItem == null ||
                 string.IsNullOrWhiteSpace(txt_cantidad.Text) ||
@@ -64,8 +64,7 @@ namespace Presentaciones.Registros
                 //Referencia a la clase Localidad
                 Ventas venta = new Ventas();
 
-                //asignamos los datos ingresados a la clase Localidad
-                venta.IdVenta = int.Parse(txt_idventa.Text); // Convertir el texto a entero
+                //asignamos los datos ingresados a la clase Localidad                
                 venta.Clientes = (Clientes)comboBox_Cliente.SelectedItem;
                 venta.Partidos = (Partidos)comboBox_Partido.SelectedItem;
                 venta.Localidades = (Localidades)comboBox_Localidad.SelectedItem;
@@ -87,18 +86,19 @@ namespace Presentaciones.Registros
                 // Llamamos al método Agregar de la clase Logica ventas para agregar la venta
                 if (logicaVentas.Agregar(venta))
                 {
+                    MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     CargarVentas(); // Recargar el DataGridView para mostrar la nueva venta
                     limpiar();
                 }
                 else
                 {
-                    MessageBox.Show("Error No se permiten IDs repetidos o se alcanzó el límite de 200 registros.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Error al registrar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     limpiar();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al registrar la venta ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message);
             }
 
         }
@@ -153,8 +153,7 @@ namespace Presentaciones.Registros
 
         //Metodo que se encargado de limpiar los espacios para un nuevo registro
         public void limpiar()
-        {
-            txt_idventa.Clear();
+        {          
             txt_cantidad.Clear();
             txt_montoTotal.Clear();
 
@@ -164,9 +163,7 @@ namespace Presentaciones.Registros
             comboBox_Vendedor.SelectedIndex = -1;
             comboBox_tipoVenta.SelectedIndex = -1;
 
-            date_fechaVenta.Value = DateTime.Now;
-
-            txt_idventa.Focus();
+            date_fechaVenta.Value = DateTime.Now;         
         }
 
         //Carga los registros de ventas realizadas
@@ -181,13 +178,8 @@ namespace Presentaciones.Registros
 
             if (logica_Ventas.TieneVentas()) //Tiene Ventas
             {
-                var listaVentas = logica_Ventas.Listar(); // Obtener la lista de Ventas
-                for (int i = 0; i < listaVentas.Length; i++)
-                {
-                    if (listaVentas[i] != null) // Verificar que la localidad no sea nula
-                    {
-                        Ventas Venta = listaVentas[i]; // Obtener la Ventas actual
-                        data_Venta.Rows.Add(
+                foreach(Ventas Venta in logica_Ventas.Listar()) //Recorremos la lista de ventas
+                    data_Venta.Rows.Add(
                             Venta.IdVenta,
                             Venta.Clientes.Nombre,
                             Venta.Partidos.Rival,
@@ -197,12 +189,11 @@ namespace Presentaciones.Registros
                             Venta.FechaVenta,
                             Venta.MontoTotal,
                             Venta.TipoVenta
-                        );
-                    }
-                }
+                     );
             }
+                
         }
-
+        
         //Metodo que carga las localidades registradas
         public void cargarLocalidades()
         {
@@ -242,7 +233,7 @@ namespace Presentaciones.Registros
                 if (logicaClientes.TieneClientes()) //Tiene clientes
                 {
                     var listaClientes = logicaClientes.Listar(); // Obtener la lista de clientes
-                    for (int i = 0; i < listaClientes.Length; i++)
+                    for (int i = 0; i < listaClientes.Count; i++)
                     {
                         if (listaClientes[i] != null) // Verificar que clientes no sea nula
                         {
@@ -269,7 +260,7 @@ namespace Presentaciones.Registros
                 if (logicaVendedores.TieneVendedores()) //Tiene vendedores
                 {
                     var listaVendedores = logicaVendedores.Listar(); // Obtener la lista de vendedores
-                    for (int i = 0; i < listaVendedores.Length; i++)
+                    for (int i = 0; i < listaVendedores.Count; i++)
                     {
                         if (listaVendedores[i] != null) // Verificar que clientes no sea nula
                         {
@@ -296,7 +287,7 @@ namespace Presentaciones.Registros
                 if (logica_Partidos.TienePartidos()) //Tiene partidos
                 {
                     var listaPartidos = logica_Partidos.Listar(); // Obtener la lista de partidos
-                    for (int i = 0; i < listaPartidos.Length; i++)
+                    for (int i = 0; i < listaPartidos.Count; i++)
                     {
                         if (listaPartidos[i] != null) // Verificar que partidos no sea nula
                         {

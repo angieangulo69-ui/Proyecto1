@@ -18,50 +18,96 @@ namespace Acceso
     public class Acceso_Vendedor
     {
         //Mi arreglo para almacenamiento
-        private static Vendedores[] lista_Vendedores = new Vendedores[15];
+        private Conexion conexion = new Conexion();
 
         //Booleado pára controlar el ingreso de vendedores registrados
-        public static bool ingresar(Vendedores vendedores) //Clase objeto
+        public bool ingresar(Vendedores vendedores) //Clase objeto
         {
-            if (lista_Vendedores == null)
+            using (var conn = conexion.ObtenerConexion())
             {
-                return false; 
-            }
-           
-            //REcorre el arreglo para encontar la posicion vacia y guiardar el objeto vendedor
-            for (int i = 0; i < lista_Vendedores.Length; i++) {
-                if (lista_Vendedores[i] == null)
+                conn.Open();
+                string query = "INSERT INTO Vendedor (IdVendedor,Identificacion, Nombre, Apellido, FechaNacimiento, FechaIngreso) " +
+                    "   VALUES (@IdVendedor, @Identificacion, @Nombre, @Apellido, @FechaNacimiento, @FechaIngreso)";
+                using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
                 {
-                    lista_Vendedores[i] = vendedores; //guarde le objeto
-                    return true;
+                    comando.Parameters.AddWithValue("@IdVendedor", vendedores.IdVendedor);
+                    comando.Parameters.AddWithValue("@Identificacion", vendedores.Identificacion);
+                    comando.Parameters.AddWithValue("@Nombre", vendedores.Nombre);
+                    comando.Parameters.AddWithValue("@Apellido", vendedores.Apellido);
+                    comando.Parameters.AddWithValue("@FechaNacimiento", vendedores.FechaNacimiento);
+                    comando.Parameters.AddWithValue("@FechaIngreso", vendedores.FechaIngreso);
+                   
+                    int filasAfectadas = comando.ExecuteNonQuery();
+                    if (filasAfectadas == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("No se pudo insertar el vendedor.");
+                    }
                 }
             }
-            return false;
         }
 
-        public static Vendedores[]Listar() //lista los vendedores
+        public List<Vendedores> ObtenerVendedores()
         {
+            List<Vendedores> lista_Vendedores = new List<Vendedores>();
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+                    string query = "SELECT IdVendedor, Identificacion, Nombre, Apellido, FechaNacimiento, FechaIngreso FROM Vendedor";
+                    
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        using (var reader = comando.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Vendedores vendedor = new Vendedores
+                                {
+                                    IdVendedor = reader.GetInt32(0),
+                                    Identificacion = reader.GetString(1),
+                                    Nombre = reader.GetString(2),
+                                    Apellido = reader.GetString(3),
+                                    FechaNacimiento = reader.GetDateTime(4),
+                                    FechaIngreso = reader.GetDateTime(5)
+                                };
+                                lista_Vendedores.Add(vendedor);
+                            }
+                        }
+                    }
+                }              
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener vendedores: " + ex.Message, ex);
+            }
             return lista_Vendedores;
-
         }
 
-        public static bool encontrar_registros()
+        public bool encontrar_registros()
         {
-            if (lista_Vendedores == null)
-            { //Si la lista es nula, esta vacia
-              return false;
-            }
-
-            for (int i = 0; i < lista_Vendedores.Length; i++)
+            try
             {
-                if (lista_Vendedores[i]!= null) //Si es diferente de nulo
+                using (var conn = conexion.ObtenerConexion())
                 {
-                    return true;//Si hay registros
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM Vendedor";
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        int count = (int)comando.ExecuteScalar();
+                        return count > 0; // Retorna true si hay registros, false si no hay
+                    }
                 }
             }
-            return false; //No hay registros
-        }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar registros: " + ex.Message, ex);
+            }
 
-        
+        }
     }
 }

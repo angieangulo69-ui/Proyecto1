@@ -60,7 +60,7 @@ namespace Presentaciones.Registros
                 cliente.IdCliente = int.Parse(txt_idcliente.Text);
                 cliente.Apellido = txt_apellido.Text;
                 cliente.Nombre = txt_nombre.Text;
-                cliente.Identificacion = mask_identificacion.Text;
+                cliente.Identificacion = mask_identificacion.Text.Replace("-", "");
                 cliente.FechaRegistro = date_fecharegistro.Value;
                 cliente.FechaNacimiento = date_fechanacimiento.Value;
                 cliente.Activo = checkBox_activo.Checked;
@@ -139,30 +139,26 @@ namespace Presentaciones.Registros
         //Metodo para cargar los vendedores registrados 
         public void cargar_Clientes()
         {
-
-
+            //CArgar cleintes
+            Logica_Clientes logicaCliente = new Logica_Clientes();
             data_cliente.Rows.Clear(); //limpiamos para evitar duplicados
 
             if (logicaCliente.TieneClientes())
             {
-                var lista_cliente = logicaCliente.Listar(); //Obtenemos las lista de partidos
-                for (int i = 0; i < lista_cliente.Length; i++)
-                {
-                    if (lista_cliente[i] != null)
-                    {
-                        Clientes cliente = lista_cliente[i];
-                        data_cliente.Rows.Add(
-                           cliente.IdCliente,
-                           cliente.Identificacion,
-                           cliente.Nombre,
-                            cliente.Apellido,
-                            cliente.FechaNacimiento.ToShortDateString(),
-                             cliente.FechaRegistro.ToShortDateString(),
-                             cliente.Activo.ToString());
-                    }
+                foreach(Clientes cliente in logicaCliente.Listar())
+                {                                       
+                    data_cliente.Rows.Add(
+                       cliente.IdCliente,
+                       cliente.Identificacion,
+                       cliente.Nombre,
+                       cliente.Apellido,
+                       cliente.FechaNacimiento.ToShortDateString(),
+                       cliente.FechaRegistro.ToShortDateString(),
+                       cliente.Activo.ToString());
                 }
             }
         }
+        
 
         private void txt_idcliente_KeyPress(object sender, KeyPressEventArgs e)
         {

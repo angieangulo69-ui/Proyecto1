@@ -32,8 +32,6 @@
             label5 = new Label();
             data_Venta = new DataGridView();
             btn_guardar = new Button();
-            txt_idventa = new TextBox();
-            label2 = new Label();
             btn_atras = new Button();
             btn_salir = new Button();
             label1 = new Label();
@@ -123,26 +121,6 @@
             btn_guardar.UseVisualStyleBackColor = false;
             btn_guardar.Click += btn_guardar_Click;
             // 
-            // txt_idventa
-            // 
-            txt_idventa.Location = new Point(109, 18);
-            txt_idventa.Name = "txt_idventa";
-            txt_idventa.Size = new Size(150, 27);
-            txt_idventa.TabIndex = 97;
-            txt_idventa.KeyPress += txt_idventa_KeyPress;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.BackColor = Color.Transparent;
-            label2.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
-            label2.ForeColor = SystemColors.ActiveCaptionText;
-            label2.Location = new Point(4, 21);
-            label2.Name = "label2";
-            label2.Size = new Size(86, 20);
-            label2.TabIndex = 95;
-            label2.Text = "Id Venta:";
-            // 
             // btn_atras
             // 
             btn_atras.BackColor = Color.Bisque;
@@ -201,7 +179,7 @@
             label6.BackColor = Color.Transparent;
             label6.Font = new Font("Rockwell", 10.2F, FontStyle.Bold);
             label6.ForeColor = SystemColors.ActiveCaptionText;
-            label6.Location = new Point(21, 57);
+            label6.Location = new Point(16, 21);
             label6.Name = "label6";
             label6.Size = new Size(77, 20);
             label6.TabIndex = 103;
@@ -210,7 +188,7 @@
             // comboBox_Cliente
             // 
             comboBox_Cliente.FormattingEnabled = true;
-            comboBox_Cliente.Location = new Point(109, 57);
+            comboBox_Cliente.Location = new Point(99, 18);
             comboBox_Cliente.Name = "comboBox_Cliente";
             comboBox_Cliente.Size = new Size(151, 28);
             comboBox_Cliente.TabIndex = 104;
@@ -462,8 +440,6 @@
             // 
             panel2.BackColor = Color.White;
             panel2.BorderStyle = BorderStyle.Fixed3D;
-            panel2.Controls.Add(label2);
-            panel2.Controls.Add(txt_idventa);
             panel2.Controls.Add(label6);
             panel2.Controls.Add(comboBox_Cliente);
             panel2.Location = new Point(19, 58);
@@ -618,8 +594,6 @@
         private Label label5;
         private DataGridView data_Venta;
         private Button btn_guardar;
-        private TextBox txt_idventa;
-        private Label label2;
         private Button btn_atras;
         private Button btn_salir;
         private Label label1;

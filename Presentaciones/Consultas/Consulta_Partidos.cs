@@ -73,6 +73,7 @@ namespace Presentaciones.Consultas
 
             if (comboBox_fechas.SelectedIndex == -1)
             {
+                MessageBox.Show("Seleccione una fecha.");
                 return;
             }
 
@@ -82,20 +83,17 @@ namespace Presentaciones.Consultas
             {
                 return;
             }
-
-            var listaPartidos = logicaPartidos.Listar();
-
-            for (int i = 0; i < listaPartidos.Length; i++)
+             var listaPartidos = logicaPartidos.Listar(); //Listamos
+            foreach (Partidos partido in listaPartidos)
             {
-                if (listaPartidos[i] != null &&
-                    listaPartidos[i].Fecha.Date == fechaSeleccionada.Date)
+                if (partido.Fecha.Date == fechaSeleccionada.Date)
                 {
                     data_partidos.Rows.Add(
-                        listaPartidos[i].IdPartido,
-                        listaPartidos[i].Rival,
-                        listaPartidos[i].Fecha,
-                        listaPartidos[i].Hora,
-                        listaPartidos[i].Activo
+                        partido.IdPartido,
+                        partido.Rival,
+                        partido.Fecha.ToShortDateString(),
+                        partido.Hora,
+                        partido.Activo ? "Sí" : "No"
                     );
                 }
             }
@@ -109,13 +107,13 @@ namespace Presentaciones.Consultas
 
             if (listaPartidos != null)
             {
-                foreach (var partido in listaPartidos)
+                foreach (Partidos partido in listaPartidos)
                 {
-                    if (partido != null)
+                    string fecha = partido.Fecha.ToShortDateString();
+
+                    if (!comboBox_fechas.Items.Contains(fecha))
                     {
-                        comboBox_fechas.Items.Add(
-                            partido.Fecha.ToShortDateString()
-                        );
+                        comboBox_fechas.Items.Add(fecha);
                     }
                 }
             }

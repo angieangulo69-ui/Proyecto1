@@ -17,48 +17,99 @@ namespace Acceso
     public class AccesoCliente
     {
         //Mi arreglo para almacenamiento
-        private static Clientes[] lista_Clientes = new Clientes[50];
+        private Conexion conexion = new Conexion();
 
         //Booleano para controlar el ingreso de datos
-        public static bool ingresar(Clientes cliente)
+        public bool ingresar(Clientes cliente)
         {
-            if (cliente == null)
+            using (var conn = conexion.ObtenerConexion())
             {
-                return false;
-            }
-
-            //Recorre el arrglo para encontrar la posicion vacia y guardar el objeto vendedor
-            for (int i = 0; i < lista_Clientes.Length; i++)
-            {
-                if (lista_Clientes[i] == null)
+                conn.Open();
+                string query = "INSERT INTO Cliente (IdCliente,Identificacion, Nombre, Apellido, FechaNacimiento, FechaRegistro,Activo) " +
+                    "   VALUES (@IdCliente, @Identificacion, @Nombre, @Apellido, @FechaNacimiento, @FechaRegistro, @Activo)";
+                using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
                 {
-                    lista_Clientes[i] = cliente;
-                    return true;
+                    comando.Parameters.AddWithValue("@IdCliente", cliente.IdCliente);
+                    comando.Parameters.AddWithValue("@Identificacion", cliente.Identificacion);
+                    comando.Parameters.AddWithValue("@Nombre", cliente.Nombre);
+                    comando.Parameters.AddWithValue("@Apellido", cliente.Apellido);
+                    comando.Parameters.AddWithValue("@FechaNacimiento", cliente.FechaNacimiento);
+                    comando.Parameters.AddWithValue("@FechaRegistro", cliente.FechaRegistro);
+                    comando.Parameters.AddWithValue("@Activo", cliente.Activo);
+
+                    //Validamos que se haya insertado correctamente
+                    int filasAfectadas = comando.ExecuteNonQuery();
+                    if (filasAfectadas == 1)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        throw new Exception("No se pudo insertar el cliente.");
+                    }
                 }
             }
-            return false;
         }
         //lista de clientes
-        public static Clientes[] Listar()
+        public List<Clientes> ObtenerClientes()
         {
+            List<Clientes> lista_Clientes = new List<Clientes>();
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+                    string query = "SELECT IdCliente, Identificacion, Nombre, Apellido, FechaNacimiento, FechaRegistro, Activo FROM Cliente";
+
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        using (var reader = comando.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Clientes cliente = new Clientes
+                                {
+                                    IdCliente = reader.GetInt32(0),
+                                    Identificacion = reader.GetString(1),
+                                    Nombre = reader.GetString(2),
+                                    Apellido = reader.GetString(3),
+                                    FechaNacimiento = reader.GetDateTime(4),
+                                    FechaRegistro = reader.GetDateTime(5),
+                                    Activo = reader.GetBoolean(6)
+                                };
+                                lista_Clientes.Add(cliente);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener clientes: " + ex.Message, ex);
+            }
             return lista_Clientes;
         }
 
-        public static bool encontrar_registro()
+        public bool encontrar_registro()
         {
-            if(lista_Clientes == null)
+            try
             {
-                return false;
-            }
-            for (int i = 0; i < lista_Clientes.Length; i++)
-            {
-                if (lista_Clientes[i] != null)
+                using (var conn = conexion.ObtenerConexion())
                 {
-                    return true; //si hay registros
+                    conn.Open();
+                    string query = "SELECT COUNT(*) FROM Cliente";
+                    using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
+                    {
+                        int cantidadRegistros = (int)comando.ExecuteScalar();
+                        return cantidadRegistros > 0;
+                    }
                 }
             }
-                return false; //No hay registros
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar registros: " + ex.Message, ex);
+            }
         }
-     }       
+    }    
 }
 

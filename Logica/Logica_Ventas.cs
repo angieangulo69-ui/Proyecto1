@@ -1,6 +1,8 @@
-﻿using Entidades;
+﻿using Acceso;
+using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,6 +19,10 @@ namespace Logica
 {
     public class Logica_Ventas
     {
+        private Conexion conexion = new Conexion();
+        private Acceso_Ventas AccesoVentas = new Acceso_Ventas();
+        private Acceso_LocalidadesXPartido accesoLocalidadPartido = new Acceso_LocalidadesXPartido();
+
         //Metodo que permite agregar las ventas registradas en acceso de datos, simpre y cuando 
         // se cumplan las validaciones 
         public bool Agregar(Ventas venta)
@@ -26,12 +32,12 @@ namespace Logica
             if (!string.IsNullOrEmpty(mensaje))
                 return false;
 
-            return Acceso.Acceso_Ventas.ingresar(venta);
+            return AccesoVentas.ingresar(venta);
         }
         //Metodo permite solicitar la lista de ventas y devolverla
-        public Ventas[] Listar() //Alistamos las ventas
+        public List<Ventas> Listar() //Alistamos las ventas
         {
-            return Acceso.Acceso_Ventas.Listar();
+            return AccesoVentas.ObtenerVentas();
         }
 
         //Metodo de validaciones para la venta
@@ -41,18 +47,8 @@ namespace Logica
             if (venta == null)
                 return "La venta no puede estar vacía.";
             
-            Ventas[] lista = Acceso.Acceso_Ventas.Listar(); // guardar todas las datos segun lo permitido
-            
-            // Valida que el id de venta sea única
-            for (int i = 0; i < lista.Length; i++)
-            {
-                if (lista[i] != null && lista[i].IdVenta == venta.IdVenta)
-                {
-                    if (lista[i].IdVenta == venta.IdVenta)
-                        return "El ID de la venta ya existe.";
-                }
-            }
-
+            List<Ventas> lista = AccesoVentas.ObtenerVentas(); // guardar todas las datos segun lo permitido
+           
             //  Valida que cliente no este vacio
             if (venta.Clientes == null)
                 return "Debe seleccionar un cliente.";
@@ -86,13 +82,13 @@ namespace Logica
                 return "La cantidad debe ser mayor a 0.";
 
             // valida que haya disponibilidad
-            var listaLocPartido = Acceso.Acceso_LocalidadesXPartido.Listar();
+            List<LocalidadesXpartido> listaLocPartido = accesoLocalidadPartido.ObtenerLocalidadXPartido();
 
             if (listaLocPartido == null)
                 return "No hay localidades disponibles.";
 
             //se encarga de recorrer la lista
-            for (int i = 0; i < listaLocPartido.Length; i++)
+            for (int i = 0; i < listaLocPartido.Count; i++)
             {
                 if (listaLocPartido[i] != null)
                 { // verifica si hay entrdas disponibles 
@@ -118,8 +114,25 @@ namespace Logica
         //permite verificar si hay registros 
         public bool TieneVentas()
         {
-            //Llamamos a la capa de acceso para verificar si hay registros de partidos
-            return Acceso.Acceso_Ventas.encontrar_registros();
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+
+                    string query = "SELECT COUNT(*) FROM Venta";
+
+                    using (var comando = new SqlCommand(query, conn))
+                    {
+                        int count = (int)comando.ExecuteScalar();
+                        return count > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar registros de ventas: " + ex.Message);
+            }
         }
 
 

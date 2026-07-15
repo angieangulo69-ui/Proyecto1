@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Acceso;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace Logica
 {
     public class Logica_Partidos
     {//Permite agregar partidos a la lista
+        private Acceso_Partido AccesoPartido = new Acceso_Partido(); 
         public bool Agregar(Partidos ppartidos)
         {
             //Validamos datos
@@ -25,29 +27,29 @@ namespace Logica
                 return false;
             }
             //Obtenesmo los partidos registrados
-            Partidos[] lista_Partidos = Acceso.Acceso_Partido.Listar();
+            List<Partidos> listapartidos= AccesoPartido.ObtenerPartidos(); 
 
             // valida que no existe el mismo idPartido en el arreglo
-            for (int i = 0; i < lista_Partidos.Length; i++)
+            foreach(Partidos item in listapartidos)
             {   // Si encuentra un partido con el mismo idPartido, no se puede ingresar
-                if (lista_Partidos[i] != null && lista_Partidos[i].IdPartido == ppartidos.IdPartido)
+                if (item != null && item.IdPartido == ppartidos.IdPartido)
                 {
                     return false;
                 }
             }
 
-            return Acceso.Acceso_Partido.ingreso(ppartidos); //Llamamos a la capa de acceso para agregar el partido
+            return AccesoPartido.ingresar(ppartidos); //Llamamos a la capa de acceso para agregar el partido
         }
 
-        public Partidos[] Listar()//Llamamos a la capa de acceso para listar los partidos
+        public List<Partidos> Listar()//Llamamos a la capa de acceso para listar los partidos
         {
-            return Acceso.Acceso_Partido.Listar();
-        } 
-        
-       //Controla si hay partidos registrados
+            return AccesoPartido.ObtenerPartidos();
+        }
+
+        //Controla si hay partidos registrados
         public bool TienePartidos() {
             //Llamamos a la capa de acceso para verificar si hay registros de partidos
-            return Acceso.Acceso_Partido.encontrar_registros();
+            return AccesoPartido.encontrar_registros();
         }
     }
 }

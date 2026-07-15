@@ -228,10 +228,12 @@
             // 
             // dateTime_fecha
             // 
+            dateTime_fecha.Format = DateTimePickerFormat.Custom;
             dateTime_fecha.Location = new Point(84, 3);
             dateTime_fecha.Name = "dateTime_fecha";
             dateTime_fecha.Size = new Size(208, 27);
             dateTime_fecha.TabIndex = 58;
+            dateTime_fecha.Value = new DateTime(2026, 7, 13, 0, 0, 0, 0);
             // 
             // checkBox_activo
             // 
@@ -251,7 +253,7 @@
             dateTime_hora.ShowUpDown = true;
             dateTime_hora.Size = new Size(208, 27);
             dateTime_hora.TabIndex = 60;
-            dateTime_hora.Value = new DateTime(2026, 7, 4, 11, 38, 0, 0);
+            dateTime_hora.Value = new DateTime(2026, 7, 13, 11, 38, 0, 0);
             // 
             // panel3
             // 

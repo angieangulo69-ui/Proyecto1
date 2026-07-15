@@ -27,8 +27,9 @@ namespace Presentaciones.Consultas
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
-            cargar_venta();
             configurar_data_ventas();
+            cargar_venta();
+          
         }
 
         private void Consulta_Ventas_Load(object sender, EventArgs e)
@@ -105,7 +106,7 @@ namespace Presentaciones.Consultas
             if (logicaVenta.TieneVentas())
             {
                 var lista_cliente = logicaVenta.Listar(); //Obtenemos las lista de partidos
-                for (int i = 0; i < lista_cliente.Length; i++)
+                for (int i = 0; i < lista_cliente.Count; i++)
                 {
                     if (lista_cliente[i] != null)
                     {

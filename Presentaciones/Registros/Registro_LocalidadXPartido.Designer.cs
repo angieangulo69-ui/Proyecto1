@@ -32,7 +32,6 @@
             label8 = new Label();
             label5 = new Label();
             data_localidadXpartido = new DataGridView();
-            btn_guardar = new Button();
             txt_idlocalidadPartido = new TextBox();
             label4 = new Label();
             label3 = new Label();
@@ -48,7 +47,7 @@
             label6 = new Label();
             label13 = new Label();
             panel9 = new Panel();
-            btn_limpiar = new Button();
+            btnGuardar = new Button();
             panel3 = new Panel();
             panel4 = new Panel();
             panel2 = new Panel();
@@ -60,6 +59,7 @@
             label15 = new Label();
             panel7 = new Panel();
             panel8 = new Panel();
+            btn_limpiar = new Button();
             ((System.ComponentModel.ISupportInitialize)data_localidadXpartido).BeginInit();
             panel5.SuspendLayout();
             panel6.SuspendLayout();
@@ -105,23 +105,6 @@
             data_localidadXpartido.RowHeadersWidth = 51;
             data_localidadXpartido.Size = new Size(787, 126);
             data_localidadXpartido.TabIndex = 91;
-            // 
-            // btn_guardar
-            // 
-            btn_guardar.BackColor = Color.MistyRose;
-            btn_guardar.BackgroundImageLayout = ImageLayout.Stretch;
-            btn_guardar.Cursor = Cursors.Hand;
-            btn_guardar.Enabled = false;
-            btn_guardar.Font = new Font("Rockwell", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_guardar.ForeColor = SystemColors.ControlText;
-            btn_guardar.Location = new Point(896, 170);
-            btn_guardar.Name = "btn_guardar";
-            btn_guardar.Size = new Size(91, 43);
-            btn_guardar.TabIndex = 90;
-            btn_guardar.Text = "Guardar";
-            btn_guardar.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btn_guardar.UseVisualStyleBackColor = false;
-            btn_guardar.Click += btn_guardar_Click;
             // 
             // txt_idlocalidadPartido
             // 
@@ -280,11 +263,11 @@
             panel9.BackColor = Color.Snow;
             panel9.BorderStyle = BorderStyle.Fixed3D;
             panel9.Controls.Add(btn_limpiar);
+            panel9.Controls.Add(btnGuardar);
             panel9.Controls.Add(panel3);
             panel9.Controls.Add(txt_disponibilidad);
             panel9.Controls.Add(panel5);
             panel9.Controls.Add(panel4);
-            panel9.Controls.Add(btn_guardar);
             panel9.Controls.Add(panel2);
             panel9.Controls.Add(dataGridView2);
             panel9.Controls.Add(button2);
@@ -297,22 +280,15 @@
             panel9.Size = new Size(1013, 234);
             panel9.TabIndex = 99;
             // 
-            // btn_limpiar
+            // btnGuardar
             // 
-            btn_limpiar.BackColor = Color.MistyRose;
-            btn_limpiar.BackgroundImageLayout = ImageLayout.Stretch;
-            btn_limpiar.Cursor = Cursors.Hand;
-            btn_limpiar.Enabled = false;
-            btn_limpiar.Font = new Font("Rockwell", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btn_limpiar.ForeColor = SystemColors.ControlText;
-            btn_limpiar.Location = new Point(785, 170);
-            btn_limpiar.Name = "btn_limpiar";
-            btn_limpiar.Size = new Size(91, 43);
-            btn_limpiar.TabIndex = 99;
-            btn_limpiar.Text = "Limpiar";
-            btn_limpiar.TextImageRelation = TextImageRelation.ImageBeforeText;
-            btn_limpiar.UseVisualStyleBackColor = false;
-            btn_limpiar.Click += btn_limpiar_Click;
+            btnGuardar.Location = new Point(673, 180);
+            btnGuardar.Name = "btnGuardar";
+            btnGuardar.Size = new Size(94, 29);
+            btnGuardar.TabIndex = 100;
+            btnGuardar.Text = "Guardar";
+            btnGuardar.UseVisualStyleBackColor = true;
+            btnGuardar.Click += button1_Click;
             // 
             // panel3
             // 
@@ -441,6 +417,16 @@
             panel8.Size = new Size(1069, 589);
             panel8.TabIndex = 101;
             // 
+            // btn_limpiar
+            // 
+            btn_limpiar.Location = new Point(796, 180);
+            btn_limpiar.Name = "btn_limpiar";
+            btn_limpiar.Size = new Size(94, 29);
+            btn_limpiar.TabIndex = 101;
+            btn_limpiar.Text = "Limpiar";
+            btn_limpiar.UseVisualStyleBackColor = true;
+            btn_limpiar.Click += btn_limpiar_Click_1;
+            // 
             // Registro_LocalidadXPartido
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -480,7 +466,6 @@
         private Label label8;
         private Label label5;
         private DataGridView data_localidadXpartido;
-        private Button btn_guardar;
         private TextBox txt_idlocalidadPartido;
         private Label label4;
         private Label label3;
@@ -507,6 +492,7 @@
         private Panel panel4;
         private Panel panel7;
         private Panel panel8;
+        private Button btnGuardar;
         private Button btn_limpiar;
     }
 }

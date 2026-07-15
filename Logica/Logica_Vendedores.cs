@@ -1,4 +1,5 @@
-﻿using Entidades;
+﻿using Acceso;
+using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,45 +18,44 @@ namespace Logica
 {
     public class Logica_Vendedores
     {
-        Vendedores[] lista_Vendedores = Acceso.Acceso_Vendedor.Listar(); //listamos para obtener los vendedores guardados y poder validar 
-        
+       private Acceso_Vendedor Acceso_Vendedor = new Acceso_Vendedor(); //Instancia de la clase Acceso_Vendedor para acceder a los métodos de la capa de acceso
+
         //Este metodo se encarga de agregar un nuevo vendendedor 
         public bool Agregar(Vendedores pvendedor)
         {
-            //Validar si es nulo
-            if (pvendedor == null)
-            {
-                return false; 
+            string mensaje = validacionVendedor(pvendedor);
+
+            if (!string.IsNullOrEmpty(mensaje))
+            {           
+                return false;
             }
-            return Acceso.Acceso_Vendedor.ingresar(pvendedor);  //Envia el vendedor a la capa de acceso para guardarlo
+            
+            return Acceso_Vendedor.ingresar(pvendedor);  //guardamos en la base de datos
         }
+
+
         // Obtiene la lista de vendedores desde la capa de acceso
-        public Vendedores[] Listar() 
-        {
-            return Acceso.Acceso_Vendedor.Listar();
+        public List<Vendedores> Listar() 
+        { 
+           return Acceso_Vendedor.ObtenerVendedores();
         }
-
-        //Obtenemos el vendedor por medio del codigo
-        public Vendedores obtenerVendedores(String codigo) {
-
-            //Obtenemos la lista de vendedores desde la capa de acceso
-            var listaVendedores = Acceso.Acceso_Vendedor.Listar();
-
-            // Recorre la lista de vendedores para buscar el código indicado
-            for (int i = 0; i < listaVendedores.Length; i++)
-            {
-                if (listaVendedores[i] != null && listaVendedores[i].IdVendedor.Equals(codigo))
-                {
-                    return listaVendedores[i];
-                }
-            }
-            return null;
-        }
+        
         // Metodo de validaciones solicitadas
         public string validacionVendedor(Vendedores vendedor) {
+
             //validamos que no sea nulo
             if (vendedor == null)
                 return "El vendedor es nulo.";
+
+            //Obtenemos la lista de vendedores registrados en la capa de acceso
+            List<Vendedores> lista_Vendedores = Acceso_Vendedor.ObtenerVendedores();
+
+            //validamos que el id del vendedor sea mayor a cero
+            if (vendedor.IdVendedor <= 0)
+            {
+                return "El ID del vendedor debe ser mayor que cero.";
+            }
+            
             //Validamos que no este vacio el nombre
             if (string.IsNullOrWhiteSpace(vendedor.Nombre))
                 return "El nombre es obligatorio.";
@@ -68,31 +68,25 @@ namespace Logica
             DateTime fechaIngreso = vendedor.FechaIngreso;
             DateTime hoy = DateTime.Today; //Toma la fecha del sistema
 
+
             // Validamos que la identificacion no este vacia
             if (string.IsNullOrWhiteSpace(vendedor.Identificacion))
             {
                 return "La identificación es obligatoria.";
             }
-        
-            //Validar que no existe el mismo IDVendedor
-            for (int i = 0; i < lista_Vendedores.Length; i++)
+
+            foreach (Vendedores item in lista_Vendedores)
             {
-
-                if (lista_Vendedores[i] != null) //Si la lista no esta nula entra
+                if (item.IdVendedor == vendedor.IdVendedor)
                 {
-                    if (lista_Vendedores[i].IdVendedor == vendedor.IdVendedor) // si la lista el id en la posicion i es igual, esta repetido               
-                    {
-                        return "El id del vendedor ya existe"; //Id repetido
-                    }
-                    // si la lista la identificacion en la posicion i es igual, esta repetido               
-                    if (lista_Vendedores[i].Identificacion == vendedor.Identificacion)
-                    {
-                        return "La identificación del vendedor ya existe";  //Identificacion repetida
+                    return "El id del vendedor ya existe";
+                }
 
-                    }
+                if (item.Identificacion.Trim() == vendedor.Identificacion.Trim())
+                {
+                    return "La identificación del vendedor ya existe";
                 }
             }
-
 
             // validadcion de Fecha de nacimiento (no debe de ser mayor o igual a la fecha actual
             if (fechaNacimiento >= hoy)
@@ -118,13 +112,27 @@ namespace Logica
             {
                 return "La fecha de ingreso no puede ser mayor a la fecha actual.";
             }
-            return ""; // Todo correcto
+            return string.Empty; // Todo correcto
         }
-        //Controla si hay vendedores registrados
+
+        public Vendedores ObtenerVendedor(int id)
+        {
+            List<Vendedores> lista = Acceso_Vendedor.ObtenerVendedores();
+
+            foreach (Vendedores vendedor in lista)
+            {
+                if (vendedor.IdVendedor == id)
+                {
+                    return vendedor;
+                }
+            }
+
+            return null;
+        }
         public bool TieneVendedores()
         {
             //retorna true si hay registros, false si no hay registros
-            return Acceso.Acceso_Vendedor.encontrar_registros();
+            return Acceso_Vendedor.encontrar_registros();
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Acceso
         //metodo para registrar una nueva localidad
         public bool ingresar(Localidades localidades) //clase y objeto
         {
-            using (var conn = conexion.ObtenerConexion())
+            using (var conn = new Conexion().ObtenerConexion())
             {
                 conn.Open();
                 string query = "INSERT INTO Localidad (IdLocalidad, NombreLocalidad, Precio) " +
