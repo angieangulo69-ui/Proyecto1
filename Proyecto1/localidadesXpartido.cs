@@ -43,7 +43,13 @@ namespace Entidades
             this.localidades = localidades;
             this.cantidadDisponible = cantidadDisponible;
         }
-
+        public string NombreLocalidad
+        {
+            get
+            {
+                return Localidades.NombreLocalidad;
+            }
+        }
         public override string ToString()
         {
             return Partido.Rival + " - " + Localidades.NombreLocalidad;

@@ -23,7 +23,7 @@ namespace Acceso
         private Conexion conexion = new Conexion();
 
         //Booleano para controlar el ingreso de datos
-        public bool ingresar(Ventas venta)
+        public bool Ingresar(Ventas venta)
         {
             using (var conn = conexion.ObtenerConexion())
             {
@@ -32,11 +32,16 @@ namespace Acceso
                     "( @IdCliente, @IdPartido, @IdLocalidad, @Cantidad, @IdVendedor, @FechaVenta, @MontoTotal, @TipoVenta)";
                 using (var comando = new System.Data.SqlClient.SqlCommand(query, conn))
                 {
-                    comando.Parameters.AddWithValue("@IdCliente", venta.Clientes.IdCliente);
+                    comando.Parameters.AddWithValue("@IdCliente", venta.Cliente.IdCliente);
                     comando.Parameters.AddWithValue("@IdPartido", venta.Partidos.IdPartido);
                     comando.Parameters.AddWithValue("@IdLocalidad", venta.Localidades.IdLocalidad);
                     comando.Parameters.AddWithValue("@Cantidad", venta.Cantidad);
-                    comando.Parameters.AddWithValue("@IdVendedor", venta.Vendedores.IdVendedor);
+                    // 
+                    if (venta.Vendedores == null)
+                        comando.Parameters.AddWithValue("@IdVendedor", DBNull.Value);
+                    else
+                        comando.Parameters.AddWithValue("@IdVendedor", venta.Vendedores.IdVendedor);
+
                     comando.Parameters.AddWithValue("@FechaVenta", venta.FechaVenta);
                     comando.Parameters.AddWithValue("@MontoTotal", venta.MontoTotal);
                     comando.Parameters.AddWithValue("@TipoVenta", venta.TipoVenta);
@@ -44,20 +49,8 @@ namespace Acceso
                     int filasAfectadas = comando.ExecuteNonQuery();
                     if (filasAfectadas == 1)
                     {
-                        // ACTUALIZAR LA DISPONIBILIDAD
-                        SqlCommand actualizar = new SqlCommand(
-                        @"UPDATE LocalidadPorPartido
-                  SET CantidadDisponible = CantidadDisponible - @Cantidad
-                  WHERE IdPartido = @IdPartido
-                  AND IdLocalidad = @IdLocalidad", conn);
-
-                        actualizar.Parameters.AddWithValue("@Cantidad", venta.Cantidad);
-                        actualizar.Parameters.AddWithValue("@IdPartido", venta.Partidos.IdPartido);
-                        actualizar.Parameters.AddWithValue("@IdLocalidad", venta.Localidades.IdLocalidad);
-
-                        actualizar.ExecuteNonQuery();
-
-                        return true;
+                    
+                        return filasAfectadas==1;
                     }
                     else
                     {
@@ -76,9 +69,15 @@ namespace Acceso
                 using (var conn = conexion.ObtenerConexion())
                 {
                     conn.Open();
-                    string query = @"SELECT V.IdVenta,C.IdCliente,C.Nombre,
-                             P.IdPartido,P.Rival,L.IdLocalidad,L.NombreLocalidad,L.Precio,
-                             V.Cantidad,VE.IdVendedor,VE.Nombre,V.FechaVenta,V.MontoTotal,V.TipoVenta
+                    string query = @"SELECT 
+                               V.IdVenta,
+                              C.IdCliente,C.Nombre,
+                              P.IdPartido,P.Rival, P.Fecha, P.Hora, P.Activo,
+                              L.IdLocalidad,L.NombreLocalidad,L.Precio,
+                              V.Cantidad,
+                              VE.IdVendedor,VE.Nombre,
+                              V.FechaVenta,V.MontoTotal,V.TipoVenta
+
                             FROM Venta V
                             INNER JOIN Cliente C ON V.IdCliente = C.IdCliente
                             INNER JOIN Partido P ON V.IdPartido = P.IdPartido
@@ -91,35 +90,51 @@ namespace Acceso
                         {
                             while (reader.Read())
                             {
-                                Ventas venta = new Ventas
+                                Ventas venta = new Ventas();
+
+                                venta.IdVenta = reader.GetInt32(0);
+
+                               venta.Cliente = new Cliente
                                 {
-                                    IdVenta = reader.GetInt32(0),
-                                    Clientes = new Clientes
-                                    {
                                         IdCliente = reader.GetInt32(1),
-                                        Nombre = reader.GetString(2)
-                                    },
-                                    Partidos = new Partidos
-                                    {
-                                        IdPartido = reader.GetInt32(3),
-                                        Rival = reader.GetString(4)
-                                    },
-                                    Localidades = new Localidades
-                                    {
-                                        IdLocalidad = reader.GetInt32(5),
-                                        NombreLocalidad = reader.GetString(6),
-                                        Precio = reader.GetDecimal(7)
-                                    },
-                                    Cantidad = reader.GetInt32(8),
-                                    Vendedores = new Vendedores
-                                    {
-                                        IdVendedor = reader.GetInt32(9),
-                                        Nombre = reader.GetString(10)
-                                    },
-                                    FechaVenta = reader.GetDateTime(11),
-                                    MontoTotal = reader.GetDecimal(12),
-                                    TipoVenta = reader.GetString(13)
+                                        Nombre = reader.GetString(2),
+                                        Apellido = reader.GetString(3)
                                 };
+
+                                venta.Partidos = new Partidos
+                                {
+                                    IdPartido = reader.GetInt32(4),
+                                    Rival = reader.GetString(5),
+                                    Fecha = reader.GetDateTime(6),
+                                    Hora = reader.GetString(7),
+                                    Activo = reader.GetBoolean(8)
+                                };
+                                venta.Localidades = new Localidades
+                                {
+                                    IdLocalidad = reader.GetInt32(9),
+                                    NombreLocalidad = reader.GetString(10),
+                                    Precio = reader.GetDecimal(11)
+                                };
+
+                                venta.Cantidad = reader.GetInt32(12);
+                                //
+                                if (reader.IsDBNull(13))
+                                {
+                                    venta.Vendedores = null;
+                                }
+                                else
+                                {
+                                    venta.Vendedores = new Vendedores
+                                    {
+                                        IdVendedor = reader.GetInt32(13),
+                                        Nombre = reader.GetString(14)
+                                    };
+                                }
+
+                                venta.FechaVenta = reader.GetDateTime(15);
+                                venta.MontoTotal = reader.GetDecimal(16);
+                                venta.TipoVenta = reader.GetString(17);
+                               
                                 ventas.Add(venta);
                             }
                         }

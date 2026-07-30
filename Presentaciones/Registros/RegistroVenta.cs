@@ -1,5 +1,6 @@
 ﻿using Entidades;
 using Logica;
+using Presentaciones;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,20 +10,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-/*
-Universidad:UNED
-II Cuatrimestre
-Proyecto I
-Descripción: Este formulario permite registrar las ventas, ademas carga datos de otro formularios como cliente, vendedor
-localidades y partidos, los cuales son clave para la venta de entradas. 
-Estudiante: Angie Angulo Chacón 
-Fecha:21/06/2026
-*/
-namespace Presentaciones.Registros
+
+namespace Servidor.Registros
 {
-    public partial class Registro_Ventas : Form
+    public partial class RegistroVenta : Form
     {
-        public Registro_Ventas()
+        public RegistroVenta()
         {
             InitializeComponent();
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -32,28 +25,18 @@ namespace Presentaciones.Registros
             cargarClientes();
             cargarVendedores();
 
-            txt_montoTotal.ReadOnly = true; //Inavilitar el montototal
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Registro_Ventas_Load(object sender, EventArgs e)
-        {
+            txtMontototal.ReadOnly = true; //Inavilitar el montototal
 
         }
 
         private void btn_guardar_Click(object sender, EventArgs e)
         {
-
             //Validamos que los campos no estén vacíos
-            if (comboBox_Cliente.SelectedItem == null ||
-               comboBox_Partido.SelectedItem == null ||
-               comboBox_Localidad.SelectedItem == null ||
-                string.IsNullOrWhiteSpace(txt_cantidad.Text) ||
-               comboBox_Vendedor.SelectedItem == null)
+            if (comboBoxCliente.SelectedItem == null ||
+               comboBoxPartido.SelectedItem == null ||
+               comboBoxLocalidad.SelectedItem == null ||
+                string.IsNullOrWhiteSpace(txtCantidad.Text) ||
+               comboBoxVendedor.SelectedItem == null)
             {
                 MessageBox.Show("Debe completar todos los campos.");
                 return;
@@ -65,49 +48,48 @@ namespace Presentaciones.Registros
                 Ventas venta = new Ventas();
 
                 //asignamos los datos ingresados a la clase Localidad                
-                venta.Clientes = (Clientes)comboBox_Cliente.SelectedItem;
-                venta.Partidos = (Partidos)comboBox_Partido.SelectedItem;
-                venta.Localidades = (Localidades)comboBox_Localidad.SelectedItem;
+                venta.Cliente = (Cliente)comboBoxCliente.SelectedItem;
+                venta.Partidos = (Partidos)comboBoxPartido.SelectedItem;
+                venta.Localidades = (Localidades)comboBoxLocalidad.SelectedItem;
                 //validamos que solo numeros
-                if (!int.TryParse(txt_cantidad.Text, out int cantidad))
+                if (!int.TryParse(txtCantidad.Text, out int cantidad))
                 {
                     MessageBox.Show("Cantidad inválida");
                     return;
                 }
-                venta.Cantidad = int.Parse(txt_cantidad.Text);
-                venta.Vendedores = (Vendedores)comboBox_Vendedor.SelectedItem;
-                venta.FechaVenta = date_fechaVenta.Value;
-                venta.MontoTotal = decimal.Parse(txt_montoTotal.Text);
+                venta.Cantidad = cantidad;
+                venta.Vendedores = (Vendedores)comboBoxVendedor.SelectedItem;
+                venta.FechaVenta = date_venta.Value;
+                venta.MontoTotal = decimal.Parse(txtMontototal.Text);
                 venta.TipoVenta = "Boleteria";
 
 
                 Logica_Ventas logicaVentas = new Logica_Ventas(); //Instancia de la clase Logica ventas
 
                 // Llamamos al método Agregar de la clase Logica ventas para agregar la venta
-                if (logicaVentas.Agregar(venta))
+                string resultado = logicaVentas.Agregar(venta);
+
+                if (string.IsNullOrEmpty(resultado))
                 {
-                    MessageBox.Show("Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    CargarVentas(); // Recargar el DataGridView para mostrar la nueva venta
+                    MessageBox.Show(
+                        "Venta registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    CargarVentas();
                     limpiar();
                 }
                 else
                 {
-                    MessageBox.Show("Error al registrar la venta.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    limpiar();
+                    MessageBox.Show(resultado,"Error",MessageBoxButtons.OK,MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-
         }
 
-        private void btn_atras_Click(object sender, EventArgs e)
+        private void btn_limpiar_Click(object sender, EventArgs e)
         {
-            Menu_Registros ventana_registros = new Menu_Registros();
-            ventana_registros.Show(this);
-            Dispose();
 
         }
 
@@ -116,21 +98,13 @@ namespace Presentaciones.Registros
             Application.Exit();
         }
 
-        private void comboBox_Cliente_SelectedIndexChanged(object sender, EventArgs e)
+        private void btn_atras_Click(object sender, EventArgs e)
         {
-
+            Menu_Registros ventana_registros = new Menu_Registros();
+            ventana_registros.Show(this);
+            Dispose();
         }
 
-        private void comboBox_Partido_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void data_Venta_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-
-        }
-        //Metodo para configurar la data de ventas
         private void configurar_data_ventas()
         {
             data_Venta.Columns.Add("IDVenta", "ID Venta");
@@ -153,19 +127,19 @@ namespace Presentaciones.Registros
 
         //Metodo que se encargado de limpiar los espacios para un nuevo registro
         public void limpiar()
-        {          
-            txt_cantidad.Clear();
-            txt_montoTotal.Clear();
+        {
+            txtCantidad.Clear();
+            txtMontototal.Clear();
+            txtTipo.Clear();
 
-            comboBox_Cliente.SelectedIndex = -1;
-            comboBox_Partido.SelectedIndex = -1;
-            comboBox_Localidad.SelectedIndex = -1;
-            comboBox_Vendedor.SelectedIndex = -1;
-            comboBox_tipoVenta.SelectedIndex = -1;
+            comboBoxCliente.SelectedIndex = -1;
+            comboBoxPartido.SelectedIndex = -1;
+            comboBoxLocalidad.SelectedIndex = -1;
+            comboBoxVendedor.SelectedIndex = -1;
 
-            date_fechaVenta.Value = DateTime.Now;         
+
+            date_venta.Value = DateTime.Now;
         }
-
         //Carga los registros de ventas realizadas
         public void CargarVentas()
         {
@@ -178,10 +152,10 @@ namespace Presentaciones.Registros
 
             if (logica_Ventas.TieneVentas()) //Tiene Ventas
             {
-                foreach(Ventas Venta in logica_Ventas.Listar()) //Recorremos la lista de ventas
+                foreach (Ventas Venta in logica_Ventas.Listar()) //Recorremos la lista de ventas
                     data_Venta.Rows.Add(
                             Venta.IdVenta,
-                            Venta.Clientes.Nombre,
+                            Venta.Cliente.Nombre,
                             Venta.Partidos.Rival,
                             Venta.Localidades.NombreLocalidad,
                             Venta.Cantidad,
@@ -191,15 +165,32 @@ namespace Presentaciones.Registros
                             Venta.TipoVenta
                      );
             }
-                
+
         }
-        
+        //Permite calcular el total
+        private void CalcularTotal()
+        {
+            if (comboBoxLocalidad.SelectedItem == null) return;
+
+            if (!int.TryParse(txtCantidad.Text, out int cantidad) || cantidad <= 0)
+            {
+                txtMontototal.Clear();
+                return;
+            }
+
+            Localidades localidad = (Localidades)comboBoxLocalidad.SelectedItem;
+
+            decimal total = cantidad * localidad.Precio;
+
+            txtMontototal.Text = total.ToString("0.00");
+        }
+
         //Metodo que carga las localidades registradas
         public void cargarLocalidades()
         {
             try
             {
-                comboBox_Localidad.Items.Clear(); //Eviar duplicado
+                comboBoxLocalidad.Items.Clear(); //Eviar duplicado
                 // Cargar localidades desde la lógica y mostrarlas en el DataGridView
                 Logica_localidades logicaLocalidades = new Logica_localidades();
 
@@ -210,7 +201,7 @@ namespace Presentaciones.Registros
                     {
                         if (listaLocalidades[i] != null) // Verificar que la localidad no sea nula
                         {
-                            comboBox_Localidad.Items.Add(listaLocalidades[i]);
+                            comboBoxLocalidad.Items.Add(listaLocalidades[i]);
                         }
                     }
                 }
@@ -226,7 +217,7 @@ namespace Presentaciones.Registros
         {
             try
             {
-                comboBox_Cliente.Items.Clear();
+                comboBoxCliente.Items.Clear();
                 // Cargar clientes desde la lógica y mostrarlas en el DataGridView
                 Logica_Clientes logicaClientes = new Logica_Clientes();
 
@@ -237,7 +228,7 @@ namespace Presentaciones.Registros
                     {
                         if (listaClientes[i] != null) // Verificar que clientes no sea nula
                         {
-                            comboBox_Cliente.Items.Add(listaClientes[i]); //cargamos datos 
+                            comboBoxCliente.Items.Add(listaClientes[i]); //cargamos datos 
                         }
                     }
                 }
@@ -253,7 +244,7 @@ namespace Presentaciones.Registros
         {
             try
             {
-                comboBox_Vendedor.Items.Clear();
+                comboBoxVendedor.Items.Clear();
                 // Cargar clientes desde la lógica y mostrarlas en el DataGridView
                 Logica_Vendedores logicaVendedores = new Logica_Vendedores();
 
@@ -264,7 +255,7 @@ namespace Presentaciones.Registros
                     {
                         if (listaVendedores[i] != null) // Verificar que clientes no sea nula
                         {
-                            comboBox_Vendedor.Items.Add(listaVendedores[i]); //cargamos datos 
+                            comboBoxVendedor.Items.Add(listaVendedores[i]); //cargamos datos 
                         }
                     }
                 }
@@ -280,7 +271,7 @@ namespace Presentaciones.Registros
         {
             try
             {
-                comboBox_Partido.Items.Clear();
+                comboBoxPartido.Items.Clear();
                 // Cargar partidosdesde la lógica y mostrarlas en el DataGridView
                 Logica_Partidos logica_Partidos = new Logica_Partidos();
 
@@ -291,7 +282,7 @@ namespace Presentaciones.Registros
                     {
                         if (listaPartidos[i] != null) // Verificar que partidos no sea nula
                         {
-                            comboBox_Partido.Items.Add(listaPartidos[i]); //cargamos datos 
+                            comboBoxPartido.Items.Add(listaPartidos[i]); //cargamos datos 
                         }
                     }
                 }
@@ -302,57 +293,15 @@ namespace Presentaciones.Registros
             }
         }
 
-        private void txt_montoTotal_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-        //Permite calcular el total
-        private void CalcularTotal()
-        {
-            if (comboBox_Localidad.SelectedItem == null) return;
-
-            if (!int.TryParse(txt_cantidad.Text, out int cantidad) || cantidad <= 0)
-            {
-                txt_montoTotal.Clear();
-                return;
-            }
-
-            Localidades localidad = (Localidades)comboBox_Localidad.SelectedItem;
-
-            decimal total = cantidad * localidad.Precio;
-
-            txt_montoTotal.Text = total.ToString("0.00");
-        }
-
-        private void comboBox_Localidad_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBoxLocalidad_SelectedIndexChanged(object sender, EventArgs e)
         {
             CalcularTotal();
         }
 
-        private void txt_cantidad_TextChanged(object sender, EventArgs e)
+        private void txtCantidad_TextChanged(object sender, EventArgs e)
         {
             CalcularTotal();
-        }
-
-        private void label19_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btn_limpiar_Click(object sender, EventArgs e)
-        {
-            limpiar();
-        }
-
-        private void txt_idventa_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            //validamos que solo se puedan ingresar numeros en el campo de id venta
-            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
-            {
-                e.Handled = true; // Ignorar el carácter ingresado
-                MessageBox.Show("Solo se permiten números en el campo de Id Venta.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
         }
     }
-}
 
+}

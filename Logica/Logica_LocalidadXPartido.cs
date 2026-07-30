@@ -61,6 +61,28 @@ namespace Logica
         {
             return Acceso.ObtenerLocalidadXPartido(); //
         }
+        //Obtiene las localidades por partido
+        public List<LocalidadesXpartido> ObtenerPorPartido(int idPartido)
+        {
+            List<LocalidadesXpartido> lista = Acceso.ObtenerLocalidadXPartido();
+
+            List<LocalidadesXpartido> resultado = new List<LocalidadesXpartido>();
+
+            foreach (LocalidadesXpartido item in lista)
+            {
+                if (item.Partido.IdPartido == idPartido)
+                {
+                    resultado.Add(item);
+                }
+            }
+
+            return resultado;
+        }
+
+        public bool ActualizarCantidad(int idLocalidadPartido, int cantidadDisponible)
+        {
+            return Acceso.ActualizarCantidadDisponible(idLocalidadPartido, cantidadDisponible);
+        }
 
         //PErmite controlar si hay registros en la localidadxpartido
         public bool TieneLocalidadesXPartido()

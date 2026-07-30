@@ -87,7 +87,7 @@ namespace Presentaciones.Consultas
 
             data_venta.Rows.Add(
                 venta.IdVenta,
-                venta.Clientes.Nombre,
+                venta.Cliente.Nombre,
                 venta.Partidos.Rival,
                 venta.Localidades.NombreLocalidad,
                 venta.Cantidad,

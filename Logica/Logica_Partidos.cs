@@ -27,7 +27,7 @@ namespace Logica
                 return false;
             }
             //Obtenesmo los partidos registrados
-            List<Partidos> listapartidos= AccesoPartido.ObtenerPartidos(); 
+            List<Partidos> listapartidos = AccesoPartido.ObtenerPartidos();
 
             // valida que no existe el mismo idPartido en el arreglo
             foreach(Partidos item in listapartidos)
@@ -44,6 +44,22 @@ namespace Logica
         public List<Partidos> Listar()//Llamamos a la capa de acceso para listar los partidos
         {
             return AccesoPartido.ObtenerPartidos();
+        }
+        //Obtenemos los partidos disponibles (activos y con fecha igual o posterior a la fecha actual)
+        public List<Partidos> ObtenerPartidosDisponibles()
+        {
+            List<Partidos> lista = AccesoPartido.ObtenerPartidos();
+            List<Partidos> disponibles = new List<Partidos>();
+
+            foreach (Partidos partido in lista)
+            {
+                if (partido.Activo && partido.Fecha.Date >= DateTime.Now.Date)
+                {
+                    disponibles.Add(partido);
+                }
+            }
+
+            return disponibles;
         }
 
         //Controla si hay partidos registrados

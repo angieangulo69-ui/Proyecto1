@@ -1,161 +1,199 @@
-﻿using Acceso;
+﻿/*
+Universidad: UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Esta clase permite agregar los registros, y realizar validaciones,
+según lo solicitado. Obtener cliente y permite una conexión con la clase de
+acceso a datos.
+Estudiante: Angie Angulo Chacón
+Fecha: 21/06/2026
+*/
+using Acceso;
 using Entidades;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-/*
-Universidad:UNED
-II Cuatrimestre
-Proyecto I
-Descripción: Esta clase permite agregar los registros, y realizar validaciones, segun lo solicitado.
-obtener cliente y permite una conexion con mi clase de acceso a mi almacenamiento. 
-Estudiante: Angie Angulo Chacón 
-Fecha:21/06/2026
-*/
+
 namespace Logica
 {
     public class Logica_Clientes
-    {// permite agregar clientes a mi clase correspondiente
-        //
+    {
+        // Permite agregar clientes a la clase correspondiente
         private AccesoCliente Acceso = new AccesoCliente();
 
-        public bool Agregar(Clientes pclientes)
+        // Agrega un cliente luego de validarlo por completo.
+        // Retorna string.Empty si todo salió bien, o un mensaje de error específico.
+        public string Agregar(Cliente pCliente)
         {
-          if(pclientes == null)
+            try
             {
-                return false;
-            }
-
-            //Obtenemos la lista de clientes desde la capa de acceso
-            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
-
-            //Valiamos a los clientes en la base de datos
-            foreach( Clientes item in lista_Clientes ) {
-               if (item.IdCliente == pclientes.IdCliente)
-               {
-                  return false;
-               }
-
-               if (item.Identificacion.Trim() == pclientes.Identificacion.Trim())
+                // Ejecuta TODAS las validaciones (formato, negocio y duplicados)
+                string error = ValidacionesCliente(pCliente);
+                if (!string.IsNullOrEmpty(error))
                 {
-                        return false;
-                 }               
-            }
-            return Acceso.ingresar(pclientes);
-        }
-
-        //Obtenemos la lista de clientes desde la capa acceso
-        public List<Clientes> Listar()
-        {
-            return Acceso.ObtenerClientes();
-
-        }
-        //Buscar clciente por id
-        public Clientes obtenerClientes(int codigo)
-        {
-            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
-
-            //Recorremos la lista de clientes para buscar el codigo indicado
-            foreach (Clientes cliente in lista_Clientes)
-            {
-                if (cliente.IdCliente.Equals(codigo))
-                {
-                    return cliente;
-                }
-            }
-            return null;
-        }
-
-        //Metodo de validaciones 
-        public string validacionesCliente(Clientes clientes)
-        {
-            if (clientes == null)
-            {
-                return "El cliente no puede estar vacio.";
-            }
-
-            //validacion heredada de Persona
-            if (String.IsNullOrWhiteSpace(clientes.Nombre))
-            {
-                return "Debe ingresar el nombre";
-            }
-            // valida que no quede en blanco el apellido
-            if (String.IsNullOrWhiteSpace(clientes.Apellido))
-            {
-                return "Debe ingresar el apellido";
-            }
-            //Valida que no quede en blanco la identificacion 
-            if (String.IsNullOrWhiteSpace(clientes.Identificacion))
-            {
-                return "Debe ingresar la identificacion";
-            }
-            //Permite que la fecha de nacimiento no sea a futuro de la actual
-            if (clientes.FechaNacimiento >=  DateTime.Now)
-            {
-                return "La fecha de nacimiento no puede ser futura";
-            }
-
-            //Validaciones de cliente 
-            //Valida que el id del cliente sea mayor a cero
-            if (clientes.IdCliente <= 0)
-            {
-                return "El ID del cliente debe de ser mayor que cero";
-            }
-
-            //Valia que le fecha de registro mo se mayor a la actual
-            if(clientes.FechaRegistro > DateTime.Now)
-            {
-                return "La fecha de registro no puede ser mayor a la actual";
-                    
-            }
-            //Si el cliente no esta activo
-
-            if (!clientes.Activo)
-            {
-                return "Debe indicar si el cliente se encuentra activo.";
-            }
-
-            //Validar que no existe el mismo IDVendedor
-            List<Clientes> lista_Clientes = Acceso.ObtenerClientes();
-
-            foreach (Clientes item in lista_Clientes)
-            {
-                if (item.IdCliente == clientes.IdCliente)
-                {
-                    return "El id del cliente ya existe";
+                    return error;
                 }
 
-                if (item.Identificacion.Trim() == clientes.Identificacion.Trim())
-                {
-                    return "La identificación del cliente ya existe";
-                }
+                bool registrado = Acceso.ingresar(pCliente);
+                return registrado ? string.Empty : "No se pudo registrar el cliente.";
             }
-
-
-            //Valida que el cliente sea mayor de edad
-            int edad = DateTime.Now.Year - clientes.FechaNacimiento.Year;
-             if (clientes.FechaNacimiento > DateTime.Now.AddYears(-edad))
-             {
-                edad--;
-             }
-
-             if (edad < 18)
-             {
-               return "El cliente debe ser mayor de edad";
-             }
-             return string.Empty; // Retorna cadena vacía si todas las validaciones pasan
+            catch (Exception ex)
+            {
+                return "Error al agregar cliente: " + ex.Message;
+            }
         }
-        
-        //Permite controlar si hay clientes registrados
+
+        // Obtiene la lista de clientes desde la capa de acceso
+        public List<Cliente> Listar()
+        {
+            try
+            {
+                return Acceso.ObtenerClientes();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar clientes: " + ex.Message);
+            }
+        }
+
+        // Busca un cliente por su Id
+        public Cliente ObtenerClientePorId(int codigo)
+        {
+            try
+            {
+                List<Cliente> listaClientes = Acceso.ObtenerClientes();
+
+                foreach (Cliente cliente in listaClientes)
+                {
+                    if (cliente.IdCliente.Equals(codigo))
+                    {
+                        return cliente;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener cliente por Id: " + ex.Message);
+            }
+        }
+
+        // Permite obtener un cliente por su identificación
+        public Cliente ObtenerPorIdentificacion(string identificacion)
+        {
+            try
+            {
+                List<Cliente> lista = Acceso.ObtenerClientes();
+
+                foreach (Cliente cliente in lista)
+                {
+                    if (cliente.Identificacion.Trim() == identificacion.Trim())
+                    {
+                        return cliente;
+                    }
+                }
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener cliente por identificación: " + ex.Message);
+            }
+        }
+
+        // Permite controlar si hay clientes registrados
         public bool TieneClientes()
         {
-            //retorna true si hay registros, false si no hay registros
-            return Acceso.encontrar_registro();
+            try
+            {
+                // Retorna true si hay registros, false si no hay registros
+                return Acceso.EncontrarRegistro();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al verificar clientes existentes: " + ex.Message);
+            }
+        }
+
+        // Método único de validaciones: formato + reglas de negocio + duplicados
+        public string ValidacionesCliente(Cliente cliente)
+        {
+            if (cliente == null)
+            {
+                return "El cliente no puede estar vacío.";
+            }
+
+            // Validación heredada de Persona
+            if (String.IsNullOrWhiteSpace(cliente.Nombre))
+            {
+                return "Debe ingresar el nombre.";
+            }
+
+            // Valida que no quede en blanco el apellido
+            if (String.IsNullOrWhiteSpace(cliente.Apellido))
+            {
+                return "Debe ingresar el apellido.";
+            }
+
+            // Valida que no quede en blanco la identificación
+            if (String.IsNullOrWhiteSpace(cliente.Identificacion))
+            {
+                return "Debe ingresar la identificación.";
+            }
+
+            // La fecha de nacimiento no puede ser futura
+            if (cliente.FechaNacimiento >= DateTime.Now)
+            {
+                return "La fecha de nacimiento no puede ser futura.";
+            }
+
+            // El Id del cliente debe ser mayor a cero
+            if (cliente.IdCliente <= 0)
+            {
+                return "El ID del cliente debe ser mayor que cero.";
+            }
+
+            // La fecha de registro no puede ser mayor a la actual
+            if (cliente.FechaRegistro > DateTime.Now)
+            {
+                return "La fecha de registro no puede ser mayor a la actual.";
+            }
+
+            // Valida que el cliente sea mayor de edad
+            int edad = DateTime.Now.Year - cliente.FechaNacimiento.Year;
+            if (cliente.FechaNacimiento > DateTime.Now.AddYears(-edad))
+            {
+                edad--;
+            }
+            if (edad < 18)
+            {
+                return "El cliente debe ser mayor de edad.";
+            }
+
+            try
+            {
+                // Valida que no exista el mismo Id o la misma identificación
+                List<Cliente> listaCliente = Acceso.ObtenerClientes();
+
+                foreach (Cliente item in listaCliente)
+                {
+                    // Evita comparar el cliente consigo mismo en un futuro escenario de edición
+                    if (item.IdCliente == cliente.IdCliente)
+                    {
+                        return "El ID del cliente ya existe.";
+                    }
+
+                    if (item.Identificacion.Trim() == cliente.Identificacion.Trim())
+                    {
+                        return "La identificación del cliente ya existe.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return "Error al validar duplicados: " + ex.Message;
+            }
+
+            // Si todas las validaciones pasan
+            return string.Empty;
         }
     }
-
 }
-    
-

@@ -20,7 +20,7 @@ namespace Acceso
         private Conexion conexion = new Conexion();
 
         //Booleano para controlar el ingreso de datos
-        public bool ingresar(Clientes cliente)
+        public bool ingresar(Cliente cliente)
         {
             using (var conn = conexion.ObtenerConexion())
             {
@@ -51,9 +51,9 @@ namespace Acceso
             }
         }
         //lista de clientes
-        public List<Clientes> ObtenerClientes()
+        public List<Cliente> ObtenerClientes()
         {
-            List<Clientes> lista_Clientes = new List<Clientes>();
+            List<Cliente> lista_Clientes = new List<Cliente>();
             try
             {
                 using (var conn = conexion.ObtenerConexion())
@@ -67,7 +67,7 @@ namespace Acceso
                         {
                             while (reader.Read())
                             {
-                                Clientes cliente = new Clientes
+                                Cliente cliente = new Cliente
                                 {
                                     IdCliente = reader.GetInt32(0),
                                     Identificacion = reader.GetString(1),
@@ -90,7 +90,7 @@ namespace Acceso
             return lista_Clientes;
         }
 
-        public bool encontrar_registro()
+        public bool EncontrarRegistro()
         {
             try
             {

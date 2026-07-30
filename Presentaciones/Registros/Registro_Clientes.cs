@@ -54,7 +54,7 @@ namespace Presentaciones.Registros
                 }
 
                 //Referenciamos a la clase vendedor
-                Clientes cliente = new Clientes();
+                Cliente cliente = new Cliente();
 
                 //Asignamos los valores a las propiedades del nuevo partido
                 cliente.IdCliente = int.Parse(txt_idcliente.Text);
@@ -67,7 +67,7 @@ namespace Presentaciones.Registros
 
                 //Instanciamos la calse logica
 
-                String mensaje = logicaCliente.validacionesCliente(cliente);
+                String mensaje = logicaCliente.ValidacionesCliente(cliente);
                 // 
                 if (!String.IsNullOrEmpty(mensaje))
                 {
@@ -75,15 +75,18 @@ namespace Presentaciones.Registros
                     return;
                 }
                 //Si 
-                if (logicaCliente.Agregar(cliente))
+                string resultado = logicaCliente.Agregar(cliente);
+
+                if (string.IsNullOrEmpty(resultado))
                 {
-                    MessageBox.Show("Cliente registrado correctamente.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Cliente registrado correctamente.", "Información",MessageBoxButtons.OK,MessageBoxIcon.Information);
+
                     limpiar();
                     cargar_Clientes();
                 }
                 else
                 {
-                    MessageBox.Show("Error al registrar el cliente.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(resultado, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -145,7 +148,7 @@ namespace Presentaciones.Registros
 
             if (logicaCliente.TieneClientes())
             {
-                foreach(Clientes cliente in logicaCliente.Listar())
+                foreach(Cliente cliente in logicaCliente.Listar())
                 {                                       
                     data_cliente.Rows.Add(
                        cliente.IdCliente,

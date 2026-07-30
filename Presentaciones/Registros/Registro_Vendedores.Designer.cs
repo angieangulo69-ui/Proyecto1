@@ -50,14 +50,12 @@
             btn_limpiar = new Button();
             panel5 = new Panel();
             panel2 = new Panel();
-            dataGridView2 = new DataGridView();
             button2 = new Button();
             panel6 = new Panel();
             label15 = new Label();
             panel7 = new Panel();
             label16 = new Label();
             button4 = new Button();
-            label17 = new Label();
             panel4 = new Panel();
             label6 = new Label();
             panel1 = new Panel();
@@ -65,7 +63,6 @@
             panel9.SuspendLayout();
             panel5.SuspendLayout();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).BeginInit();
             panel6.SuspendLayout();
             panel7.SuspendLayout();
             panel4.SuspendLayout();
@@ -168,7 +165,7 @@
             btn_atras.BackgroundImage = (Image)resources.GetObject("btn_atras.BackgroundImage");
             btn_atras.BackgroundImageLayout = ImageLayout.Stretch;
             btn_atras.Cursor = Cursors.Hand;
-            btn_atras.Location = new Point(3, 661);
+            btn_atras.Location = new Point(21, 651);
             btn_atras.Name = "btn_atras";
             btn_atras.Size = new Size(38, 39);
             btn_atras.TabIndex = 45;
@@ -182,7 +179,7 @@
             btn_salir.BackgroundImage = (Image)resources.GetObject("btn_salir.BackgroundImage");
             btn_salir.BackgroundImageLayout = ImageLayout.Stretch;
             btn_salir.Cursor = Cursors.Hand;
-            btn_salir.Location = new Point(802, 648);
+            btn_salir.Location = new Point(762, 651);
             btn_salir.Name = "btn_salir";
             btn_salir.Size = new Size(31, 39);
             btn_salir.TabIndex = 44;
@@ -265,16 +262,14 @@
             panel9.Controls.Add(btn_limpiar);
             panel9.Controls.Add(panel5);
             panel9.Controls.Add(panel2);
-            panel9.Controls.Add(dataGridView2);
             panel9.Controls.Add(button2);
             panel9.Controls.Add(btn_guardar);
             panel9.Controls.Add(panel6);
             panel9.Controls.Add(panel7);
             panel9.Controls.Add(button4);
-            panel9.Controls.Add(label17);
             panel9.Location = new Point(34, 86);
             panel9.Name = "panel9";
-            panel9.Size = new Size(731, 314);
+            panel9.Size = new Size(731, 313);
             panel9.TabIndex = 101;
             // 
             // btn_limpiar
@@ -322,15 +317,6 @@
             panel2.Name = "panel2";
             panel2.Size = new Size(312, 176);
             panel2.TabIndex = 85;
-            // 
-            // dataGridView2
-            // 
-            dataGridView2.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView2.Location = new Point(117, 451);
-            dataGridView2.Name = "dataGridView2";
-            dataGridView2.RowHeadersWidth = 51;
-            dataGridView2.Size = new Size(787, 151);
-            dataGridView2.TabIndex = 73;
             // 
             // button2
             // 
@@ -402,18 +388,6 @@
             button4.TextImageRelation = TextImageRelation.ImageBeforeText;
             button4.UseVisualStyleBackColor = false;
             // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.BackColor = Color.Transparent;
-            label17.Font = new Font("Sylfaen", 13.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label17.ForeColor = Color.Black;
-            label17.Location = new Point(43, 394);
-            label17.Name = "label17";
-            label17.Size = new Size(237, 29);
-            label17.TabIndex = 74;
-            label17.Text = "Registros  realizados:";
-            // 
             // panel4
             // 
             panel4.BackColor = Color.SandyBrown;
@@ -462,12 +436,10 @@
             Load += Registro_Vendedores_Load;
             ((System.ComponentModel.ISupportInitialize)data_vendedores).EndInit();
             panel9.ResumeLayout(false);
-            panel9.PerformLayout();
             panel5.ResumeLayout(false);
             panel5.PerformLayout();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridView2).EndInit();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             panel7.ResumeLayout(false);
@@ -502,14 +474,12 @@
         private Panel panel5;
         private Panel panel4;
         private Panel panel2;
-        private DataGridView dataGridView2;
         private Button button2;
         private Panel panel6;
         private Label label15;
         private Panel panel7;
         private Label label16;
         private Button button4;
-        private Label label17;
         private Label label6;
         private Panel panel1;
         private Button btn_limpiar;

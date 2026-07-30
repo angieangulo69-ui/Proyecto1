@@ -59,7 +59,7 @@ namespace Presentaciones.Consultas
                 return;
             }
             //
-            Clientes cliente = (Clientes)comboBox_cliente.SelectedItem;
+            Cliente cliente = (Cliente)comboBox_cliente.SelectedItem;
 
             data_cliente.Rows.Clear(); //Limpiamos la data antes de visualizar la seleccion 
             data_cliente.Rows.Add(

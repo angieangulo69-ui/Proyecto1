@@ -1,6 +1,7 @@
 ﻿using Entidades;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -117,7 +118,34 @@ namespace Acceso
             }
             return localidadesXpartido;
         }
-        
+
+        public bool ActualizarCantidadDisponible(int idLocalidadPartido, int cantidadDisponible)
+        {
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+
+                    string query = @"UPDATE LocalidadPorPartido
+                             SET CantidadDisponible = @CantidadDisponible
+                             WHERE IdLocalidadPartido = @IdLocalidadPartido";
+
+                    using (SqlCommand comando = new SqlCommand(query, conn))
+                    {
+                        comando.Parameters.AddWithValue("@CantidadDisponible", cantidadDisponible);
+                        comando.Parameters.AddWithValue("@IdLocalidadPartido", idLocalidadPartido);
+
+                        return comando.ExecuteNonQuery() > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al actualizar la cantidad disponible: " + ex.Message);
+            }
+        }
+
         public bool encontrar_registros()
         {
             try
@@ -138,6 +166,71 @@ namespace Acceso
             catch (Exception ex)
             {
                 throw new Exception("Error al verificar registros.", ex);
+            }
+        }
+
+        public LocalidadesXpartido ObtenerLocalidadXPartido(int idPartido, int idLocalidad)
+        {
+            try
+            {
+                using (var conn = conexion.ObtenerConexion())
+                {
+                    conn.Open();
+
+                    string query = @"SELECT
+                    LP.IdLocalidadPartido,
+                    P.IdPartido,P.Rival,P.Fecha,P.Hora,P.Activo,
+                    L.IdLocalidad,L.NombreLocalidad,L.Precio,
+                    LP.CantidadDisponible
+                FROM LocalidadPorPartido LP
+                INNER JOIN Partido P
+                    ON LP.IdPartido = P.IdPartido
+                INNER JOIN Localidad L
+                    ON LP.IdLocalidad = L.IdLocalidad
+                WHERE LP.IdPartido = @IdPartido
+                  AND LP.IdLocalidad = @IdLocalidad";
+
+                    using (SqlCommand comando = new SqlCommand(query, conn))
+                    {
+                        comando.Parameters.AddWithValue("@IdPartido", idPartido);
+                        comando.Parameters.AddWithValue("@IdLocalidad", idLocalidad);
+
+                        using (SqlDataReader reader = comando.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new LocalidadesXpartido
+                                {
+                                    IdLocalidadPartido = reader.GetInt32(0),
+
+                                    Partido = new Partidos
+                                    {
+                                        IdPartido = reader.GetInt32(1),
+                                        Rival = reader.GetString(2),
+                                        Fecha = reader.GetDateTime(3),
+                                        Hora = reader.GetString(4),
+                                        Activo = reader.GetBoolean(5)
+                                    },
+
+                                    Localidades = new Localidades
+                                    {
+                                        IdLocalidad = reader.GetInt32(6),
+                                        NombreLocalidad = reader.GetString(7),
+                                        Precio = reader.GetDecimal(8)
+                                    },
+
+                                    CantidadDisponible = reader.GetInt32(9)
+                                };
+                            }
+                        }
+                    }
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al obtener la localidad del partido: " + ex.Message);
             }
         }
 

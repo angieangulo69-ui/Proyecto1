@@ -16,7 +16,7 @@ Fecha:21/06/2026
 
 namespace Entidades
 {
-    public class Clientes: Persona
+    public class Cliente: Persona
     {
         //Atributos de la clase
         private int idCliente;
@@ -30,7 +30,7 @@ namespace Entidades
 
         //Constructor: inicializa el objeto con valores proporcionados
         //base nos permite llamar al constructor de la base padre en este caso persona.
-        public Clientes (int idCliente,string nombre, string apellido, string identificacion,DateTime fechaNacimiento,DateTime fechaRegistro, bool activo)
+        public Cliente (int idCliente,string nombre, string apellido, string identificacion,DateTime fechaNacimiento,DateTime fechaRegistro, bool activo)
             :base(nombre,apellido,identificacion,fechaNacimiento) 
         {
             this.IdCliente = idCliente;
@@ -39,11 +39,11 @@ namespace Entidades
         }
 
         // Constructor vacío: permite crear el objeto sin datos iniciales
-        public Clientes()
+        public Cliente()
         {
 
         }
-        //Devuelve una cadena con la información principal del partido para mostrar en listas o ComboBox
+        //Devuelve una cadena con la información principal del cliente para mostrar en listas o ComboBox
         public override string ToString()
         {
             return Identificacion + " - " + Nombre + " " + Apellido;

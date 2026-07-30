@@ -20,26 +20,27 @@ namespace Entidades
     {
         //Atributos de la clase
         private int idVenta;
-        private Clientes clientes;  //Cliente que realiza la compra
+        private Cliente cliente;  //Cliente que realiza la compra
         private Partidos partidos;
         private Localidades localidades;
         private Vendedores vendedores;
         private int cantidad;
         private DateTime fechaVenta;
         private Decimal montoTotal;
-        private string tipoVenta = "Boleteria";
+        private string tipoVenta;
 
         //Constructor: inicializa el objeto con valores proporcionados
-        public Ventas(int idVenta, Clientes clientes, Partidos partidos, Localidades localidades, int cantidad, Vendedores vendedores, DateTime fechaVenta, decimal montoTotal)
+        public Ventas(int idVenta, Cliente cliente, Partidos partidos, Localidades localidades, int cantidad, Vendedores vendedores, DateTime fechaVenta, decimal montoTotal, string tipoVenta)
         {
             IdVenta = idVenta;
-            this.Clientes = clientes;
+            this.Cliente = cliente;
             this.Partidos = partidos;
             this.Localidades = localidades;
             this.Cantidad = cantidad;
             this.Vendedores = vendedores;
             FechaVenta = fechaVenta;
             MontoTotal = montoTotal;
+            TipoVenta = tipoVenta;
         }
         // Constructor vacío: permite crear el objeto sin datos iniciales
         public Ventas()
@@ -49,7 +50,7 @@ namespace Entidades
 
         //Propiedades nos permiten acceder a los datos de forma segura
         public int IdVenta { get => idVenta; set => idVenta = value; }
-        public Clientes Clientes { get => clientes; set => clientes = value; }
+        public Cliente Cliente { get => cliente; set => cliente = value; }
         public Partidos Partidos { get => partidos; set => partidos = value; }
         public Localidades Localidades { get => localidades; set => localidades = value; }
         public int Cantidad { get => cantidad; set => cantidad = value; }
@@ -61,10 +62,9 @@ namespace Entidades
     
 
      public override string ToString()
-        {
-            return Clientes.Identificacion + " - " + Clientes.Nombre + " " + Clientes.Apellido;
+        {   
+            return IdVenta + " - " + Partidos.Rival + " - " + Cliente.Nombre;
         }
-
-
     }
+    
 }

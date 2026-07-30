@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -10,8 +10,10 @@ namespace Acceso
 {
     public class Conexion
     {
+        // Variable para almacenar la cadena de conexión
         private string cadenaConexion;
 
+        // Constructor que obtiene la cadena de conexión desde el archivo App.config
         public Conexion()
         {
             var conn = ConfigurationManager.ConnectionStrings["conexion"];
@@ -22,6 +24,7 @@ namespace Acceso
             cadenaConexion = conn.ConnectionString;
         }
 
+        //Permite obtener la conexión a la base de datos
         public SqlConnection ObtenerConexion()
         {
             return new SqlConnection(cadenaConexion);

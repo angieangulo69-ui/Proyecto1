@@ -1,4 +1,5 @@
 ﻿using Presentaciones.Registros;
+using Servidor.Registros;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -76,7 +77,7 @@ namespace Presentaciones
 
         private void btn_ventas_Click(object sender, EventArgs e)
         {
-            Registro_Ventas ventana_registroVentas = new Registro_Ventas();
+            RegistroVenta ventana_registroVentas = new RegistroVenta();
             ventana_registroVentas.Show();
             Dispose(); // Cierra la ventana actual
         }

@@ -1,116 +1,149 @@
-﻿using Acceso;
+﻿/*
+Universidad: UNED
+II Cuatrimestre
+Proyecto I
+Descripción: Lógica de negocio para el registro de ventas. El candado
+(lock) garantiza que, aunque lleguen varias ventas al mismo tiempo desde
+distintos clientes, la verificación de disponibilidad y el descuento de
+entradas se ejecuten de forma atómica, evitando la sobreventa.
+Estudiante: Angie Angulo Chacón
+Fecha: 21/06/2026
+*/
+using Acceso;
 using Entidades;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-/*
-Universidad:UNED
-II Cuatrimestre
-Proyecto I
-Descripción: Esta clase representa la logica de ventas , en cual encontramos las validaciones para ingreso de
-registros. 
-Estudiante: Angie Angulo Chacón 
-Fecha:21/06/2026
-*/
+
 namespace Logica
 {
     public class Logica_Ventas
     {
         private Conexion conexion = new Conexion();
-        private Acceso_Ventas AccesoVentas = new Acceso_Ventas();
+        private Acceso_Ventas accesoVenta = new Acceso_Ventas();
         private Acceso_LocalidadesXPartido accesoLocalidadPartido = new Acceso_LocalidadesXPartido();
 
-        //Metodo que permite agregar las ventas registradas en acceso de datos, simpre y cuando 
-        // se cumplan las validaciones 
-        public bool Agregar(Ventas venta)
-        {           
-            string mensaje = ValidarVenta(venta);
-       
-            if (!string.IsNullOrEmpty(mensaje))
-                return false;
+        // MISMO candado para TODAS las ventas, sin importar qué cliente la registre.
+        // Debe ser static porque Logica_Ventas se puede instanciar varias veces
+        // (una por cada hilo de cliente atendido), pero el candado tiene que ser uno solo
+        // compartido por todas esas instancias.
+        private static readonly object candadoVentas = new object();
 
-            return AccesoVentas.ingresar(venta);
-        }
-        //Metodo permite solicitar la lista de ventas y devolverla
-        public List<Ventas> Listar() //Alistamos las ventas
+        // Retorna string.Empty si la venta se registró correctamente,
+        // o un mensaje de error específico si falló alguna validación.
+        public string Agregar(Ventas venta)
         {
-            return AccesoVentas.ObtenerVentas();
-        }
-
-        //Metodo de validaciones para la venta
-        public string ValidarVenta(Ventas venta)
-        {
-            //Valida que la venta no este vacia
-            if (venta == null)
-                return "La venta no puede estar vacía.";
-            
-            List<Ventas> lista = AccesoVentas.ObtenerVentas(); // guardar todas las datos segun lo permitido
-           
-            //  Valida que cliente no este vacio
-            if (venta.Clientes == null)
-                return "Debe seleccionar un cliente.";
-            
-            //Valida que cliente este activo
-            if (!venta.Clientes.Activo)
-                return "El cliente está inactivo.";
-
-            // Valida que el vendedor no este vacio
-            if (venta.Vendedores == null)
-                return "Debe seleccionar un vendedor.";
-
-            // Valida que el partido no este vacio
-            if (venta.Partidos == null)
-                return "Debe seleccionar un partido.";
-
-            //Valida que el partido este activo
-            if (!venta.Partidos.Activo)
-                return "El partido no está activo.";
-
-            //Valida que la fecha de partido sea mayor al dia actual
-            if (venta.Partidos.Fecha.Date < DateTime.Now.Date)
-                return "No se pueden vender entradas de partidos pasados.";
-
-            // valida que la localidad no este vacia
-            if (venta.Localidades == null)
-                return "Debe seleccionar una localidad.";
-
-            // valida que la cantidad sea mayor a 0
-            if (venta.Cantidad <= 0)
-                return "La cantidad debe ser mayor a 0.";
-
-            // valida que haya disponibilidad
-            List<LocalidadesXpartido> listaLocPartido = accesoLocalidadPartido.ObtenerLocalidadXPartido();
-
-            if (listaLocPartido == null)
-                return "No hay localidades disponibles.";
-
-            //se encarga de recorrer la lista
-            for (int i = 0; i < listaLocPartido.Count; i++)
+            try
             {
-                if (listaLocPartido[i] != null)
-                { // verifica si hay entrdas disponibles 
-                    if (listaLocPartido[i].Partido.IdPartido == venta.Partidos.IdPartido &&
-                        listaLocPartido[i].Localidades.IdLocalidad == venta.Localidades.IdLocalidad)
+                // Validaciones que NO dependen de la disponibilidad (no necesitan el lock):
+                if (venta == null)
+                {
+                    return "La venta no puede estar vacía.";
+                }
+                if (venta.Cantidad <= 0)
+                {
+                    return "La cantidad debe ser mayor a cero.";
+                }
+                if (venta.Cliente == null || !venta.Cliente.Activo)
+                {
+                    return "El cliente debe estar activo.";
+                }
+                if (venta.Partidos == null || !venta.Partidos.Activo)
+                {
+                    return "No se pueden vender entradas para partidos inactivos.";
+                }
+                if (venta.Partidos.Fecha.Date < DateTime.Now.Date)
+                {
+                    return "No se pueden vender boletos para partidos con fecha anterior a hoy.";
+                }
+                if(string.IsNullOrWhiteSpace(venta.TipoVenta))
+{
+                    venta.TipoVenta = "En línea";
+                }
+                if (venta.Localidades == null)
+                {
+                    return "Debe seleccionar una localidad.";
+                }
+                if (venta.Partidos == null)
+                {
+                    return "Debe seleccionar un partido.";
+                }
+
+                // A partir de aquí se toca la disponibilidad de la localidad: zona crítica.
+                lock (candadoVentas)
+                {
+                    LocalidadesXpartido localidadPartido =
+                        accesoLocalidadPartido.ObtenerLocalidadXPartido(venta.Partidos.IdPartido, venta.Localidades.IdLocalidad);
+
+                    if (localidadPartido == null)
                     {
-                        //valida que haya disponiblidad
-                        if (venta.Cantidad > listaLocPartido[i].CantidadDisponible)
-                        {
-                            return "No hay entradas disponibles.";
-                        }
-                        
-                        listaLocPartido[i].CantidadDisponible -= venta.Cantidad; //restamos cada vez  que se compra
-                        //Calculamos el monto total
-                        venta.MontoTotal = venta.Cantidad * listaLocPartido[i].Localidades.Precio;
-                            
+                        return "La localidad no está asociada a este partido.";
+                    }
+
+                    if (venta.Cantidad > localidadPartido.CantidadDisponible)
+                    {
+                        return "No hay suficientes entradas disponibles para esta localidad.";
+                    }
+
+                    // Calcular el monto total (no editable por el usuario)
+                    venta.MontoTotal = venta.Cantidad * localidadPartido.Localidades.Precio;
+                    venta.FechaVenta = DateTime.Now;
+
+                    // Descontar disponibilidad y guardar todo dentro del mismo candado,
+                    // para que ningún otro hilo pueda vender sobre estos mismos boletos
+                    // mientras esta operación no haya terminado.
+                    int nuevaCantidadDisponible = localidadPartido.CantidadDisponible - venta.Cantidad;
+                    accesoLocalidadPartido.ActualizarCantidadDisponible(localidadPartido.IdLocalidadPartido, nuevaCantidadDisponible);
+
+                    bool guardado = accesoVenta.Ingresar(venta);
+                    if (!guardado)
+                    {
+                        return "No se pudo registrar la venta.";
                     }
                 }
-            }
 
-            return string.Empty;
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                return "Error al registrar la venta: " + ex.Message;
+            }
         }
+
+        public List<Ventas> Listar()
+        {
+            try
+            {
+                return accesoVenta.ObtenerVentas();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar ventas: " + ex.Message);
+            }
+        }
+
+        public List<Ventas> ListarPorCliente(int idCliente)
+        {
+            try
+            {
+                List<Ventas> todas = accesoVenta.ObtenerVentas();
+                List<Ventas> propias = new List<Ventas>();
+
+                foreach (Ventas venta in todas)
+                {
+                    if (venta.Cliente.IdCliente == idCliente)
+                    {
+                        propias.Add(venta);
+                    }
+                }
+                return propias;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al listar compras del cliente: " + ex.Message);
+            }
+        }
+
         //permite verificar si hay registros 
         public bool TieneVentas()
         {
@@ -134,7 +167,6 @@ namespace Logica
                 throw new Exception("Error al verificar registros de ventas: " + ex.Message);
             }
         }
-
 
     }
 }
