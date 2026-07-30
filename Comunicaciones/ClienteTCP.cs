@@ -23,7 +23,7 @@ namespace Comunicaciones
             try
             {
                 cliente = new TcpClient();
-                cliente.Connect(ip, puerto);
+                cliente.Connect(ip,puerto);
                 stream = cliente.GetStream();
                 reader = new StreamReader(stream);
                 writer = new StreamWriter(stream){AutoFlush = true} ;

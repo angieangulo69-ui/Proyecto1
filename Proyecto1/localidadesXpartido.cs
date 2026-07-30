@@ -50,9 +50,11 @@ namespace Entidades
                 return Localidades.NombreLocalidad;
             }
         }
+        
         public override string ToString()
         {
-            return Partido.Rival + " - " + Localidades.NombreLocalidad;
+            return Localidades.NombreLocalidad +
+                   " (" + CantidadDisponible + " disponibles)";
         }
     }
 }

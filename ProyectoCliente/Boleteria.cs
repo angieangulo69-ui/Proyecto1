@@ -52,15 +52,15 @@ namespace ProyectoCliente
 
                 int cantidad;
 
-                if (!int.TryParse(txtCantidad.Text, out cantidad))
+                if (!int.TryParse(txtCantidad.Text, out cantidad) || cantidad <= 0)
                 {
                     MessageBox.Show("Cantidad inválida.");
                     return;
                 }
 
-                Entidades.Ventas venta = new Entidades.Ventas();
+                Ventas venta = new Ventas();
                 venta.Cliente = clienteActual;
-         
+
                 LocalidadesXpartido localidadPartido = (LocalidadesXpartido)comboBoxLocalidad.SelectedItem;
                 venta.Partidos = localidadPartido.Partido;
                 venta.Localidades = localidadPartido.Localidades;
@@ -70,19 +70,26 @@ namespace ProyectoCliente
                 venta.TipoVenta = "En Línea";
                 venta.MontoTotal = 0;
 
-                Mensaje mensaje = new Mensaje("RegistrarVenta", venta);
+                //
+                MensajeSocket<object> mensaje = new MensajeSocket<object>("RegistrarVenta")
+                {
+                    Entidad = venta
+                };
 
                 string respuestaJson = clienteTCP.Enviar(mensaje);
 
-                Mensaje respuesta =
-                    JsonConvert.DeserializeObject<Mensaje>(respuestaJson);
+                MensajeSocket<object> respuesta = JsonConvert.DeserializeObject<MensajeSocket<object>>(respuestaJson);
 
-                MessageBox.Show(respuesta.Entidad.ToString());
-
+                //
                 if (respuesta.Metodo == "OK")
                 {
+                    MessageBox.Show(respuesta.Entidad.ToString());
                     limpiar();
                     CargarVentas();
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Entidad.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 }
             }
             catch (Exception ex)
@@ -98,10 +105,15 @@ namespace ProyectoCliente
 
         private void Boleteria_Load(object sender, EventArgs e)
         {
+            MessageBox.Show(clienteActual.Nombre);
             CargarPartidos();
 
             txt_nombreCliente.Text = clienteActual.Nombre + " " + clienteActual.Apellido;
             txt_identificacion.Text = clienteActual.Identificacion;
+
+            
+            CargarVentas();
+
         }
         private void configurar_data_venta()
         {
@@ -142,13 +154,12 @@ namespace ProyectoCliente
                 lblMontoTotal.Text = "";
                 return;
             }
-
-            LocalidadesXpartido localidadPartido =
-                (LocalidadesXpartido)comboBoxLocalidad.SelectedItem;
+            //
+            LocalidadesXpartido localidadPartido = (LocalidadesXpartido)comboBoxLocalidad.SelectedItem;
 
             decimal total = cantidad * localidadPartido.Localidades.Precio;
 
-            lblMontoTotal.Text = total.ToString("N2");
+            lblMontoTotal.Text = total.ToString("N2"); //
         }
 
         private void comboBoxLocalidad_SelectedIndexChanged(object sender, EventArgs e)
@@ -166,19 +177,25 @@ namespace ProyectoCliente
         {
             try
             {
-                Mensaje mensaje = new Mensaje("ConsultarPartidos", null);
+                MensajeSocket<object> mensaje = new MensajeSocket<object>("ConsultarPartidos");
 
                 string respuestaJson = clienteTCP.Enviar(mensaje);
+                //
+                MensajeSocket<object> respuesta = JsonConvert.DeserializeObject<MensajeSocket<object>>(respuestaJson);
+                if (respuesta.Metodo == "OK")
+                {
+                    //
+                    List<Partidos> lista = JsonConvert.DeserializeObject<List<Partidos>>(JsonConvert.SerializeObject(respuesta.Entidad));
 
-                Mensaje respuesta =
-                    JsonConvert.DeserializeObject<Mensaje>(respuestaJson);
-
-                List<Partidos> lista =
-                    JsonConvert.DeserializeObject<List<Partidos>>(JsonConvert.SerializeObject(respuesta.Entidad));
-
-                comboBoxPartido.DataSource = lista;
-                comboBoxPartido.DisplayMember = "Rival";
-                comboBoxPartido.ValueMember = "IdPartido";
+                    comboBoxPartido.DataSource = null;
+                    comboBoxPartido.DataSource = lista;
+                    comboBoxPartido.DisplayMember = "Rival";
+                    comboBoxPartido.ValueMember = "IdPartido";
+                }
+                else
+                {
+                    MessageBox.Show(respuesta.Entidad.ToString());
+                }
             }
             catch (Exception ex)
             {
@@ -188,22 +205,36 @@ namespace ProyectoCliente
         private void CargarVentas()
         {
             try
-            {
-                Mensaje mensaje = new Mensaje("ConsultarCompras", clienteActual.IdCliente);
+            {   //
+                MensajeSocket<object> mensaje = new MensajeSocket<object>("ConsultarCompras")
+                {
+                    Entidad = clienteActual.IdCliente
+                };
 
                 string respuestaJson = clienteTCP.Enviar(mensaje);
-
-                Mensaje respuesta =
-                    JsonConvert.DeserializeObject<Mensaje>(respuestaJson);
+                //
+                MensajeSocket<object> respuesta = JsonConvert.DeserializeObject<MensajeSocket<object>>(respuestaJson);
 
                 if (respuesta.Metodo == "OK")
                 {
-                    List<Entidades.Ventas> lista =
-                        JsonConvert.DeserializeObject<List<Entidades.Ventas>>(
-                            JsonConvert.SerializeObject(respuesta.Entidad));
+                    List<Ventas> lista = JsonConvert.DeserializeObject<List<Ventas>>(JsonConvert.SerializeObject(respuesta.Entidad));
 
-                    data_compras.DataSource = null;
-                    data_compras.DataSource = lista;
+                    data_compras.Rows.Clear();
+
+                    foreach (Ventas venta in lista)
+                    {
+                        data_compras.Rows.Add(
+                            venta.IdVenta,
+                            venta.Cliente.Nombre,
+                            venta.Partidos.Rival,
+                            venta.Localidades.NombreLocalidad,
+                            venta.Cantidad,
+                            venta.Vendedores == null ? "" : venta.Vendedores.Nombre,
+                            venta.FechaVenta.ToShortDateString(),
+                            venta.MontoTotal,
+                            venta.TipoVenta
+                        );
+                    }
                 }
                 else
                 {
@@ -219,21 +250,22 @@ namespace ProyectoCliente
         {
             try
             {
-                Mensaje mensaje = new Mensaje("ConsultarLocalidades", idPartido);
+                MensajeSocket<object> mensaje = new MensajeSocket<object>("ConsultarLocalidades")
+                {
+                    Entidad = idPartido
+                };
 
                 string respuestaJson = clienteTCP.Enviar(mensaje);
 
-                Mensaje respuesta =
-                    JsonConvert.DeserializeObject<Mensaje>(respuestaJson);
+                MensajeSocket<object> respuesta = JsonConvert.DeserializeObject<MensajeSocket<object>>(respuestaJson);
 
                 if (respuesta.Metodo == "OK")
                 {
-                    List<LocalidadesXpartido> lista =JsonConvert.DeserializeObject<List<LocalidadesXpartido>>(JsonConvert.SerializeObject(respuesta.Entidad));
+                    List<LocalidadesXpartido> lista = JsonConvert.DeserializeObject<List<LocalidadesXpartido>>(JsonConvert.SerializeObject(respuesta.Entidad));
 
                     comboBoxLocalidad.DataSource = null;
                     comboBoxLocalidad.DataSource = lista;
-                    comboBoxLocalidad.DisplayMember = "NombreLocalidad";
-                    comboBoxLocalidad.ValueMember = "IdLocalidadPartido";
+
                 }
                 else
                 {
@@ -259,14 +291,22 @@ namespace ProyectoCliente
             Partidos partidoSeleccionado = (Partidos)comboBoxPartido.SelectedItem;
 
             date_partido.Value = partidoSeleccionado.Fecha;
-            date_hora.Text = partidoSeleccionado.Hora.ToString();
+            date_hora.Text = partidoSeleccionado.Hora;
 
             CargarLocalidades(partidoSeleccionado.IdPartido);
         }
 
         private void data_compras_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            
+
+        }
+
+        private void comboBoxLocalidad_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (comboBoxLocalidad.SelectedItem == null)
+                return;
+
+            CalcularTotal();
         }
     }
 }

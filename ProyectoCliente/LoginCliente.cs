@@ -83,9 +83,12 @@ namespace ProyectoCliente
 
         private void LoginCliente_Load(object sender, EventArgs e)
         {
+            MessageBox.Show("Entró al Load");
+
             try
             {
                 clienteTCP.Conectar("127.0.0.1", 14500);
+                MessageBox.Show(clienteTCP.EstaConectado().ToString());
 
                 lbl_Mensaje.Text = "Conectado al servidor";
             }

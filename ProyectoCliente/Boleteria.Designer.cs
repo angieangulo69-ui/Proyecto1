@@ -125,6 +125,7 @@
             comboBoxLocalidad.Name = "comboBoxLocalidad";
             comboBoxLocalidad.Size = new Size(149, 28);
             comboBoxLocalidad.TabIndex = 107;
+            comboBoxLocalidad.SelectedIndexChanged += comboBoxLocalidad_SelectedIndexChanged_1;
             // 
             // txtCantidad
             // 
@@ -255,8 +256,7 @@
             comboBoxPartido.Name = "comboBoxPartido";
             comboBoxPartido.Size = new Size(174, 28);
             comboBoxPartido.TabIndex = 106;
-            this.comboBoxPartido.SelectedIndexChanged += new System.EventHandler(this.comboBoxPartido_SelectedIndexChanged);
-
+            comboBoxPartido.SelectedIndexChanged += comboBoxPartido_SelectedIndexChanged;
             // 
             // label22
             // 

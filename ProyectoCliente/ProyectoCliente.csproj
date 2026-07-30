@@ -11,8 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Comunicaciones\Comunicaciones.csproj" />
     <ProjectReference Include="..\Logica\Logica.csproj" />
-    <ProjectReference Include="..\Servidor.csproj" />
-	<ProjectReference Include ="..\ProyectoCliente.csproj"/>
+    <ProjectReference Include="..\Presentaciones\Servidor.csproj" />
     <ProjectReference Include="..\Proyecto1\Entidades.csproj" />
 	
   </ItemGroup>
